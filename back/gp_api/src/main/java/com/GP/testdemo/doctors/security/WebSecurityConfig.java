@@ -28,6 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 ;
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http  //HTTP Basic authentication
@@ -46,6 +48,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.DELETE, "/patient/**").hasAnyRole("PATIENT","ADMIN")
                 .and()
                 .csrf().disable()
-               .formLogin().disable();
+                .formLogin().disable();
     }
 }
