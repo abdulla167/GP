@@ -5,6 +5,7 @@ import com.server.mothercare.entities.User;
 import com.server.mothercare.repositories.ConfirmationTokenRepository;
 import com.server.mothercare.security.config.EmailSenderService;
 import com.server.mothercare.services.UserService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +42,9 @@ public class RegistrationController {
          user.setPassword(this.encoder.encode(user.getPassword()));
          this.userService.registerUser(user);
          confirm(user.getEmail(),user);
-         return new ResponseEntity("Sucessful sign up", HttpStatus.OK);
+         return new ResponseEntity("\"Sucessful sign up\"", HttpStatus.OK);
       }else {
-         return new ResponseEntity("User alredy exist", HttpStatus.CONFLICT);
+         return new ResponseEntity("\"User alredy exist\"", HttpStatus.CONFLICT);
       }
    }
    private void confirm(String email,User theUser){
@@ -84,19 +85,22 @@ public class RegistrationController {
       User dbUser = null;
       dbUser = this.userService.userbyUserName(user.getUsername());
       if(dbUser == null){
-         return new ResponseEntity ("Failed sign in", HttpStatus.UNAUTHORIZED);
+         return new ResponseEntity ("\"Failed sign in\"", HttpStatus.UNAUTHORIZED);
       } else {
          if (encoder.matches(user.getPassword(), dbUser.getPassword())){
 
             if (dbUser.isConfirmed()) {
-               return new ResponseEntity("Sucessful sign in", HttpStatus.OK);
+
+               ResponseEntity response = new ResponseEntity("\"Sucessful sign in\"", HttpStatus.OK);
+               System.out.println(response);
+               return response;
             }else {
                confirm(user.getEmail(),user);
-               return new ResponseEntity ("Confirm account before sign in", HttpStatus.UNAUTHORIZED);
+               return new ResponseEntity ("\"Confirm account before sign in\"", HttpStatus.UNAUTHORIZED);
             }
 
          }else{
-            return new ResponseEntity ("Failed sign in", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity ("\"Failed sign in\"", HttpStatus.UNAUTHORIZED);
          }
       }
    }
