@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../models/user.model';
 import {Observable, Subject} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -20,22 +20,21 @@ export class AuthenticationService{
    */
   // tslint:disable-next-line:typedef
   signup(newUser: User){
-    return this.http.post('localhost:8080/signupNewUser', newUser).pipe(catchError(respError => {
+    return this.http.post('http://localhost:8080/register/newUser', JSON.parse(JSON.stringify(newUser))).pipe(catchError(respError => {
         // switch (respError.error.error.message){
         //
         // }
+      console.log(JSON.stringify(newUser));
       return Observable.throw(respError.error.error.message);
       }
     ));
   }
 
   signin(username: string, password: string){
-    return this.http.post('localhost:8080/signin', {username, password}).pipe(catchError(respError => {
-      // switch (respError.error.error.message){
-      //
-      // }
-      return Observable.throw(respError.error.error.message);
-    }));
+    return this.http.post('http://localhost:8080/signin', {username, password}).pipe(tap( // Log the result or error
+      data => console.log(data),
+      error => console.log(error)
+    ));
   }
 
   saveToken(token) {

@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     this.authService.signin(username, password).subscribe(respData => {
 
     }, respError => {
-
+      console.log("error");
     });
 
 

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -28,7 +29,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final UserDetailsService userDetailsService;
 
-    private PasswordEncoder encoder;
+    private BCryptPasswordEncoder encoder;
     @Value("${keyfile}")
     private String keyFile ;
     @Value("${password}")
@@ -41,7 +42,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     public AuthorizationServerConfig(AuthenticationManager authenticationManager
-            , @Qualifier("userDetailsServiceImpl")UserDetailsService userDetailsService, PasswordEncoder encoder){
+            , @Qualifier("userDetailsServiceImpl")UserDetailsService userDetailsService, BCryptPasswordEncoder encoder){
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.encoder = encoder;

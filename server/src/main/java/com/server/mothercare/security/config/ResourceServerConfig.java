@@ -26,6 +26,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.httpBasic();
         http.authorizeRequests().mvcMatchers(HttpMethod.POST,"/register/newUser").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/confirm-account").permitAll()
+                .mvcMatchers(HttpMethod.POST,"/signin").permitAll()
                 .anyRequest().authenticated().and().csrf().disable();
     }
 }

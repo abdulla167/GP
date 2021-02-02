@@ -3,16 +3,16 @@ import {Injectable} from "@angular/core";
 @Injectable({providedIn:"root"})
 export class User{
   private _imgPath: string;
-  constructor(private _firstName:string, private _lastName:string, private _username:string, private _gender:string,
-              private _email:string,private _date:Date,private _password:string){}
+  constructor(private firstName:string, private lastName:string, private username:string, private gender:string,
+              private email:string, private birthOfDate:Date, private password:string){}
 
 
-  get date(): Date {
-    return this._date;
+  get getBirthOfDate(): Date {
+    return this.birthOfDate;
   }
 
-  set date(value: Date) {
-    this._date = value;
+  set setBirthOfDate(value: Date) {
+    this.birthOfDate = value;
   }
 
   get imgPath(): string {
@@ -23,53 +23,53 @@ export class User{
     this._imgPath = value;
   }
 
-  get firstName(): string {
-    return this._firstName;
+  get getFirstName(): string {
+    return this.firstName;
   }
 
-  set firstName(value: string) {
-    this._firstName = value;
+  set setFirstName(value: string) {
+    this.firstName = value;
   }
 
-  get lastName(): string {
-    return this._lastName;
+  get getLastName(): string {
+    return this.lastName;
   }
 
-  set lastName(value: string) {
-    this._lastName = value;
+  set setLastName(value: string) {
+    this.lastName = value;
   }
 
-  get username(): string {
-    return this._username;
+  get getUsername(): string {
+    return this.username;
   }
 
-  set username(value: string) {
-    this._username = value;
+  set setUsername(value: string) {
+    this.username = value;
   }
 
-  get gender(): string {
-    return this._gender;
+  get getGender(): string {
+    return this.gender;
   }
 
-  set gender(value: string) {
-    this._gender = value;
+  set setGender(value: string) {
+    this.gender = value;
   }
 
-  get email(): string {
-    return this._email;
+  get getEmail(): string {
+    return this.email;
   }
 
-  set email(value: string) {
-    this._email = value;
+  set setEmail(value: string) {
+    this.email = value;
   }
 
 
 
-  get password(): string {
-    return this._password;
+  get getPassword(): string {
+    return this.password;
   }
 
-  set password(value: string) {
-    this._password = value;
+  set setPassword(value: string) {
+    this.password = value;
   }
 }
