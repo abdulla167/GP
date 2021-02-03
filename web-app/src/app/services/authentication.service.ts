@@ -38,12 +38,12 @@ export class AuthenticationService{
       .pipe(catchError(this.handleError))
   }
 
-  private handleError(errResp : HttpErrorResponse){
+  private handleError(errResp : HttpErrorResponse) {
     let errorMessage = "An unknown error message";
-    if(!errResp.error || !errResp.error.error){
+    if (!errResp.error || !errResp.error.error) {
       return throwError(errorMessage);
     }
-    switch (errResp.error.message){
+    switch (errResp.error.message) {
       case 'EMAIL_EXISTS':
         errorMessage = "This email is already exists";
         break;

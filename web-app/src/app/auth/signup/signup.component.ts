@@ -1,28 +1,29 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {User} from '../../models/user.model';
-import {AuthenticationService} from "../../services/authentication.service";
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
-  providers:[]
+  providers: []
 })
 export class SignupComponent implements OnInit {
   datepickerValue: Date;
-  defaultGender = "Male";
+  defaultGender = 'Male';
   invalidConfirmPassword = false;
   isLoading = false;
-  error : string = null;
+  error: string = null;
 
   constructor(private authService:AuthenticationService) {}
+
 
   ngOnInit(): void {
     this.datepickerValue = new Date();
   }
 
-  onSubmitForm(form : NgForm){
+  onSubmitForm(form: NgForm){
     if (!form.valid){
       return;
     }else {
@@ -38,9 +39,9 @@ export class SignupComponent implements OnInit {
           this.error = resError;
         });
         this.isLoading = false;
-        // form.reset();
+        form.reset();
       }else {
-        this.invalidConfirmPassword= true;
+        this.invalidConfirmPassword = true;
       }
     }
   }

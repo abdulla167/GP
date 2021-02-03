@@ -2,111 +2,117 @@ import {Injectable} from "@angular/core";
 
 @Injectable({providedIn:"root"})
 export class User{
+// <<<<<<< HEAD
+//
+//
+//   constructor(private _userId: string,  private _token: string,
+//               private _refreshToken : string,  private _tokeExpirationDate: Date){}
+//
+//
+//   get userId(): string {
+//     return this._userId;
+//   }
+//
+//   set userId(value: string) {
+//     this._userId = value;
+//   }
+//
+//   get refreshToken(): string {
+//     return this._refreshToken;
+//   }
+//
+//   set refreshToken(value: string) {
+//     this._refreshToken = value;
+//   }
+//
+//   get tokeExpirationDate(): Date {
+//     return this._tokeExpirationDate;
+//   }
+//
+//   set tokeExpirationDate(value: Date) {
+//     this._tokeExpirationDate = value;
+//   }
+//
+//
+//   get token(){
+//     if (!this._tokeExpirationDate || new Date() > this._tokeExpirationDate){
+//       return null;
+//     }
+//     return this.token;
+//   }
+//
+//
+//
+// =======
+  private _imgPath: string;
+  constructor(private firstName:string, private lastName:string, private username:string, private gender:string,
+              private email:string, private birthOfDate:Date, private password:string){}
 
 
-  constructor(private _userId: string,  private _token: string,
-              private _refreshToken : string,  private _tokeExpirationDate: Date){}
-
-
-  get userId(): string {
-    return this._userId;
+  get getBirthOfDate(): Date {
+    return this.birthOfDate;
   }
 
-  set userId(value: string) {
-    this._userId = value;
+  set setBirthOfDate(value: Date) {
+    this.birthOfDate = value;
   }
 
-  get refreshToken(): string {
-    return this._refreshToken;
+  get imgPath(): string {
+    return this._imgPath;
   }
 
-  set refreshToken(value: string) {
-    this._refreshToken = value;
+  set imgPath(value: string) {
+    this._imgPath = value;
   }
 
-  get tokeExpirationDate(): Date {
-    return this._tokeExpirationDate;
+  get getFirstName(): string {
+    return this.firstName;
   }
 
-  set tokeExpirationDate(value: Date) {
-    this._tokeExpirationDate = value;
+  set setFirstName(value: string) {
+    this.firstName = value;
+  }
+
+  get getLastName(): string {
+    return this.lastName;
+  }
+
+  set setLastName(value: string) {
+    this.lastName = value;
+  }
+
+  get getUsername(): string {
+    return this.username;
+  }
+
+  set setUsername(value: string) {
+    this.username = value;
+  }
+
+  get getGender(): string {
+    return this.gender;
+  }
+
+  set setGender(value: string) {
+    this.gender = value;
+  }
+
+  get getEmail(): string {
+    return this.email;
+  }
+
+  set setEmail(value: string) {
+    this.email = value;
   }
 
 
-  get token(){
-    if (!this._tokeExpirationDate || new Date() > this._tokeExpirationDate){
-      return null;
-    }
-    return this.token;
+
+  get getPassword(): string {
+    return this.password;
   }
 
-
-// constructor(private _firstName:string, private _lastName:string,private _password:string, private _username:string, private _gender:string,
-  //             private _email:string,private _date:Date){}
-  //
-  //
-  // get date(): Date {
-  //   return this._date;
-  // }
-  //
-  // set date(value: Date) {
-  //   this._date = value;
-  // }
-  //
-  // get imgPath(): string {
-  //   return this._imgPath;
-  // }
-  //
-  // set imgPath(value: string) {
-  //   this._imgPath = value;
-  // }
-  //
-  // get firstName(): string {
-  //   return this._firstName;
-  // }
-  //
-  // set firstName(value: string) {
-  //   this._firstName = value;
-  // }
-  //
-  // get lastName(): string {
-  //   return this._lastName;
-  // }
-  //
-  // set lastName(value: string) {
-  //   this._lastName = value;
-  // }
-  //
-  // get username(): string {
-  //   return this._username;
-  // }
-  //
-  // set username(value: string) {
-  //   this._username = value;
-  // }
-  //
-  // get gender(): string {
-  //   return this._gender;
-  // }
-  //
-  // set gender(value: string) {
-  //   this._gender = value;
-  // }
-  //
-  // get email(): string {
-  //   return this._email;
-  // }
-  //
-  // set email(value: string) {
-  //   this._email = value;
-  // }
-
-
-  // get password(): string {
-  //   return this._password;
-  // }
-  //
-  // set password(value: string) {
-  //   this._password = value;
-  // }
+  set setPassword(value: string) {
+    this.password = value;
+  }
+// >>>>>>> 3e0b7e17c283d87717f918ca12a7a2c446e9478f
 }

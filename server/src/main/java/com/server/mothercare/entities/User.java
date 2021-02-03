@@ -14,6 +14,7 @@ import java.util.Collection;
 @Entity(name = "User")
 @Data
 @RequiredArgsConstructor
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"username"})})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +52,9 @@ public class User implements UserDetails {
     @Column(name = "image")
     private byte[] img;
 
+    @Column(name = "confirmed")
+    boolean confirmed;
+
 
     public User(User user) {
         this.firstName = user.getFirstName();
@@ -60,6 +64,7 @@ public class User implements UserDetails {
         this.birthOfDate = user.getBirthOfDate();
         this.email = user.getEmail();
         this.phone = user.getPhone();
+        this.confirmed = false;
     }
 
     public User(String firstName, String lastName, String encodedPassword, String username,String email, String phone) {
@@ -69,6 +74,7 @@ public class User implements UserDetails {
         this.username = username;
         this.email = email;
         this.phone = phone;
+        this.confirmed = false;
     }
 
     public User(String firstName, String lastName, String encodedPassword, String username, Date birthOfDate, String email, String phone) {
@@ -79,6 +85,7 @@ public class User implements UserDetails {
         this.birthOfDate = birthOfDate;
         this.email = email;
         this.phone = phone;
+        this.confirmed = false;
     }
 
 
