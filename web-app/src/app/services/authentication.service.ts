@@ -1,14 +1,18 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {User} from "../models/user.model";
 import {Subject} from "rxjs";
-import {catchError} from "rxjs/operators";
+import {catchError, tap} from "rxjs/operators";
 import {throwError} from "rxjs";
+
+
 
 
 @Injectable({providedIn:"root"})
 export class AuthenticationService{
   public user = new Subject<User>();
+
+
 
   constructor(private http: HttpClient) {}
 
@@ -17,27 +21,37 @@ export class AuthenticationService{
    * [Parameters] : User OBJECT
    * [Returns] : Observable OBJECT
    */
-  signup(newUser : User){
-    return this.http.post("localhost:8080/signupNewUser", newUser).pipe(catchError(respError => {
-        switch (respError.error.error.message){
-
-        }
-      }
-    ))
+  signup(newUser: { firstName: string; lastName: string; password: string; phone: string; email: string; username: string }){
+    return this.http.post("http://localhost:8080/register/newUser", newUser).pipe(catchError(this.handleError));
   }
 
-  signin(username:string, password:string){
-    return this.http.post("localhost:8080/signin", {username:username,password:password}).pipe(catchError(respError => {
-      switch (respError.error.error.message){
-
-      }
-    }))
+  login(username:string, password:string){
+    const headers = {
+      'Authorization': 'Basic ' + btoa('mothercare-webapp:6969'),
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
+    const body = new HttpParams()
+      .set('username', username)
+      .set('password', password)
+      .set('grant_type', 'password');
+    return this.http.post("http://localhost:8080/oauth/token", body, {headers : headers})
+      .pipe(catchError(this.handleError))
   }
 
-  saveToken(token) {
-    let expireDate = new Date().getTime() + (1000 * token.expires_in);
-    Cookie.set("access_token", token.access_token, expireDate);
-    console.log('Obtained Access token');
-    window.location.href = 'http://localhost:8089';
+  private handleError(errResp : HttpErrorResponse){
+    let errorMessage = "An unknown error message";
+    if(!errResp.error || !errResp.error.error){
+      return throwError(errorMessage);
+    }
+    switch (errResp.error.message){
+      case 'EMAIL_EXISTS':
+        errorMessage = "This email is already exists";
+        break;
+      case 'INVALID_USERNAME_PASSWORD':
+        errorMessage = "This is invalid username or password";
+      default:
+        errorMessage = "Something wrong happened";
+    }
+    return throwError(errorMessage);
   }
 }

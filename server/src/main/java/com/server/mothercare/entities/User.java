@@ -21,28 +21,35 @@ public class User implements UserDetails {
 
     @NotNull
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
 
     @NotNull
     @Column(name = "last_name")
-    String lastName;
-
-    @NotNull
-    @Column(name = "password")
-    String password;
+    private String lastName;
 
     @NotNull
     @Column(name = "username", unique = true)
-    String username;
+    private String username;
+
+    @NotNull
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "gender")
+    private String gender = "female";
 
     @Column(name = "BOD")
-    Date birthOfDate;
+    private Date birthOfDate;
 
     @Column(name = "email")
-    String email;
+    private String email;
 
     @Column(name = "phone")
     String phone;
+
+    @Lob
+    @Column(name = "image")
+    private byte[] img;
 
 
     public User(User user) {

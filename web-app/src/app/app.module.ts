@@ -17,9 +17,6 @@ import {LoadingSpinnerComponent} from "./shared/loading-spinner/loading-spinner.
 import {BsDropdownModule} from "ngx-bootstrap/dropdown"
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import {ng2-cookies}
-
-
 
 
 @NgModule({

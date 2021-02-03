@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+//@CrossOrigin(origins = "*", allowedHeaders = "*",allowCredentials = "")
 public class RegistrationController {
    private PasswordEncoder encoder;
    private UserService userService;

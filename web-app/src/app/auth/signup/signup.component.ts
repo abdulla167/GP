@@ -16,13 +16,10 @@ export class SignupComponent implements OnInit {
   isLoading = false;
   error : string = null;
 
-
-
-  constructor(private authService:AuthenticationService) { }
+  constructor(private authService:AuthenticationService) {}
 
   ngOnInit(): void {
     this.datepickerValue = new Date();
-
   }
 
   onSubmitForm(form : NgForm){
@@ -31,14 +28,17 @@ export class SignupComponent implements OnInit {
     }else {
       if (form.value.password === form.value.confirmPassword){
         this.invalidConfirmPassword = false;
-        let theUser = new User(form.value.firstName, form.value.lastName, form.value.username, form.value.gender,form.value.email,form.value.datepicker ,form.value.password);
+        let theUser = {"firstName" : form.value.firstName, "lastName" : form.value.lastName, "username": form.value.username,
+                        "password":form.value.password, "email":form.value.email, "phone":form.value.phone};
         this.isLoading = true;
         this.authService.signup(theUser).subscribe(resData => {
-        }, error =>{
-          this.error = "Something wrong happened";
+          console.log(resData)
+        }, resError =>{
+          console.log(resError)
+          this.error = resError;
         });
         this.isLoading = false;
-        form.reset();
+        // form.reset();
       }else {
         this.invalidConfirmPassword= true;
       }

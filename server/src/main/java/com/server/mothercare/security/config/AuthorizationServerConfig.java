@@ -1,5 +1,7 @@
 package com.server.mothercare.security.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final AuthenticationManager authenticationManager;
 
     private final UserDetailsService userDetailsService;
+
 
     private PasswordEncoder encoder;
     @Value("${keyfile}")
@@ -64,7 +67,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()");
     }
-
 
     @Bean
     public TokenStore tokenStore() {
