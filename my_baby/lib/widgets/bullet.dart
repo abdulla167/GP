@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:my_baby/models/resource.dart';
+import 'package:my_baby/widgets/html_widget.dart';
 
-class Bullet extends Text {
-  const Bullet(
-      String data, {
-        Key key,
-        TextStyle style,
-        TextAlign textAlign,
-        TextDirection textDirection,
-        Locale locale,
-        bool softWrap,
-        TextOverflow overflow,
-        double textScaleFactor,
-        int maxLines,
-        String semanticsLabel,
-      }) : super(
-    '\t\t\t• ${data}',
-    key: key,
-    style: style,
-    textAlign: textAlign,
-    textDirection: textDirection,
-    locale: locale,
-    softWrap: softWrap,
-    overflow: overflow,
-    textScaleFactor: textScaleFactor,
-    maxLines: maxLines,
-    semanticsLabel: semanticsLabel,
-  );
+class Bullet extends StatelessWidget {
+  final Object text;
+
+  Bullet({this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget child;
+    if (text is String)
+      child = Text(text);
+    else
+      child = HtmlWidget('${(text as HtmlText).text}');
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('•\t', style: TextStyle(fontSize: 18),),
+        Flexible(child: child),
+      ],
+    );
+  }
 }
