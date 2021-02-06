@@ -153,7 +153,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
                   child: IconButton(
                       iconSize: 30,
                       icon: isFinished
-                          ? const Icon(Icons.replay)
+                          ? const Icon(Icons.replay, color: Colors.white,)
                           : AnimatedIcon(
                           icon: AnimatedIcons.play_pause,
                           progress: playPauseIconAnimationController,

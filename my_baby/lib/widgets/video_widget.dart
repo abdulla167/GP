@@ -12,7 +12,7 @@ import 'package:video_player/video_player.dart';
 class VideoWidget extends StatefulWidget {
   final String videoId;
 
-  VideoWidget(this.videoId);
+  VideoWidget(this.videoId, {Key key}) : super(key: key);
 
   @override
   _VideoWidgetState createState() => _VideoWidgetState();
@@ -21,11 +21,12 @@ class VideoWidget extends StatefulWidget {
 class _VideoWidgetState extends State<VideoWidget> {
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
+  bool errorBackgroundImage = false;
+  
   bool isVideoInit = false;
 
   bool showLoading = false;
 
-  bool inlineVideo = false;
   bool gettingVideoInfo = false;
 
   @override
@@ -149,15 +150,14 @@ class _VideoWidgetState extends State<VideoWidget> {
     });
   }
 
-
-  Future<String> fetchVideoInfo() async{
-    try{
+  Future<String> fetchVideoInfo() async {
+    try {
       var video = await fetch(widget.videoId);
-      if(video['url'] != null){
+      if (video['url'] != null) {
         return video['url'];
       }
       return null;
-    } catch(e){
+    } catch (e) {
       return null;
     }
   }
@@ -170,22 +170,21 @@ class _VideoWidgetState extends State<VideoWidget> {
       _videoPlayerController = VideoPlayerController.network(videoUrl);
       await _videoPlayerController.initialize();
       _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController,
-        autoPlay: true,
-        customControls: CustomVideoControls(),
-        materialProgressColors: ChewieProgressColors(
-          playedColor: Colors.red,
-          handleColor: Colors.red,
-          bufferedColor: Colors.white,
-        )
-      );
+          videoPlayerController: _videoPlayerController,
+          autoPlay: true,
+          customControls: CustomVideoControls(),
+          materialProgressColors: ChewieProgressColors(
+            playedColor: Colors.red,
+            handleColor: Colors.red,
+            bufferedColor: Colors.white,
+          ));
       setState(() {
         showLoading = false;
         isVideoInit = true;
       });
     } catch (e) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => VideoScreen(widget.videoId)));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => VideoScreen(widget.videoId)));
     }
   }
 
@@ -193,15 +192,24 @@ class _VideoWidgetState extends State<VideoWidget> {
     if (!isVideoInit && !showLoading) {
       return Stack(
         children: [
-          Container(
+          if(!errorBackgroundImage)    // during navigation http thrown error, so this variable handle this issue
+            Container(
             width: MediaQuery.of(context).size.width,
             child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/loading.gif',
               image:
                   "https://img.youtube.com/vi/${widget.videoId}/sddefault.jpg",
               fit: BoxFit.fitWidth,
+              imageErrorBuilder: (cxt, object, stackTrack) {
+                errorBackgroundImage = true;
+                return Container(
+                  color: Colors.grey,
+                );
+              },
             ),
-          ),
+          )
+          else
+            Container(color: Colors.grey,),
           Center(
             child: RaisedButton(
               color: Colors.red,
@@ -210,20 +218,25 @@ class _VideoWidgetState extends State<VideoWidget> {
                 color: Colors.white,
                 size: 30,
               ),
-              onPressed: !gettingVideoInfo? () async{
-                if (connectionStatus.isConnected) {
-                  setState(() {
-                    gettingVideoInfo = true;
-                  });
-                  String videoUrl = await fetchVideoInfo();
-                  if(videoUrl != null){
-                    initializePlayer(videoUrl);
-                  } else {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => VideoScreen(widget.videoId)));
-                  }
-                }
-              }: null,
+              onPressed: !gettingVideoInfo
+                  ? () async {
+                      if (connectionStatus.isConnected) {
+                        setState(() {
+                          gettingVideoInfo = true;
+                        });
+                        String videoUrl = await fetchVideoInfo();
+                        if (videoUrl != null) {
+                          initializePlayer(videoUrl);
+                        } else {
+                          setState(() {
+                            gettingVideoInfo = false;
+                          });
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => VideoScreen(widget.videoId)));
+                        }
+                      }
+                    }
+                  : null,
               shape: CircleBorder(),
             ),
           ),
@@ -247,6 +260,8 @@ class _VideoWidgetState extends State<VideoWidget> {
         ),
       );
     }
+
+    return Container();
   }
 
   @override
