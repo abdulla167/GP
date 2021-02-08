@@ -76,5 +76,4 @@ public class RegistrationController {
          System.out.println("Failure token");
       }
    }
-
 }

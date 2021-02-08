@@ -26,7 +26,7 @@ export class PostsComponent{
   }
 
   addPost(){
-    let post = new PostModel(1,this.postContent.slice(), this.postImg, this.postFile);
+    let post = new PostModel(1,this.postContent.slice(), this.postImg, this.postFile,null);
     this.userPosts.unshift(post);
     this.postImg = null;
   }
