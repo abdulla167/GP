@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_baby/screens/resources/resource_subsections_screen.dart';
-
 import './screens/tabs_screen.dart';
 
 void main() => runApp(MyApp());

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:my_baby/widgets/html_widget.dart';
+import 'package:my_baby/widgets/my_appbar.dart';
+import 'package:my_baby/widgets/video_widget.dart';
 import '../../models/resource.dart';
 import '../../widgets/bullet.dart';
 
@@ -12,36 +13,23 @@ class ResourceContentScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final Map<String, Object> args = ModalRoute.of(context).settings.arguments;
     final title = args['title'];
-    final List<Content> contents = args['content'];
+    final List contents = args['content'];
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: theme.scaffoldBackgroundColor,
-        elevation: 0,
-        title: Text(
-          title,
-          style:
-              TextStyle(fontWeight: FontWeight.w500, color: Color(0xff364861)),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: theme.primaryColor,
-            size: 20,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
+      appBar: buildAppBar(context, title),
       body: ListView.builder(
+        cacheExtent: double.infinity,
         itemCount: contents.length,
         itemBuilder: (ctx, index) {
           final content = contents[index];
-          if (content is TextContent) {
+          if (content is String) {
             return Container(
               margin: EdgeInsets.symmetric(vertical: 5),
-              child: Text(content.text, textAlign: TextAlign.justify),
+              child: Text(content, textAlign: TextAlign.justify),
+            );
+          } else if (content is HtmlText) {
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: HtmlWidget(content.text),
             );
           } else if (content is ImageContent) {
             return Container(
@@ -52,10 +40,21 @@ class ResourceContentScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (content.title != null) Text(content.title),
-                for (var item in content.items) Bullet(item),
+                if (content.title != null)
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: content.title is String
+                          ? Text(content.title)
+                          : HtmlWidget((content.title as HtmlText).text)),
+                for (var item in content.items)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, bottom: 5),
+                    child: Bullet(text: item),
+                  ),
               ],
             );
+          } else if (content is VideoContent) {
+            return VideoWidget(content.videoId,key: ValueKey(content.videoId),);
           } else {
             return Container();
           }
