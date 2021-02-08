@@ -21,6 +21,9 @@ import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {BabyMonitorComponent} from "./profile/baby-monitor/baby-monitor.component";
 import {UserInfoComponent} from "./profile/user-info/user-info.component";
 import {PostsComponent} from "./profile/posts/posts.component";
+import { TimelineComponent } from './timeline/timeline.component';
+import { PostComponent } from './timeline/post/post.component';
+import { CreatePostComponent } from './timeline/create-post/create-post.component';
 
 
 
@@ -36,7 +39,10 @@ import {PostsComponent} from "./profile/posts/posts.component";
     ProfileComponent,
     BabyMonitorComponent,
     UserInfoComponent,
-    PostsComponent
+    PostsComponent,
+    TimelineComponent,
+    PostComponent,
+    CreatePostComponent
   ],
   imports: [
     BrowserModule,

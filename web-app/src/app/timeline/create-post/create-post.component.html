@@ -1,0 +1,55 @@
+
+<div class="container bootstrap snippets bootdey">
+  <div class="row">
+    <div class="col-md-offset-3 col-md-6 col-xs-12">
+      <div class="well well-sm well-social-post">
+        <form>
+          <ul class="list-inline" id='list_PostActions'>
+            <li class='active'><a href='#'>Update status</a></li>
+            <li><a  (click)="selectImage()">Add photos/Video</a></li>
+            <li><a href='#'>Create photo album</a></li>
+          </ul>
+          <textarea class="form-control" placeholder="What's in your mind?" #text  ></textarea>
+<!--          ##############-->
+          <div class="container row">
+            <div class="col-md-12">
+              <h1>Upload Image</h1>
+            </div>
+          </div>
+          <div class="container row">
+            <div class="col-md-6">
+              <input type="file" (change)="onFileChanged($event)">
+            </div>
+            <div class="col-md-6">
+              <input type="button" (click)="getImage()" value="upload">
+            </div>
+          </div>
+          <hr />
+<!--          <div class="container row">-->
+<!--            <div class="col-md-12">-->
+<!--              <div *ngIf=message>{{message}}</div>-->
+<!--            </div>-->
+<!--          </div>-->
+          <div class="container row">
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="name" placeholder="image name" [(ngModel)]="imageName"
+                     name="name" />
+            </div>
+<!--            <div class="col-md-6">-->
+<!--              <input type="button" (click)="getImage()" value="Get Image">-->
+<!--            </div>-->
+          </div>
+
+<!--          #############-->
+          <ul class='list-inline post-actions'>
+            <li><a href="#"><span class="glyphicon glyphicon-camera">upload image</span></a></li>
+            <li><a href="#" class='glyphicon glyphicon-user'></a></li>
+            <li><a href="#" class='glyphicon glyphicon-map-marker'></a></li>
+            <li class='pull-right'><a class='btn btn-primary btn-xs' (click)="createPost(text)">Post</a></li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

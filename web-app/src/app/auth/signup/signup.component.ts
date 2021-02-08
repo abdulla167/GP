@@ -17,21 +17,26 @@ export class SignupComponent implements OnInit {
   isLoading = false;
   error: string = null;
 
+<<<<<<< HEAD
   constructor(private authService:AuthenticationService, private router: Router) {}
+=======
+  constructor(private authService: AuthenticationService) {}
+>>>>>>> 58e1a10f54c86fa44df930120783e0f002c78b39
 
 
   ngOnInit(): void {
     this.datepickerValue = new Date();
   }
 
+  // tslint:disable-next-line:typedef
   onSubmitForm(form: NgForm){
     if (!form.valid){
       return;
     }else {
       if (form.value.password === form.value.confirmPassword){
         this.invalidConfirmPassword = false;
-        let theUser = {"firstName" : form.value.firstName, "lastName" : form.value.lastName, "username": form.value.username,
-                        "password":form.value.password, "email":form.value.email, "phone":form.value.phone};
+        const theUser = {firstName : form.value.firstName, lastName : form.value.lastName, username: form.value.username,
+                        password: form.value.password, email: form.value.email, phone: form.value.phone};
         this.isLoading = true;
         this.authService.signup(theUser).subscribe(resData => {
           console.log(resData)

@@ -26,14 +26,9 @@ import java.security.KeyPair;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     private static final String RESOURCE_ID = "motherService";
-
     private final AuthenticationManager authenticationManager;
-
     private final UserDetailsService userDetailsService;
-
-
     private PasswordEncoder encoder;
-
     @Value("${keyfile}")
     private String keyFile ;
     @Value("${password}")
