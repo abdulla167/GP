@@ -17,12 +17,10 @@ import {LoadingSpinnerComponent} from './shared/loading-spinner/loading-spinner.
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-<<<<<<< HEAD
-=======
-// import {ng2-cookies}
+import { TimelineComponent } from './timeline/timeline.component';
+import { PostComponent } from './timeline/post/post.component';
+import { CreatePostComponent } from './timeline/create-post/create-post.component';
 
-
->>>>>>> 3e0b7e17c283d87717f918ca12a7a2c446e9478f
 
 
 @NgModule({
@@ -33,7 +31,10 @@ import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     HomeComponent,
     SignupComponent,
     DoctorListComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    TimelineComponent,
+    PostComponent,
+    CreatePostComponent
   ],
   imports: [
     BrowserModule,
