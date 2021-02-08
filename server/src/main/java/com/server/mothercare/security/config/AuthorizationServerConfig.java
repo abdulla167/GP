@@ -28,7 +28,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private static final String RESOURCE_ID = "motherService";
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
-    private PasswordEncoder encoder;
+    private BCryptPasswordEncoder encoder;
     @Value("${keyfile}")
     private String keyFile ;
     @Value("${password}")
@@ -41,7 +41,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     public AuthorizationServerConfig(AuthenticationManager authenticationManager
-            , @Qualifier("userDetailsServiceImpl")UserDetailsService userDetailsService, PasswordEncoder encoder){
+            , @Qualifier("userDetailsServiceImpl")UserDetailsService userDetailsService, BCryptPasswordEncoder encoder){
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.encoder = encoder;

@@ -40,7 +40,7 @@ export class AuthenticationService{
     )
       .subscribe(( response) => {
         if (response.status === 200 ){
-          // this.tokenService.saveToken(JSON.parse(JSON.stringify(response.body)).get('access_token'));
+
           this.tokenService.saveToken( response.body['access_token']);
         }
       });
