@@ -1,4 +1,4 @@
-package com.server.mothercare.security.config;
+package com.server.mothercare.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

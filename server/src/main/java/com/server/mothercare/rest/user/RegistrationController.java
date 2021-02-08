@@ -3,15 +3,13 @@ package com.server.mothercare.rest.user;
 import com.server.mothercare.entities.ConfirmationToken;
 import com.server.mothercare.entities.User;
 import com.server.mothercare.repositories.ConfirmationTokenRepository;
-import com.server.mothercare.security.config.EmailSenderService;
+import com.server.mothercare.services.EmailSenderService;
 import com.server.mothercare.services.UserService;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -46,6 +44,7 @@ public class RegistrationController {
          return new ResponseEntity("\"User alredy exist\"", HttpStatus.CONFLICT);
       }
    }
+
    private void confirm(String email,User theUser){
       ConfirmationToken confirmationToken = new ConfirmationToken(theUser);
 
