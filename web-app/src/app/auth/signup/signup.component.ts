@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {User} from '../../models/user.model';
 import {AuthenticationService} from '../../services/authentication.service';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,11 +18,7 @@ export class SignupComponent implements OnInit {
   isLoading = false;
   error: string = null;
 
-<<<<<<< HEAD
-  constructor(private authService:AuthenticationService, private router: Router) {}
-=======
-  constructor(private authService: AuthenticationService) {}
->>>>>>> 58e1a10f54c86fa44df930120783e0f002c78b39
+  constructor(private authService: AuthenticationService, private router: Router, private userService: UserService) {}
 
 
   ngOnInit(): void {
@@ -38,15 +35,16 @@ export class SignupComponent implements OnInit {
         const theUser = {firstName : form.value.firstName, lastName : form.value.lastName, username: form.value.username,
                         password: form.value.password, email: form.value.email, phone: form.value.phone};
         this.isLoading = true;
-        this.authService.signup(theUser).subscribe(resData => {
-          console.log(resData)
-          this.router.navigate(['/login'])
-        }, resError =>{
-          console.log(resError)
+        this.authService.signup(theUser).subscribe(response => {
+          console.log(response.body);
+          this.userService.theuser = response.body as User;
+          this.router.navigate(['/login']);
+        }, resError => {
+          console.log(resError);
           this.error = resError;
         });
         this.isLoading = false;
-        form.reset();
+        // form.reset();
       }else {
         this.invalidConfirmPassword = true;
       }

@@ -8,14 +8,18 @@ import {TokenService} from './Token.service';
 import {async, Subject, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {getClassName} from 'codelyzer/util/utils';
+import {CommentModel} from '../models/comment.model';
+import {isIterable} from 'rxjs/internal-compatibility';
+import {LikeModel} from '../models/like.model';
+import {UserService} from './user.service';
 // import {type} from 'os';
 
 @Injectable({providedIn: 'root'})
 export class PostService{
   public postsSubject = new Subject<Post[]>();
-  posts: Post[];
+  posts: Post[] ;
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {
+  constructor(private http: HttpClient, private tokenService: TokenService, private userService: UserService) {
   }
   getPosts() {
     return this.posts.slice();
@@ -44,20 +48,57 @@ export class PostService{
     });
   }
 
-  uploadPosts(){
+  uploadPosts(cycle: number){
     const headers = {
       Authorization: 'Bearer ' + this.tokenService.getToken()
     };
-     this.http.get('http://localhost:8080/post/get', {headers}).subscribe(
+     this.http.get('http://localhost:8080/post/get/' + cycle, {headers}).subscribe(
       res => {
         const posts: Post[] = ( JSON.parse(JSON.stringify(res)) as Post[]);
-        this.posts = posts;
-        console.log(this.posts[4] );
-        console.log(posts[0]);
-        this.postsSubject.next(this.getPosts());
+        if( isIterable(posts)){
+          console.log("iterable");
+          if (cycle == 0)
+          {
+            for (const post of posts) {
+              this.addPost(post);
+            }
+          }else
+          {
+            this.posts = posts;
+          }
+          this.postsSubject.next(this.getPosts());
+        }
+
       }
     );
 
+  }
+  saveComment(postId: number, comment: CommentModel){
+    const headers = {
+      Authorization: 'Bearer ' + this.tokenService.getToken()
+    };
+    console.log('http://localhost:8080/comment' + postId);
+     return this.http.post('http://localhost:8080/comment/' + postId, comment,{ observe: 'response',headers: headers});
+
+  }
+  addLike(postId: number, postIndex: number){
+
+    const headers = {
+      Authorization: 'Bearer ' + this.tokenService.getToken()
+    };
+
+      return this.http.post('http://localhost:8080/like/' + postId, null, {observe: 'response', headers});
+  }
+
+  likedPosts(){
+    const headers = {
+      Authorization: 'Bearer ' + this.tokenService.getToken()
+    };
+    return this.http.get('http://localhost:8080/liked_posts',{observe: 'response', headers}).subscribe((response) => {
+      if(response.status === 200){
+        console.log(response.body);
+      }
+    });
   }
   getJsonFromFormData(formData: FormData){
     const object = {};

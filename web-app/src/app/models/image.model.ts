@@ -1,5 +1,5 @@
 export class ImageModel{
-  constructor(public id: number, public name: string, public type: string, public picByte: any) {}
+  constructor(public id: number, public name: string, public type: string, public picByte: string) {}
 
   //
   // get getId(): number {

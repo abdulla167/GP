@@ -1,8 +1,6 @@
 package com.server.mothercare.rest.timeline;
 
-import com.server.mothercare.entities.Image;
-import com.server.mothercare.entities.Post;
-import com.server.mothercare.entities.User;
+import com.server.mothercare.entities.*;
 import com.server.mothercare.services.ImageService;
 import com.server.mothercare.services.PostService;
 import com.server.mothercare.services.UserService;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.attribute.UserPrincipal;
@@ -44,8 +43,6 @@ public class TimelineController {
 
     @PostMapping(value = "/post/save")
     private ResponseEntity savePost(@RequestBody Post thePost,
-//                                    @RequestParam(value = "imageFile",required = false) MultipartFile theImage,
-//                                    @RequestParam(value = "text",required = false) String tex,
                                     HttpServletRequest request
     ){
         User user= userService.userbyUserName(request.getUserPrincipal().getName());
@@ -74,13 +71,50 @@ public class TimelineController {
 //        }
         return null;
     }
-    @GetMapping(value = "/post/get")
-    private ResponseEntity getPosts(){
+    @GetMapping(value = "/post/get/{first}")
+    private ResponseEntity getPosts(@PathVariable int first){
         List<Post> posts = null;
-        posts = postService.getPosts();
+        posts = postService.getPosts(first);
         return posts == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(posts, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/comment/{theId}")
+    private ResponseEntity saveComment(@PathVariable int theId,
+                                       @RequestBody Comment theComment,
+                                       HttpServletRequest request){
+
+        Post post = postService.getPostById(theId);
+        User user= userService.userbyUserName(request.getUserPrincipal().getName());
+        if (post == null){
+            return new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT);
+        }else {
+            theComment.setDate(new Timestamp(new Date().getTime()));
+            theComment.setUser(user);
+            post.addComment(theComment);
+            boolean commentSaved = postService.saveComment(theComment);
+            boolean saved = postService.update(post);
+            System.out.println(saved + " " + post.getComments().get(0));
+            return saved == false && commentSaved == false ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(post, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(value = "like/{postId}")
+    public ResponseEntity addLike(@PathVariable int postId, HttpServletRequest request){
+        User user= userService.userbyUserName(request.getUserPrincipal().getName());
+        Like theLike = new Like();
+        theLike.setUser(user);
+        Post thePost = postService.getPostById(postId);
+        thePost.addLikes(theLike);
+        boolean saved =postService.update(thePost);
+        return saved== true? new ResponseEntity(thePost, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+    }
+
+    @GetMapping(value = "liked_posts")
+    public ResponseEntity likedPosts(HttpServletRequest request){
+        User user= userService.userbyUserName(request.getUserPrincipal().getName());
+        List<Post> likedPosts = postService.likedPosts(user);
+        return likedPosts != null? new ResponseEntity(likedPosts, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+    }
     public static byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
         deflater.setInput(data);

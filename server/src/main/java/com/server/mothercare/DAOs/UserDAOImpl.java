@@ -28,7 +28,7 @@ public class UserDAOImpl implements UserDAO{
         User user = null;
         try {
             user = (User) query.setParameter("theUserName", theUserName).getResultList().get(0);
-            System.out.println(user);
+//            System.out.println(user);
             return user;
         }catch (Exception e){
             System.out.println(e.getMessage());

@@ -2,19 +2,16 @@ package com.server.mothercare.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity(name = "Post")
+@Entity(name = "Comment")
 @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
-public class Post implements Serializable {
+public class Comment implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,45 +28,29 @@ public class Post implements Serializable {
 
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @JoinColumn(name = "image_id",referencedColumnName = "id")
     private Image image;
-
-    @OneToMany(cascade =  CascadeType.ALL , mappedBy ="post")
-    private List<Like> likes;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
-    @OneToMany(cascade =  CascadeType.ALL , mappedBy = "post")
-    private List<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    Post post;
 
-    public Post(String text, String type, Timestamp
+
+
+    public Comment(String text, String type, Timestamp
             date, User user) {
         this.text = text;
         this.type = type;
         this.date = date;
         this.user = user;
     }
-    public Post() {
+    public  Comment(){
 
     }
-
-    public void addComment(Comment theComment){
-        if (comments == null){
-            comments = new ArrayList<Comment>();
-        }
-        comments.add(theComment);
-        theComment.setPost(this);
-    }
-    public void addLikes(Like theLike){
-        if (likes == null){
-            likes = new ArrayList<Like>();
-        }
-        likes.add(theLike);
-        theLike.setPost(this);
-    }
-
     public int getId() {
         return id;
     }
@@ -118,32 +99,24 @@ public class Post implements Serializable {
         this.user = user;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public Post getPost() {
+        return post;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public List<Like> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     @Override
     public String toString() {
-        return "Post{" +
+        return "Comment{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", type='" + type + '\'' +
                 ", date=" + date +
                 ", image=" + image +
                 ", user=" + user +
-                ", comments=" + comments.toArray().length +
+                ", post=" + post +
                 '}';
     }
 }

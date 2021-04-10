@@ -13,7 +13,7 @@ const appRoutes: Routes = [
   {path : 'signup', component: SignupComponent},
   {path: 'login', component: LoginComponent},
   {path: 'bookdoctor', component: DoctorListComponent},
-  {path: 'profile', component:ProfileComponent}
+  {path: 'profile', component:ProfileComponent},
   {path: 'timeline', component: TimelineComponent},
   {path: 'new_post', component: CreatePostComponent}
 ];

@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   isAuthenticated = false;
   logoUrl:string = "../../assets/images/logo.svg";
   leftNavItems:any[] = [["Home", "/home",true],["Baby Vaccinations","#",true], ["Healthy food","#",true]]
-  rightNavItems:any[] = [["Login","/login",false], ["Sign Up", "/signup", false],["Profile","/new_post", true], ["TimeLine", "/timeline", false]]
+  rightNavItems:any[] = [["Login","/login",false], ["Sign Up", "/signup", false],["Profile","/profile", true], ["TimeLine", "/timeline", false]]
   userSubscription : Subscription;
 
 

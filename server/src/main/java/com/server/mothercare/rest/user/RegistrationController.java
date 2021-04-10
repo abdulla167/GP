@@ -39,7 +39,7 @@ public class RegistrationController {
          user.setPassword(this.encoder.encode(user.getPassword()));
          this.userService.registerUser(user);
          confirm(user.getEmail(),user);
-         return new ResponseEntity("\"Sucessful sign up\"", HttpStatus.OK);
+         return new ResponseEntity(user, HttpStatus.OK);//new ResponseEntity("\"Sucessful sign up\"", HttpStatus.OK);
       }else {
          return new ResponseEntity("\"User alredy exist\"", HttpStatus.CONFLICT);
       }

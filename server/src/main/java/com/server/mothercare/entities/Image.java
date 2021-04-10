@@ -1,5 +1,7 @@
 package com.server.mothercare.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +11,8 @@ import java.io.Serializable;
 @Entity(name = "Image")
 @Data
 @RequiredArgsConstructor
-public class Image {
+@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
+public class Image implements Serializable{
 
     @Id
     @Column(name = "id",nullable = false)

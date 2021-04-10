@@ -1,5 +1,7 @@
 package com.server.mothercare.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +18,8 @@ import java.util.Collection;
 @Data
 @RequiredArgsConstructor
 @Table(uniqueConstraints={@UniqueConstraint(columnNames={"username"})})
-public class User implements UserDetails {
+@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
+public class User implements UserDetails , Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
@@ -50,7 +54,7 @@ public class User implements UserDetails {
 
     @Lob
     @Column(name = "image")
-    private byte[] img;
+    private byte[] profileImg;
 
     @Column(name = "confirmed")
     boolean confirmed;
