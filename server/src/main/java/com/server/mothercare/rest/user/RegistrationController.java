@@ -3,15 +3,13 @@ package com.server.mothercare.rest.user;
 import com.server.mothercare.entities.ConfirmationToken;
 import com.server.mothercare.entities.User;
 import com.server.mothercare.repositories.ConfirmationTokenRepository;
-import com.server.mothercare.security.config.EmailSenderService;
+import com.server.mothercare.services.EmailSenderService;
 import com.server.mothercare.services.UserService;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -41,11 +39,12 @@ public class RegistrationController {
          user.setPassword(this.encoder.encode(user.getPassword()));
          this.userService.registerUser(user);
          confirm(user.getEmail(),user);
-         return new ResponseEntity("\"Sucessful sign up\"", HttpStatus.OK);
+         return new ResponseEntity(user, HttpStatus.OK);//new ResponseEntity("\"Sucessful sign up\"", HttpStatus.OK);
       }else {
          return new ResponseEntity("\"User alredy exist\"", HttpStatus.CONFLICT);
       }
    }
+
    private void confirm(String email,User theUser){
       ConfirmationToken confirmationToken = new ConfirmationToken(theUser);
 
@@ -54,7 +53,7 @@ public class RegistrationController {
       SimpleMailMessage mailMessage = new SimpleMailMessage();
       mailMessage.setTo(email);
       mailMessage.setSubject("Complete Registration!");
-      mailMessage.setFrom("kemo.antemo7@gmail.com");
+      mailMessage.setFrom("abdullaelsayed167@yahoo.com");
       mailMessage.setText("To confirm your account, please click here : "
               +"http://localhost:8080/confirm-account?token="+confirmationToken.getConfirmationToken());
 
@@ -77,5 +76,4 @@ public class RegistrationController {
          System.out.println("Failure token");
       }
    }
-
 }

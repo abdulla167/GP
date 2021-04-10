@@ -20,12 +20,13 @@ export class LoginComponent implements OnInit {
     let username :string = form.value.username;
     let password : string = form.value.password;
     this.isLoading = true;
-    this.authService.login(username, password).subscribe(respData => {
-      console.log(respData);
-    }, respError => {
-      respError = this.error;
-      console.log(respError);
-    })
+    this.authService.login(username, password);
+    //   .subscribe(respData => {
+    //   console.log(respData);
+    // }, respError => {
+    //   respError = this.error;
+    //   console.log(respError);
+    // });
     this.isLoading = false;
   }
 }

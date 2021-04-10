@@ -7,6 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { DoctorListComponent } from './doctor-list/doctor-list.component';
+import {ProfileComponent} from './profile/profile.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
@@ -17,12 +18,13 @@ import {LoadingSpinnerComponent} from './shared/loading-spinner/loading-spinner.
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-<<<<<<< HEAD
-=======
-// import {ng2-cookies}
+import {BabyMonitorComponent} from './profile/baby-monitor/baby-monitor.component';
+import {UserInfoComponent} from './profile/user-info/user-info.component';
+import {PostsComponent} from './profile/posts/posts.component';
+import { TimelineComponent } from './timeline/timeline.component';
+import { PostComponent } from './timeline/post/post.component';
+import { CreatePostComponent } from './timeline/create-post/create-post.component';
 
-
->>>>>>> 3e0b7e17c283d87717f918ca12a7a2c446e9478f
 
 
 @NgModule({
@@ -33,7 +35,14 @@ import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     HomeComponent,
     SignupComponent,
     DoctorListComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    ProfileComponent,
+    BabyMonitorComponent,
+    UserInfoComponent,
+    PostsComponent,
+    TimelineComponent,
+    PostComponent,
+    CreatePostComponent
   ],
   imports: [
     BrowserModule,

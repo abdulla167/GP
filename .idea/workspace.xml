@@ -2,18 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c5291ba-ab00-49ce-9d79-3fdf58a6e6b1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/GP.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/doctors/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back/doctors/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/doctors/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back/doctors/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web application/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web application/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web application/src/app/doctor-list/doctor-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web application/src/app/doctor-list/doctor-list.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web application/src/app/doctor-list/doctor-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web application/src/app/doctor-list/doctor-list.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web application/src/app/doctor.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web application/src/app/services/doctor.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web application/src/app/signup/signup.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web application/src/app/signup/signup.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web application/src/app/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web application/src/app/services/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/rest/user/RegistrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/rest/user/RegistrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/EmailSenderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/services/EmailSenderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/MyCorsFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/MyCorsFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/OAuth2SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/OAuth2SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/ResourceServerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/ResourceServerConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +28,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web application" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/web-app" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -55,6 +50,8 @@
       <workItem from="1609426497012" duration="2182000" />
       <workItem from="1610638982692" duration="864000" />
       <workItem from="1611316997756" duration="94000" />
+      <workItem from="1612437779205" duration="11000" />
+      <workItem from="1612437924905" duration="484000" />
     </task>
     <servers />
   </component>
@@ -62,9 +59,9 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1611317090896">
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1612438294020">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1611317090896" />
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1612438294020" />
   </component>
 </project>
