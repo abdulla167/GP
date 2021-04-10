@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_baby/screens/navigator_keys.dart';
 import './screens/tabs_screen.dart';
 
 void main() => runApp(MyApp());
@@ -25,9 +26,11 @@ class MyApp extends StatelessWidget {
           selectedItemColor: Theme.of(context).primaryColor,
         ),
       ),
+      navigatorKey: NavigatorKeys.rootNavigationKey,
       initialRoute: '/',
       routes: {
         '/': (ctx) => TabsScreen(),
+        '/test': (ctx) => Container()
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(

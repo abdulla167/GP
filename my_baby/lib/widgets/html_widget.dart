@@ -23,7 +23,7 @@ class HtmlWidget extends StatelessWidget {
         "ul": Style(fontSize: FontSize(18)),
         "ul span": Style(fontSize: FontSize(15)),
       },
-      onLinkTap: (url) {
+      onLinkTap: (url, context, _, __) {
         launchUrl(url);
       },
     );

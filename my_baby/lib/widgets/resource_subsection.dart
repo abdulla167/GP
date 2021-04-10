@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ResourceSubSection extends StatelessWidget {
-
   final String title;
   final VoidCallback onTap;
 
@@ -24,7 +23,7 @@ class ResourceSubSection extends StatelessWidget {
                 IconButton(
                   splashRadius: 16,
                   icon: Icon(
-                      Icons.arrow_forward_ios_rounded,
+                    Icons.arrow_forward_ios_rounded,
                     size: 16,
                   ),
                   onPressed: onTap,

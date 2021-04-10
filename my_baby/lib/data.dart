@@ -151,11 +151,55 @@ Most doctors recommend a vaginal birth if there is a possibility for it and advi
       This is a rather peculiar type of delivery method and is required in certain cases of vaginal birth. This is an assistance to the usual vaginal delivery when the baby is on its way via the birth canal but fails to fully emerge out. This could be because of small obstructions, or the mother being tired and exhausted and hence being unable to push the baby out.<br/><br/>
       In these cases, the doctor makes use of specially created tongs which resemble <a href="https://parenting.firstcry.com/articles/assisted-delivery-forceps-and-ventouse">forceps</a>,and inserts them slowly into the birth canal. These are then used to gently grab the baby’s head and guide it outwards through the canal.
       ''')
+    ]),
+    Subsection('Vacuum Extraction', [
+      HtmlText('''
+      Similar to the forceps delivery method, this delivery technique is used in the case of a vaginal birth. For example, if the baby is on its way out but has stopped moving further down the canal, the vacuum extraction method is applied.<br/>
+      The doctors make use of a specialized vacuum pump which is inserted up to the baby via the canal. The vacuum end has a soft cup which is placed on the top of the baby’s head. Vacuum is created so that the cup holds the head, and the baby is gently guided outwards through the canal.
+      ''')
+    ]),
+  ]),
+  Section('Breast Feeding', [
+    Subsection('Lactation', [
+      HtmlText('''
+      Changes early in <a href="https://en.wikipedia.org/wiki/Pregnancy">pregnancy</a> prepare the breast for lactation. Before pregnancy the breast is largely composed of
+      <a href="https://en.wikipedia.org/wiki/Adipose_tissue">adipose</a>(fat) tissue but under the influence of the hormones
+      <a href="https://en.wikipedia.org/wiki/Estrogen">estrogen</a>, <a href="https://en.wikipedia.org/wiki/Progesterone">progesterone</a>,
+      <a href="https://en.wikipedia.org/wiki/Prolactin">prolactin</a> and other hormones, the breasts prepare for production of milk for the baby.
+      There is an increase in blood flow to the breasts. Pigmentation of the nipples and
+      <a href="https://en.wikipedia.org/wiki/Areola">areola</a> also increases. Size increases as well, but breast size is not related to the amount of milk that the mother will be able to produce after the baby is born. 
+      By the second trimester of pregnancy <a href="https://en.wikipedia.org/wiki/Colostrum">colostrum</a> , a thick yellowish fluid, begins to be produced in the alveoli and continues to be produced for the first few days after birth until the milk "comes in", around 30 to 40 hours after delivery.
+      <a href="https://en.wikipedia.org/wiki/Oxytocin">oxytocin</a> contracts the <a href="https://en.wikipedia.org/wiki/Smooth_muscle">smooth_muscle</a> of the <a href="https://en.wikipedia.org/wiki/Uterus">uterus</a>
+      uring birth and following delivery, called the <a href="https://en.wikipedia.org/wiki/Postpartum_period">postpartum period</a>, while breastfeeding.
+      Oxytocin also contracts the smooth muscle layer of band-like cells surrounding the alveoli to squeeze the newly produced milk into the duct system. Oxytocin is necessary for the milk ejection reflex, or let-down, in response to suckling, to occur.
+      '''),
+      ImageContent("assets/images/breast.png")
+    ]),
+    Subsection('Breast milk', [
+      HtmlText('''
+      Breast milk is made from nutrients in the mother's bloodstream and bodily stores. It has an optimal balance of fat, sugar, water, and protein that is needed for a baby's growth and development.
+      Breasts begin producing mature milk around the third or fourth day after birth. Early in a nursing session, the breasts produce foremilk, a thinner milk containing many proteins and vitamins. If the baby keeps nursing, then hindmilk is produced. Hindmilk has a creamier color and texture because it contains more fat.
+      <br/><b>Timing</b><br/>
+      Newborn babies typically express demand for feeding everyone to three hours (8–12 times in 24 hours).<br>
+       For the first two to four weeks. A newborn has a very small stomach capacity. At one-day old it is 5–7ml, about the size of a large marble; at day three it is 22–30ml, about the size of a ping-pong ball and at day seven it is 45–60ml, or about the size of a golf ball. The amount of breast milk that is produced is timed to meet the infant's needs in that the first milk, colostrum, is concentrated but produced in only very small amounts, gradually increasing in volume to meet the expanding size of the infant's stomach capacity.<br>
+       Many newborns will feed for 10 to 15 minutes on each breast. If the infant wants to nurse for a much longer period—say 30 minutes or longer on each breast—they may not be getting enough milk.
+       <br/><b>Position</b><br/>
+       correct positioning and technique for latching on are necessary to prevent nipple soreness and allow the baby to obtain enough milk.<br>
+       Babies can successfully latch on to the breast from multiple positions. Each baby may prefer a particular position.<br>
+       The "football" hold places the baby's legs next to the mother's side with the baby facing the mother. Using the "cradle" or "cross-body" hold, the mother supports the baby's head in the crook of her arm. The "cross-over" hold is similar to the cradle hold, except that the mother supports the baby's head with the opposite hand. The mother may choose a reclining position on her back or side with the baby lying next to her.
+      '''),
+      ImageContent("assets/images/breast_position.png")
+    ]),
+    Subsection('Health effects', [
+      HtmlText('''
+      Support for breastfeeding is universal among major health and children's organizations.<br>
+      WHO states, "Breast milk is the ideal food for the healthy growth and development of infants; breastfeeding is also an integral part of the reproductive process with important implications for the health of mothers."<br>
+      Breastfeeding decreases the risk of a number of diseases in both mothers and babies.
+      ''')
     ])
   ]),
-  Section('Breast Feeding', null),
-  Section('Baby', null),
-  Section('Exercise', null),
-  Section('Doctor Consultant', null),
-  Section('Community Experience', null)
+  Section('Baby', []),
+  Section('Exercise', []),
+  Section('Doctor Consultant', []),
+  Section('Community Experience', [])
 ];

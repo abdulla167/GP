@@ -17,7 +17,6 @@ class ResourceContentScreen extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(context, title),
       body: ListView.builder(
-        cacheExtent: double.infinity,
         itemCount: contents.length,
         itemBuilder: (ctx, index) {
           final content = contents[index];
@@ -54,7 +53,10 @@ class ResourceContentScreen extends StatelessWidget {
               ],
             );
           } else if (content is VideoContent) {
-            return VideoWidget(content.videoId,key: ValueKey(content.videoId),);
+            return VideoWidget(
+              content.videoId,
+              key: ValueKey(content.videoId),
+            );
           } else {
             return Container();
           }

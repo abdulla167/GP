@@ -11,7 +11,7 @@ class ResourcesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     print("resource");
     return Container(
-      margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+      margin: EdgeInsets.only(left: 5, right: 5, top: 5),
       child: GridView.builder(
         itemCount: data.length,
         itemBuilder: (cxt, index) {

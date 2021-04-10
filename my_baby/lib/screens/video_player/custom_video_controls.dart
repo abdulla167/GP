@@ -16,7 +16,6 @@ class CustomVideoControls extends StatefulWidget {
   }
 }
 
-
 // change padding and margin of every icon
 
 class _CustomVideoControlsState extends State<CustomVideoControls>
@@ -62,7 +61,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
         onTap: () => _cancelAndRestartTimer(),
         child: AbsorbPointer(
           absorbing: _hideStuff,
-          child: Column(
+          child: Stack(
             children: <Widget>[
               if (_latestValue != null &&
                       !_latestValue.isPlaying &&
@@ -75,7 +74,12 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
                 )
               else
                 _buildHitArea(),
-              _buildBottomBar(context),
+              Positioned(
+                child: _buildBottomBar(context),
+                bottom: 0,
+                left: 0,
+                width: MediaQuery.of(context).size.width, //change here Abdallah
+              ),
             ],
           ),
         ),
@@ -116,53 +120,50 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
     super.didChangeDependencies();
   }
 
-
-  Expanded _buildHitArea() {
+  Widget _buildHitArea() {
     final bool isFinished = _latestValue.position >= _latestValue.duration;
 
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          if (_latestValue != null && _latestValue.isPlaying) {
-            if (_displayTapped) {
-              setState(() {
-                _hideStuff = true;
-              });
-            } else {
-              _cancelAndRestartTimer();
-            }
-          } else {
-            _playPause();
-
+    return GestureDetector(
+      onTap: () {
+        if (_latestValue != null && _latestValue.isPlaying) {
+          if (_displayTapped) {
             setState(() {
               _hideStuff = true;
             });
+          } else {
+            _cancelAndRestartTimer();
           }
-        },
-        child: Opacity(                             //change here Abdallah
-          opacity: _hideStuff? 0: 1,
-          child: Container(
-            color: Colors.black38,                 //change here Abdallah
-            child: Center(
-              child: GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle
-                  ),
-                  child: IconButton(
-                      iconSize: 30,
-                      icon: isFinished
-                          ? const Icon(Icons.replay, color: Colors.white,)
-                          : AnimatedIcon(
-                          icon: AnimatedIcons.play_pause,
-                          progress: playPauseIconAnimationController,
-                          color: Colors.white
-                      ),
-                      onPressed: () {
-                        _playPause();
-                      }),
-                ),
+        } else {
+          _playPause();
+          setState(() {
+            _hideStuff = true;
+          });
+        }
+      },
+      child: Opacity(
+        //change here Abdallah
+        opacity: _hideStuff ? 0 : 1,
+        child: Container(
+          color: Colors.black38, //change here Abdallah
+          child: Center(
+            child: GestureDetector(
+              child: Container(
+                // decoration:
+                //     BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                child: IconButton(
+                    iconSize: 50,
+                    icon: isFinished
+                        ? const Icon(
+                            Icons.replay,
+                            color: Colors.white,
+                          )
+                        : AnimatedIcon(
+                            icon: AnimatedIcons.play_pause,
+                            progress: playPauseIconAnimationController,
+                            color: Colors.white),
+                    onPressed: () {
+                      _playPause();
+                    }),
               ),
             ),
           ),
@@ -176,11 +177,11 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
   ) {
     final iconColor = Theme.of(context).textTheme.button.color;
 
-    return Opacity(                                //change here Abdallah
-      opacity: _hideStuff? 0: 1,
+    return Opacity(
+      //change here Abdallah
+      opacity: _hideStuff ? 0 : 1,
       child: Container(
         height: barHeight,
-        color: Colors.black38,                      //change here Abdallah
         child: Row(
           children: <Widget>[
             _buildPlayPause(controller),
@@ -226,7 +227,6 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
     );
   }
 
-
   Widget _buildSpeedButton(
     VideoPlayerController controller,
   ) {
@@ -261,7 +261,10 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
             padding: const EdgeInsets.only(
               right: 8.0,
             ),
-            child: const Icon(Icons.speed, color: Colors.white,),
+            child: const Icon(
+              Icons.speed,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
@@ -330,10 +333,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
       padding: const EdgeInsets.only(right: 8.0),
       child: Text(
         '${formatDuration(position)} / ${formatDuration(duration)}',
-        style: const TextStyle(
-          fontSize: 14.0,
-          color: Colors.white
-        ),
+        style: const TextStyle(fontSize: 14.0, color: Colors.white),
       ),
     );
   }
@@ -355,6 +355,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
 
     if ((controller.value != null && controller.value.isPlaying) ||
         chewieController.autoPlay) {
+      playPauseIconAnimationController.forward();
       _startHideTimer();
     }
 
@@ -398,10 +399,12 @@ class _CustomVideoControlsState extends State<CustomVideoControls>
       } else {
         _cancelAndRestartTimer();
 
-        if (!controller.value.initialized) {
+        if (!controller.value.isInitialized) {
           controller.initialize().then((_) {
             controller.play();
-            playPauseIconAnimationController.forward();
+            setState(() {
+              playPauseIconAnimationController.forward();
+            });
           });
         } else {
           if (isFinished) {
