@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <div class="container bootstrap snippets bootdey">
   <div class="row">
@@ -53,3 +54,46 @@
   </div>
 
 </div>
+=======
+<div
+  class="card container max-auto p-2 my-2"
+  style="width: 90%;height: auto;"
+>
+  <div class="row" style="height: 100%;width: 100%">
+    <div class="col-lg-2 p-2" style="text-align: center">
+      <img
+        width="60%"
+        height="60%"
+        class="rounded-circle"
+        [src]="logoImg"
+        data-holder-rendered="true"
+      />
+    </div>
+    <div class="col-lg-10 p-2">
+      <div class="form-group">
+        <textarea class="form-control" placeholder="Share your experience" id="exampleFormControlTextarea1" rows="1" #text></textarea>
+        <div class="row">
+          <div class="col-2">
+            <button class="btn btn-secondary" style="height: 30px;margin-top: 10px;font-size: small;width: 80px" (click)="createPost(text)">Share</button>
+          </div>
+          <div class="col-4">
+            <div class="card container my-2" style="width: 100%;height: 32px;border: none">
+              <div class="row" style="height: 100%;width: 100%">
+                <div class="col-4">
+                  <span><a style="color: #455f6b" ><i class="fa fa-paperclip fa-2x" aria-hidden="true"></i></a><input type='file' (change)="onFileChanged($event)"/></span>
+                </div>
+                <div class="col-4">
+                  <span><a style="color: #455f6b" ><i class="fa fa-picture-o fa-2x" aria-hidden="true"></i></a><input type='file' (change)="onFileChanged($event)"/></span>
+                </div>
+                <div class="col-4">
+                  <span><a style="color: #455f6b" ><i class="fa fa-video-camera fa-2x" aria-hidden="true"></i></a><input type='file' (change)="onFileChanged($event)"/></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+>>>>>>> 5100960d8bb1ad14f43945440a5f5dd4c7058ac4

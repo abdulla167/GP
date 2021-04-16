@@ -1,5 +1,6 @@
 package com.server.mothercare.services;
 
+import com.server.mothercare.entities.Like;
 import com.server.mothercare.entities.User;
 import com.server.mothercare.entities.UserProfile;
 

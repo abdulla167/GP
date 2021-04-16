@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="container-fluid emp-profile" style="justify-content: center">
     <div class="row" style="margin-top: 40px">
       <div class="col-md-3" style ="text-align: center">
@@ -61,3 +62,71 @@
 
 
 
+=======
+<div class="container-fluid emp-profile">
+    <div class="row">
+
+      <div class="col-md-3" style ="text-align: center">
+        <div class="profile-img " style="margin-left: -50px">
+          <img style="width: 255px;  height: 255px;border: solid #6c757d" [src]="profileImg" class="rounded-circle" alt=""/>
+          <div class="file btn btn-lg btn-primary">
+            <span><a href='#'><i class="fa fa-picture-o fa-2x" aria-hidden="true"></i></a><input type='file' (change)="updateProfileImg($event)"/></span>
+          </div>
+        </div>
+        <div class="profile-work" style="padding-left: 0px" >
+          <p style="font-size: large">My Calender</p>
+            <div class="processor p-2">
+              <div class="d-flex justify-content-between mt-2">
+                <div class="form-check"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault"> Meeting doctor </label> </div> <span>3 PM</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between mt-2">
+                <div class="form-check"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault"> Taking your medicine </label> </div> <span>12 PM</span>
+              </div>
+            </div>
+
+
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div class="profile-head" >
+          <h1>
+            {{theUser.firstName + " " +theUser.lastName}}
+          </h1>
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" data-toggle="tab" href="#posts">Posts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#baby" data-toggle="tab">Baby Monitoring</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#info" data-toggle="tab">Info</a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content profile-tab" id="myTabContent">
+          <div class="tab-pane active" id="posts" role="tabpanel">
+            <app-posts-tab></app-posts-tab>
+
+          </div>
+
+
+
+          <div class="tab-pane " id="baby" role="tabpanel" >
+            <baby-monitor></baby-monitor>
+          </div>
+          <div class="tab-pane " id="info" role="tabpanel" >
+            <user-info></user-info>
+          </div>
+
+          </div>
+        </div>
+
+      <div class="col-md-2" style="text-align: right">
+        <button class="profile-edit-btn" >Edit profile</button>
+      </div>
+    </div>
+    </div>
+
+>>>>>>> 5100960d8bb1ad14f43945440a5f5dd4c7058ac4

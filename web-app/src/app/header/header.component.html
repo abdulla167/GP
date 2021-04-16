@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <mat-sidenav-container>
   <mat-sidenav #sidenav position="start" role="navigation" >
     <mat-nav-list  *ngFor="let navItem of leftNavItems">
@@ -41,4 +42,65 @@
 
 
 
+=======
+<nav class="navbar navbar-expand-sm navbar-dark bg-secondary" style="position: fixed;top: 0;left: 0; width: 100%;height: 70px; z-index: 1; ">
+  <a class="navbar-brand" routerLink="#" style="font-weight: bold; font-size: xx-large; margin-left: 1cm"> {{companyTitle}}
+    <span> <img width="50" height="50" [src]="logoUrl" style="margin-bottom: 8px"> </span>
+  </a>
+  <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div id="navbarSupportedContent " class="collapse navbar-collapse topnav " [collapse]="isCollapsed">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item " routerLinkActive="active"  *ngFor="let navItem of leftNavItems"> <a class="nav-link" [routerLink]="navItem[1]" style="font-size: large;font-weight: bold"> {{navItem[0]}} </a> </li>
+    </ul>
+  </div>
+
+  <div  class="collapse navbar-collapse topnav " [collapse]="isCollapsed">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item" routerLinkActive="active" *ngFor="let navItem of rightNavItems"> <a class="nav-link" [routerLink]="navItem[1]" style="font-size: large;font-weight: bold" > {{navItem[0]}} </a> </li>
+      <li
+        ngbDropdown
+        class=" dropdown nav-item "
+      >
+        <a
+          ngbDropdownToggle
+          class="nav-link dropdown-toggle"
+          data-toggle="dropdown"
+          id="dropdown1"
+          style="font-weight: bold;font-size:large "
+
+        >
+
+        </a>
+
+        <div
+          ngbDropdownMenu
+          class="dropdown-menu dropdown-menu-right"
+          aria-labelledby="dropdown1"
+          style="width: 100%; text-align: left;background-color: grey;position: relative"
+        >
+
+          <button ngbDropdownItem class="dropdown-item" name="All" style="color: white; padding-right: 50px">
+            <span> <i class="fa fa-key" aria-hidden="true"></i></span>
+            Reset password
+          </button>
+          <div class="dropdown-divider"></div>
+          <button ngbDropdownItem class="dropdown-item" name="Obstetrician" style="color: white">
+            <span><i class="fa fa-sign-out" aria-hidden="true"></i></span>
+            Log Out
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+
+
+
+
+
+</nav>
+>>>>>>> 5100960d8bb1ad14f43945440a5f5dd4c7058ac4
 
