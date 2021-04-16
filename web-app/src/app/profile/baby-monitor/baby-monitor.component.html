@@ -1,28 +1,51 @@
 <div class="row">
-  <div class="form-group" style="margin-left: 20px">
-    <label for="inputCode">Enter your device code</label>
-    <input id="inputCode" style="width: 80%" class="form-control" type="text" placeholder="code" >
+  <div  style="margin-left: 20px;margin-top: 20px" fxLayout="row" >
+    <div class="form-group">
+      <label for="inputCode">Enter your device code</label>
+      <input id="inputCode" style="width: 80%" class="form-control" type="text" placeholder="code" >
+    </div>
+    <div>
+      <button mat-raised-button style="margin-top: 28px">add</button>
+    </div>
   </div>
 
 </div>
 <hr>
+<br>
 <div class="row">
-  <div class="col-4 mx-auto my-auto" style="text-align: center" >
-    <div id="heartReading"  class="lds-heart"><div></div></div>
-    <p>{{heartSensor}}</p>
+  <div class="col-4" fxLayoutAlign="center">
+    <mat-card style="width: 60%">
+      <mat-card-title style="font-size:1.5vw;">Heart rate</mat-card-title>
+      <mat-card-content fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center" (click)="showGraph('heart')">
+        <div id="heartReading"  class="lds-heart"><div></div></div>
+        <p>{{heartSensor}}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <div class="col-4 mx-auto my-auto" style="text-align: center">
-    <br>
-    <div class="loading"></div>
-    <br>
-    <p>{{tempSensor}}</p>
+
+  <div class="col-4" fxLayoutAlign="center">
+    <mat-card style="width: 60%">
+      <mat-card-title style="font-size:1.5vw;">Temperature</mat-card-title>
+      <mat-card-content fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center" (click)="showGraph('temp')">
+        <div>
+          <div class="loading"></div>
+          <br>
+          <p>{{tempSensor}}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <div class="col-4">
-    <img
-      width="100%"
-      height="100%"
-      src="./assets/images/baby.png"
-      data-holder-rendered="true"
-    />
+  <div class="col-4"  fxLayoutAlign="center">
+    <mat-card style="width: 60%">
+      <mat-card-title style="font-size:1.5vw;">Respiration rate</mat-card-title>
+      <mat-card-content fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center" (click)="showGraph('respir')">
+        <div class="anim-circle"></div>
+        <p>{{tempSensor}}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
+<br>
+<br>
+
+

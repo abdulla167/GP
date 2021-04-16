@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Post} from '../models/post.model';
+import {PostModel} from '../models/post.model';
 import {PostService} from '../services/post.service';
 import {Subject} from 'rxjs';
 
@@ -9,7 +9,7 @@ import {Subject} from 'rxjs';
   styleUrls: ['./timeline.component.css']
 })
 export class TimelineComponent implements OnInit {
-  posts: Post[];
+  posts: PostModel[];
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {

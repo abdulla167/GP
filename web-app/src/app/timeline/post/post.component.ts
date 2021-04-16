@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Post} from '../../models/post.model';
+import {PostModel} from '../../models/post.model';
 import {PostService} from '../../services/post.service';
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -9,7 +9,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
-  post: Post;
+  post: PostModel;
   image;
   time;
   @Input() id: number;

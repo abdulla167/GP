@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {PostService} from '../../services/post.service';
 import {ImageModel} from '../../models/image.model';
-import {Post} from '../../models/post.model';
+import {PostModel} from '../../models/post.model';
 import {stringify} from 'querystring';
 
 @Component({
@@ -20,7 +20,7 @@ export class CreatePostComponent implements OnInit {
   message: string;
   imageName: any;
   image: FormData ;
-  post: Post;
+  post: PostModel;
 
   constructor(private postService: PostService) {
   }
@@ -42,7 +42,7 @@ export class CreatePostComponent implements OnInit {
         binaryString = String.fromCharCode.apply(null, array);
       // console.log(this.Utf8ArrayToStr(array));
 
-     this.post = { text: text.value, image: {
+     this.post = { postId : 1, text: text.value, image: {
       id: 0,
       name: this.selectedFile.name,
       type: this.selectedFile.type,

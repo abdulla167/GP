@@ -1,4 +1,4 @@
-import {Post} from '../models/post.model';
+import {PostModel} from '../models/post.model';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {toString} from '@ng-bootstrap/ng-bootstrap/util/util';
@@ -12,22 +12,22 @@ import {getClassName} from 'codelyzer/util/utils';
 
 @Injectable({providedIn: 'root'})
 export class PostService{
-  public postsSubject = new Subject<Post[]>();
-  posts: Post[];
+  public postsSubject = new Subject<PostModel[]>();
+  posts: PostModel[];
 
   constructor(private http: HttpClient, private tokenService: TokenService) {
   }
   getPosts() {
     return this.posts.slice();
   }
-  addPost(post: Post) {
+  addPost(post: PostModel) {
     this.posts.push(post);
   }
   getPostByIndex(index: number) {
     return this.posts[index];
   }
 
-  savePost(image: FormData, post: Post ){
+  savePost(image: FormData, post: PostModel ){
     console.log(this.tokenService.getToken());
     const headers = {
       Authorization: 'Bearer ' + this.tokenService.getToken(),
@@ -50,7 +50,7 @@ export class PostService{
     };
      this.http.get('http://localhost:8080/post/get', {headers}).subscribe(
       res => {
-        const posts: Post[] = ( JSON.parse(JSON.stringify(res)) as Post[]);
+        const posts: PostModel[] = ( JSON.parse(JSON.stringify(res)) as PostModel[]);
         this.posts = posts;
         console.log(this.posts[4] );
         console.log(posts[0]);

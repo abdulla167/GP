@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="4c5291ba-ab00-49ce-9d79-3fdf58a6e6b1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/rest/user/RegistrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/rest/user/RegistrationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/EmailSenderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/services/EmailSenderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/MyCorsFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/MyCorsFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/OAuth2SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/OAuth2SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/ResourceServerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/mothercare/security/config/ResourceServerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/app.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/app.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/app.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/app.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/app.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/auth/login/login.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/auth/login/login.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/auth/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/auth/login/login.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/auth/login/login.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/auth/login/login.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/auth/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/auth/login/login.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/auth/signup/signup.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/auth/signup/signup.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/auth/signup/signup.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/auth/signup/signup.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/auth/signup/signup.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/auth/signup/signup.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/auth/signup/signup.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/auth/signup/signup.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/doctor-list/doctor-list.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/doctor-list/doctor-list.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/doctor-list/doctor-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/doctor-list/doctor-list.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/doctor-list/doctor-list.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/doctor-list/doctor-list.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/doctor-list/doctor-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/doctor-list/doctor-list.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/header/header.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/header/header.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/header/header.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/header/header.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/header/header.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/header/header.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/header/header.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/home/home.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/home/home.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/home/home.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/home/home.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/home/home.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/home/home.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/models/doctor.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/models/doctor.model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/models/image.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/models/image.model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/models/post.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/models/post.model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/models/user.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/models/user.model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/baby-monitor/baby-monitor.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/baby-monitor/baby-monitor.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/baby-monitor/baby-monitor.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/baby-monitor/baby-monitor.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/baby-monitor/baby-monitor.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/baby-monitor/baby-monitor.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/posts/posts.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/posts/posts.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/posts/posts.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/posts/posts.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/posts/posts.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/posts/posts.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/profile.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/profile.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/profile.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/profile.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/profile.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/profile.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/user-info/user-info.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/user-info/user-info.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/user-info/user-info.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/user-info/user-info.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/profile/user-info/user-info.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/profile/user-info/user-info.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/services/Token.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/services/Token.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/services/authentication.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/services/authentication.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/services/doctor.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/services/doctor.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/services/post.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/services/post.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/services/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/shared/loading-spinner/loading-spinner.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/shared/loading-spinner/loading-spinner.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/shared/loading-spinner/loading-spinner.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/shared/loading-spinner/loading-spinner.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/shared/loading-spinner/loading-spinner.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/shared/loading-spinner/loading-spinner.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/create-post/create-post.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/create-post/create-post.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/create-post/create-post.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/create-post/create-post.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/create-post/create-post.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/create-post/create-post.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/post/post.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/post/post.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/post/post.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/post/post.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/post/post.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/post/post.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/timeline.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/timeline.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/timeline.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/timeline.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/app/timeline/timeline.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/app/timeline/timeline.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,10 +85,15 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web-app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -52,16 +117,23 @@
       <workItem from="1611316997756" duration="94000" />
       <workItem from="1612437779205" duration="11000" />
       <workItem from="1612437924905" duration="484000" />
+      <workItem from="1614611367913" duration="201000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1612438294020">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1612438294020" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

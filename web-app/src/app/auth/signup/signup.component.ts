@@ -17,11 +17,8 @@ export class SignupComponent implements OnInit {
   isLoading = false;
   error: string = null;
 
-<<<<<<< HEAD
   constructor(private authService:AuthenticationService, private router: Router) {}
-=======
-  constructor(private authService: AuthenticationService) {}
->>>>>>> 58e1a10f54c86fa44df930120783e0f002c78b39
+
 
 
   ngOnInit(): void {
