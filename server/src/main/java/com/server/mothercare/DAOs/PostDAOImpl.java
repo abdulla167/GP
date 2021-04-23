@@ -1,8 +1,8 @@
 package com.server.mothercare.DAOs;
 
-import com.server.mothercare.entities.Comment;
-import com.server.mothercare.entities.Like;
-import com.server.mothercare.entities.Post;
+import com.server.mothercare.entities.post.Comment;
+import com.server.mothercare.entities.post.Like;
+import com.server.mothercare.entities.post.Post;
 import com.server.mothercare.entities.User;
 import org.hibernate.Session;
 import org.hibernate.query.Query;

@@ -1,7 +1,6 @@
 package com.server.mothercare.DAOs;
 
 import com.server.mothercare.entities.Image;
-import com.server.mothercare.entities.Post;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,8 @@
 package com.server.mothercare.DAOs;
 
 import com.server.mothercare.entities.User;
-import com.server.mothercare.entities.UserProfile;
+import org.springframework.data.repository.CrudRepository;
 
-public interface UserDAO {
-    public User userbyUserName(String theUserName);
-    public UserProfile getUserProfile(int profileOwnerId);
-    public boolean save(User thUser);
+public interface UserDAO extends CrudRepository<User, Long>, UserDAOCustom {
+    User findByUsername(String username);
 }

@@ -1,7 +1,6 @@
 package com.server.mothercare.services;
 
 import com.server.mothercare.entities.Image;
-import com.server.mothercare.entities.Post;
 
 import java.util.List;
 

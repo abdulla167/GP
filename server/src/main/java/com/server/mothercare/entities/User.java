@@ -2,8 +2,9 @@ package com.server.mothercare.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.server.mothercare.entities.kit.MonitoringDevice;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,16 +14,17 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity(name = "User")
+@Table(uniqueConstraints = {@UniqueConstraint(name = "user_username", columnNames = {"username"})})
 @Data
-@RequiredArgsConstructor
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"username"})})
-@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
-public class User implements UserDetails , Serializable {
+@NoArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private long userId;
 
     @NotNull
     @Column(name = "first_name")
@@ -33,7 +35,7 @@ public class User implements UserDetails , Serializable {
     private String lastName;
 
     @NotNull
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username;
 
     @NotNull
@@ -52,6 +54,24 @@ public class User implements UserDetails , Serializable {
     @Column(name = "phone")
     String phone;
 
+    @Column(name = "relation_status")
+    private boolean married;
+
+    @Column(name = "status")
+    private boolean pregnant;
+
+    @Column(name = "height")
+    private float height;
+
+    @Column(name = "weight")
+    private float weight;
+
+    @Column(name = "bloodType")
+    private String bloodType;
+
+    @Column(name = "last_period")
+    private Date lastPeriod;
+
     @Lob
     @Column(name = "image")
     private byte[] profileImg;
@@ -59,19 +79,37 @@ public class User implements UserDetails , Serializable {
     @Column(name = "confirmed")
     boolean confirmed;
 
+    @ElementCollection
+    @CollectionTable(
+            name = "event",
+            joinColumns = @JoinColumn(name = "userId")
+    )
+    private List<Event> events;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<MonitoringDevice> devices;
 
     public User(User user) {
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.password = user.getPassword();
-        this.username = user.getUsername();
-        this.birthOfDate = user.getBirthOfDate();
-        this.email = user.getEmail();
-        this.phone = user.getPhone();
-        this.confirmed = false;
+        this.userId = user.userId;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.username = user.username;
+        this.password = user.password;
+        this.gender = user.gender;
+        this.birthOfDate = user.birthOfDate;
+        this.email = user.email;
+        this.phone = user.phone;
+        this.married = user.married;
+        this.pregnant = user.pregnant;
+        this.height = user.height;
+        this.weight = user.weight;
+        this.bloodType = user.bloodType;
+        this.lastPeriod = user.lastPeriod;
+        this.profileImg = user.profileImg;
+        this.confirmed = user.confirmed;
     }
 
-    public User(String firstName, String lastName, String encodedPassword, String username,String email, String phone) {
+    public User(String firstName, String lastName, String encodedPassword, String username, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = encodedPassword;
@@ -93,23 +131,9 @@ public class User implements UserDetails , Serializable {
     }
 
 
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>();
-    }
-
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
     }
 
     @Override

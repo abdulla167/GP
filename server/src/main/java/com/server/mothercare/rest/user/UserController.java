@@ -1,10 +1,9 @@
 package com.server.mothercare.rest.user;
 
+import com.server.mothercare.entities.Event;
 import com.server.mothercare.entities.User;
-import com.server.mothercare.entities.UserProfile;
 import com.server.mothercare.services.UserService;
-import net.minidev.json.JSONObject;
-import netscape.javascript.JSObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@Slf4j
 public class UserController {
     private UserService userService;
 
@@ -26,6 +26,12 @@ public class UserController {
 //    public UserProfile getUserProfile(@PathVariable int userId){
 //        return this.userService.getUserProfile(userId);
 //    }
+
+    @PostMapping("/addEvent")
+    public ResponseEntity addEvent(@RequestBody Event event){
+        log.debug(event.getEventName());
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
     @GetMapping("/user")
     public ResponseEntity getUserProfile(HttpServletRequest request){

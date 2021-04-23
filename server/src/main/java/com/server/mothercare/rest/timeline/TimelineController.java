@@ -1,28 +1,20 @@
 package com.server.mothercare.rest.timeline;
 
 import com.server.mothercare.entities.*;
+import com.server.mothercare.entities.post.Comment;
+import com.server.mothercare.entities.post.Like;
+import com.server.mothercare.entities.post.Post;
 import com.server.mothercare.services.ImageService;
 import com.server.mothercare.services.PostService;
 import com.server.mothercare.services.UserService;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtBearerTokenAuthenticationConverter;
-import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.attribute.UserPrincipal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;

@@ -1,7 +1,9 @@
-package com.server.mothercare.entities;
+package com.server.mothercare.entities.post;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.server.mothercare.entities.User;
+import com.server.mothercare.entities.post.Post;
 
 
 import javax.persistence.*;

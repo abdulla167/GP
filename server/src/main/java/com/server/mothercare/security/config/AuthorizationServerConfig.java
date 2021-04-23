@@ -36,9 +36,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Value("${alias}")
     String alias;
 
-
-
-
     @Autowired
     public AuthorizationServerConfig(AuthenticationManager authenticationManager
             , @Qualifier("userDetailsServiceImpl")UserDetailsService userDetailsService, BCryptPasswordEncoder encoder){
