@@ -5,7 +5,7 @@ import com.server.mothercare.entities.Image;
 import java.util.List;
 
 public interface ImageService {
-    public boolean save (Image theImage);
-    public boolean update (Image theImage);
+    public Image save (Image theImage);
+    public Image update (Image theImage);
     public List<Image> getImages();
 }

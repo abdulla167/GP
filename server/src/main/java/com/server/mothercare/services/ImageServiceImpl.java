@@ -1,6 +1,6 @@
 package com.server.mothercare.services;
 
-import com.server.mothercare.DAOs.ImageDAO;
+import com.server.mothercare.DAOs.ImageRepository;
 import com.server.mothercare.entities.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,24 +12,24 @@ import java.util.List;
 public class ImageServiceImpl implements ImageService{
 
     @Autowired
-    private ImageDAO imageDAO;
+    private ImageRepository imageRepository;
 
     @Override
     @Transactional
-    public boolean save(Image theImage) {
+    public Image save(Image theImage) {
         theImage.setId(0);
-        return imageDAO.save(theImage);
+        return imageRepository.save(theImage);
     }
 
     @Override
     @Transactional
-    public boolean update(Image theImage) {
-        return imageDAO.save(theImage);
+    public Image update(Image theImage) {
+        return imageRepository.save(theImage);
     }
 
     @Override
     @Transactional
     public List<Image> getImages() {
-        return imageDAO.getImages();
+        return imageRepository.findAll();
     }
 }

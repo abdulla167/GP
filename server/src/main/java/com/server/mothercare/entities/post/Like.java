@@ -1,9 +1,9 @@
-package com.server.mothercare.entities.post;
+package com.server.mothercare.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.server.mothercare.entities.User;
-import com.server.mothercare.entities.post.Post;
+import com.server.mothercare.entities.post.Blog;
 
 
 import javax.persistence.*;
@@ -17,11 +17,12 @@ public class Like implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private Post post;
 
     @ManyToOne
+    @JoinColumn(name = "blog_id", referencedColumnName = "id")
+    private Blog blog;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -37,12 +38,12 @@ public class Like implements Serializable {
         this.id = id;
     }
 
-    public Post getPost() {
-        return post;
+    public Blog getBlog() {
+        return blog;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setBlog(Blog blog) {
+        this.blog = blog;
     }
 
     public User getUser() {

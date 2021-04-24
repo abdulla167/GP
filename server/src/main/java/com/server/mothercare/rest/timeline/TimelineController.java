@@ -1,20 +1,23 @@
 package com.server.mothercare.rest.timeline;
 
-import com.server.mothercare.entities.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.mothercare.entities.Like;
+import com.server.mothercare.entities.User;
+import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.Comment;
-import com.server.mothercare.entities.post.Like;
-import com.server.mothercare.entities.post.Post;
-import com.server.mothercare.services.ImageService;
-import com.server.mothercare.services.PostService;
+import com.server.mothercare.services.BlogService;
+import com.server.mothercare.services.CommentService;
 import com.server.mothercare.services.UserService;
+import com.sun.security.auth.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -26,87 +29,85 @@ import java.util.zip.Inflater;
 public class TimelineController {
 
     @Autowired
-    private PostService postService;
+    private CommentService commentService;
+    @Autowired
+    private BlogService blogService;
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private ImageService imageService;
 
-    @PostMapping(value = "/post/save")
-    private ResponseEntity savePost(@RequestBody Post thePost,
-                                    HttpServletRequest request
+
+    @PostMapping(value = "/blog/save")
+    private ResponseEntity saveBlog(@RequestBody Blog theBlog,
+                                     Principal userPrincipal
     ){
-        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-        imageService.save(thePost.getImage());
-        thePost.setUser(user);
-        thePost.setDate(new Timestamp(new Date().getTime()));
-        postService.save(thePost);
-//        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-//        Post post;
-//        if (theImage == null){
-//            post =  new Post(tex, "TEXT", new Timestamp(new Date().getTime() ), user);
-//            boolean saved = postService.save(post);
-//            return  saved == true? new ResponseEntity("Success", HttpStatus.OK) : new ResponseEntity("FAILURE", HttpStatus.CONFLICT);
-//        }else{
-//            post =  new Post(tex, "TEXT_IMAGE", new Timestamp(new Date().getTime() ), user);
-//            try {
-//                Image image = new Image(theImage.getOriginalFilename(), theImage.getContentType(), theImage.getBytes());
-//                boolean imSaved = imageService.save(image);
-//                post.setImage(image);
-//                boolean saved = postService.save(post);
-//
-//                return saved == true && imSaved== true? new ResponseEntity("Success", HttpStatus.OK) : new ResponseEntity("FAILURE", HttpStatus.CONFLICT);
-//            } catch (IOException e) {
-//                return new ResponseEntity("IMAGE_ERROR", HttpStatus.BAD_REQUEST);
-//            }
-//        }
+        User user= userService.userbyUserName(userPrincipal.getName());
+        theBlog.setUser(user);
+        theBlog.setDate(new Timestamp(new Date().getTime()));
+        blogService.save(theBlog);
         return null;
     }
-    @GetMapping(value = "/post/get/{first}")
-    private ResponseEntity getPosts(@PathVariable int first){
-        List<Post> posts = null;
-        posts = postService.getPosts(first);
-        return posts == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(posts, HttpStatus.OK);
+
+    @GetMapping(value = "/blog/get/{first}")
+    private ResponseEntity getBlogs(@PathVariable int first){
+        List<Blog> blogs = null;
+        blogs = blogService.getBlogs(first);
+        ResponseEntity response = blogs == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(blogs, HttpStatus.OK);
+        ObjectMapper mapper = new ObjectMapper();
+        return response;
     }
 
     @PostMapping(value = "/comment/{theId}")
     private ResponseEntity saveComment(@PathVariable int theId,
                                        @RequestBody Comment theComment,
-                                       HttpServletRequest request){
+                                       Principal userPrincipal){
 
-        Post post = postService.getPostById(theId);
-        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-        if (post == null){
+        Blog DbBlog = blogService.getBlogById(theId);
+        User user= userService.userbyUserName(userPrincipal.getName());
+        if (DbBlog == null){
             return new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT);
         }else {
             theComment.setDate(new Timestamp(new Date().getTime()));
             theComment.setUser(user);
-            post.addComment(theComment);
-            boolean commentSaved = postService.saveComment(theComment);
-            boolean saved = postService.update(post);
-            System.out.println(saved + " " + post.getComments().get(0));
-            return saved == false && commentSaved == false ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(post, HttpStatus.OK);
+            DbBlog.addComment(theComment);
+            Blog blog = blogService.update(DbBlog);
+            return  blog == null ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(blog, HttpStatus.OK);
         }
     }
 
-    @PostMapping(value = "like/{postId}")
-    public ResponseEntity addLike(@PathVariable int postId, HttpServletRequest request){
-        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-        Like theLike = new Like();
-        theLike.setUser(user);
-        Post thePost = postService.getPostById(postId);
-        thePost.addLikes(theLike);
-        boolean saved =postService.update(thePost);
-        return saved== true? new ResponseEntity(thePost, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+    @PostMapping(value = "/commentToComment/{commentId}")
+    private ResponseEntity saveCommentToComment(@PathVariable int commentId,
+                                                @RequestBody Comment theComment,
+                                                Principal userPrincipal){
+
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Comment commentDB = commentService.getCommentById(commentId);
+        theComment.setDate(new Timestamp(new Date().getTime()));
+        theComment.setUser(user);
+        commentDB.addComment(theComment);
+        Comment comment = commentService.update(commentDB);
+        return  comment == null ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(comment, HttpStatus.OK);
     }
 
-    @GetMapping(value = "liked_posts")
-    public ResponseEntity likedPosts(HttpServletRequest request){
-        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-        List<Post> likedPosts = postService.likedPosts(user);
-        return likedPosts != null? new ResponseEntity(likedPosts, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+
+    @PostMapping(value = "like/{blogId}")
+    public ResponseEntity addLike(@PathVariable int blogId, java.nio.file.attribute.UserPrincipal userPrincipal){
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Like theLike = new Like();
+        theLike.setUser(user);
+        Blog DbBlog = blogService.getBlogById(blogId);
+        DbBlog.addLikes(theLike);
+        Blog blog = blogService.update(DbBlog);
+        return blog== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(blog, HttpStatus.OK);
     }
+
+//    @GetMapping(value = "liked_posts")
+//    public ResponseEntity likedPosts(HttpServletRequest request){
+//        User user= userService.userbyUserName(request.getUserPrincipal().getName());
+//        List<Post> likedPosts = postService.likedPosts(user);
+//        return likedPosts != null? new ResponseEntity(likedPosts, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+//    }
+
     public static byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
         deflater.setInput(data);

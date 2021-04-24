@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.Image;
 import com.server.mothercare.entities.User;
-import com.server.mothercare.entities.post.Post;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Comment")
 @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
@@ -32,15 +33,14 @@ public class Comment implements Serializable {
     @JoinColumn(name = "image_id",referencedColumnName = "id")
     private Image image;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    Post post;
-
-
+    @OneToMany
+    @JoinColumn(name = "comment_id")
+    List<Comment> comments;
 
     public Comment(String text, String type, Timestamp
             date, User user) {
@@ -99,13 +99,19 @@ public class Comment implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public Post getPost() {
-        return post;
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void addComment(Comment theComment){
+        if (comments == null){
+            comments = new ArrayList<Comment>();
+        }
+        comments.add(theComment);
     }
 
     @Override
@@ -117,7 +123,6 @@ public class Comment implements Serializable {
                 ", date=" + date +
                 ", image=" + image +
                 ", user=" + user +
-                ", post=" + post +
                 '}';
     }
 }
