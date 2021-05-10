@@ -1,0 +1,15 @@
+<div class="card" style="width: 30rem; max-height: 30rem; margin: 5px 0 5px 0"  >
+  <div class="d-flex justify-content-between p-2 px-3">
+    <div class="d-flex flex-row align-items-center"> <img [src]="profileImage" width="50" class="rounded-circle">
+      <div class="d-flex flex-column ml-2"> <span class="font-weight-bold">{{content.user.username}}</span> <small class="text-primary">Collegues</small> </div>
+    </div>
+    <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{ content.date|date }}</small> <i class="fa fa-ellipsis-h"></i> </div>
+  </div>
+  <img class="card-img-top" [src]="image" style="height: 11rem;width: 30rem" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{content.title}}</h5>
+    <p class="card-text">{{content.description}}</p>
+    <a  class="btn btn-sm btn-secondary" [routerLink]="['/blog',index]">see details</a>
+  </div>
+</div>
+

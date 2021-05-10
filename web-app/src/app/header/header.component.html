@@ -1,48 +1,3 @@
-<<<<<<< HEAD
-<mat-sidenav-container>
-  <mat-sidenav #sidenav position="start" role="navigation" >
-    <mat-nav-list  *ngFor="let navItem of leftNavItems">
-      <a mat-list-item (click)="sidenav.close()" [routerLink]="navItem[1]" style="font-size: large;font-weight: bold"> {{navItem[0]}} </a>
-    </mat-nav-list>
-    <mat-nav-list  *ngFor="let navItem of rightNavItems">
-      <a mat-list-item (click)="sidenav.close()" [routerLink]="navItem[1]" style="font-size: large;font-weight: bold"> {{navItem[0]}} </a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <div fxHide.gt-sm  fxLayout fxLayoutAlign="flex-start" >
-        <button mat-icon-button (click)="sidenav.toggle()">
-          <mat-icon>menu </mat-icon>
-        </button>
-      </div>
-      <div>
-        <img width="50" height="50" [src]="logoUrl">
-        <span><a [routerLink]="'/home'" class="title">{{companyTitle}}</a></span>
-      </div>
-
-      <div fxFlex fxLayout fxLayoutAlign="flex-start" fxLayoutGap="20px" fxHide.sm fxHide.xs style="margin-left: 40px">
-        <ul class="navigation-items" fxLayout *ngFor="let navItem of leftNavItems" >
-          <li><a [routerLink]="navItem[1]" style="font-size: large;font-weight: bold"> {{navItem[0]}}</a></li>
-        </ul>
-      </div>
-
-      <div fxFlex fxLayout fxLayoutGap="20px" fxLayoutAlign="flex-end"  fxHide.sm fxHide.xs>
-        <ul fxLayout  class="navigation-items" *ngFor="let navItem of rightNavItems">
-          <li><a [routerLink]="navItem[1]" style="font-size: large;font-weight: bold"> {{navItem[0]}} </a></li>
-        </ul>
-      </div>
-
-    </mat-toolbar>
-    <main >
-      <router-outlet></router-outlet>
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
-
-
-
-=======
 <nav class="navbar navbar-expand-sm navbar-dark bg-secondary" style="position: fixed;top: 0;left: 0; width: 100%;height: 70px; z-index: 1; ">
   <a class="navbar-brand" routerLink="#" style="font-weight: bold; font-size: xx-large; margin-left: 1cm"> {{companyTitle}}
     <span> <img width="50" height="50" [src]="logoUrl" style="margin-bottom: 8px"> </span>
@@ -102,5 +57,4 @@
 
 
 </nav>
->>>>>>> 5100960d8bb1ad14f43945440a5f5dd4c7058ac4
 
