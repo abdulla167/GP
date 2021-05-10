@@ -23,6 +23,7 @@ public class BlogRepositoryImpl implements BlogRepositoryCustom {
     public List<Blog> getBlogs(int cycle) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         List<Blog> blogs = null;
+        System.out.println("here " );
         Query theQuery;
         if (cycle == 1){
             theQuery = currentSession.createQuery("from Blog   order by id DESC ").setMaxResults(2);
@@ -41,7 +42,6 @@ public class BlogRepositoryImpl implements BlogRepositoryCustom {
 
             return blogs;
         }catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

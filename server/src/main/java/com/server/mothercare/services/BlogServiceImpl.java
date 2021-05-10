@@ -25,6 +25,11 @@ public class BlogServiceImpl implements BlogService{
         return blogRepository.save(theBlog);
     }
 
+    @Override
+    public void deleteById(int theId) {
+        blogRepository.deleteById(theId);
+    }
+
 
     @Override
     @Transactional

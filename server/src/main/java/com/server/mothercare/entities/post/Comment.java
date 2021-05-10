@@ -1,6 +1,7 @@
 package com.server.mothercare.entities.post;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.Image;
 import com.server.mothercare.entities.User;
@@ -12,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Comment")
-@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
-public class Comment implements Serializable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})public class Comment implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +34,11 @@ public class Comment implements Serializable {
     private Image image;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "comment_id")
     List<Comment> comments;
 

@@ -27,26 +27,42 @@ public class Blog implements Serializable {
     @Column(name = "date")
     private Timestamp date;
 
-    @OneToOne
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "fromAdmin")
+    private boolean fromAdmin;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "categories")
+    private String categories;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
 
     @OneToMany(cascade =  CascadeType.ALL , mappedBy ="blog")
     private List<Like> likes;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(cascade =  CascadeType.ALL)
     private List<Comment> comments;
 
-    public Blog(String html, Timestamp
-            date, User user) {
+    public Blog(String html, boolean fromAdmin,Timestamp date, String title, String description, Image image, User user) {
         this.html = html;
         this.date = date;
+        this.title = title;
+        this.description = description;
+        this.image = image;
         this.user = user;
+        this.fromAdmin = fromAdmin;
     }
+
     public Blog() {
 
     }
@@ -74,6 +90,14 @@ public class Blog implements Serializable {
         this.id = id;
     }
 
+    public boolean isFromAdmin() {
+        return fromAdmin;
+    }
+
+    public void setFromAdmin(boolean fromAdmin) {
+        this.fromAdmin = fromAdmin;
+    }
+
     public String getHtml() {
         return html;
     }
@@ -82,6 +106,29 @@ public class Blog implements Serializable {
         this.html = text;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
 
     public Timestamp getDate() {
         return date;

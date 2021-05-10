@@ -1,26 +1,23 @@
 package com.server.mothercare.rest.timeline;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.mothercare.entities.Like;
 import com.server.mothercare.entities.User;
 import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.Comment;
-import com.server.mothercare.services.BlogService;
-import com.server.mothercare.services.CommentService;
-import com.server.mothercare.services.UserService;
-import com.sun.security.auth.UserPrincipal;
+import com.server.mothercare.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.Principal;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -36,6 +33,9 @@ public class TimelineController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SseService sseService;
+
 
     @PostMapping(value = "/blog/save")
     private ResponseEntity saveBlog(@RequestBody Blog theBlog,
@@ -44,8 +44,47 @@ public class TimelineController {
         User user= userService.userbyUserName(userPrincipal.getName());
         theBlog.setUser(user);
         theBlog.setDate(new Timestamp(new Date().getTime()));
-        blogService.save(theBlog);
-        return null;
+        Blog savedBlog = blogService.save(theBlog);
+        return savedBlog != null? new ResponseEntity(savedBlog, HttpStatus.OK) : new ResponseEntity(savedBlog, HttpStatus.CONFLICT);
+    }
+
+    @PostMapping(value = "/blog/update/{id}")
+    private ResponseEntity getBlogUpdates(@PathVariable int id,@RequestBody Blog theBlog,  Principal userPrincipal) {
+
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Blog DBBlog = blogService.getBlogById(id);
+
+        if (DBBlog.equals(null)){
+            return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
+        }
+
+        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
+
+            return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
+        }
+        theBlog.setId(id);
+        theBlog.setUser(user);
+        theBlog.setDate(new Timestamp(new Date().getTime()));
+        blogService.update(theBlog);
+        return new ResponseEntity(theBlog, HttpStatus.OK) ;
+    }
+
+    @PostMapping(value = "/blog/delete/{id}")
+    private ResponseEntity seleteBlog(@PathVariable int id,  Principal userPrincipal) {
+
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Blog DBBlog = blogService.getBlogById(id);
+
+        if (DBBlog.equals(null)){
+            return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
+        }
+
+        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
+            return new ResponseEntity("\"FAILURE\"", HttpStatus.UNAUTHORIZED) ;
+        }
+        blogService.deleteById(id);
+
+        return new ResponseEntity("\"SUCCESS\"", HttpStatus.OK) ;
     }
 
     @GetMapping(value = "/blog/get/{first}")
@@ -54,6 +93,12 @@ public class TimelineController {
         blogs = blogService.getBlogs(first);
         ResponseEntity response = blogs == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(blogs, HttpStatus.OK);
         ObjectMapper mapper = new ObjectMapper();
+                try {
+            String json = mapper.writeValueAsString(blogs);
+            System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return response;
     }
 
@@ -91,7 +136,7 @@ public class TimelineController {
 
 
     @PostMapping(value = "like/{blogId}")
-    public ResponseEntity addLike(@PathVariable int blogId, java.nio.file.attribute.UserPrincipal userPrincipal){
+    public ResponseEntity addLike(@PathVariable int blogId, Principal userPrincipal){
         User user= userService.userbyUserName(userPrincipal.getName());
         Like theLike = new Like();
         theLike.setUser(user);
@@ -101,6 +146,12 @@ public class TimelineController {
         return blog== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(blog, HttpStatus.OK);
     }
 
+    @GetMapping("/blog/updates")
+    public @ResponseBody
+    SseEmitter getEmitter() {
+        System.out.println("in updates");
+        return sseService.registerClient();
+    }
 //    @GetMapping(value = "liked_posts")
 //    public ResponseEntity likedPosts(HttpServletRequest request){
 //        User user= userService.userbyUserName(request.getUserPrincipal().getName());

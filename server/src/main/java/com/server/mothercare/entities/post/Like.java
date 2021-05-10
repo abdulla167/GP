@@ -22,7 +22,7 @@ public class Like implements Serializable {
     @JoinColumn(name = "blog_id", referencedColumnName = "id")
     private Blog blog;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

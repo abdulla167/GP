@@ -30,6 +30,6 @@ public class ImageServiceImpl implements ImageService{
     @Override
     @Transactional
     public List<Image> getImages() {
-        return imageRepository.findAll();
+        return (List<Image>) imageRepository.findAll();
     }
 }
