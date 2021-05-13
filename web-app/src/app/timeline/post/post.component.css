@@ -7,9 +7,7 @@ body {
 }
 
 .card {
-  border-color: #dddddd ;
-  border-width: thin;
-  border-radius: 15px
+  border: none
 }
 
 .ellipsis {
@@ -18,8 +16,8 @@ body {
 
 hr {
   color: #a09c9c;
-  margin-top: 0;
-  margin-bottom: 0
+  margin-top: 4px;
+  margin-bottom: 8px
 }
 
 .muted-color {
@@ -88,20 +86,4 @@ hr {
   border-color: #8bbafe;
   outline: 0;
   box-shadow: none
-}
-span {
-  cursor: pointer;
-}
-a {
-  position: relative;
-  overflow: hidden;
-}
-span:hover a {
-  color: red;
-}
-a + input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
 }

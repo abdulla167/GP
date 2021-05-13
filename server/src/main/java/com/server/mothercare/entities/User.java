@@ -20,6 +20,7 @@ import java.util.List;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "user_username", columnNames = {"username"})})
 @Data
 @NoArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

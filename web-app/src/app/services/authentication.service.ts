@@ -5,8 +5,6 @@ import {Subject} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {TokenService} from './Token.service';
-import {UserService} from './user.service';
-import {BlogService} from './blog.service';
 
 
 
@@ -17,7 +15,7 @@ export class AuthenticationService{
 
 
 
-  constructor(private http: HttpClient, private tokenService: TokenService, private userService: UserService, private blogService: BlogService) {}
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
 
   /* [Description] : METHOD USED TO SEND POST HTTP REQUEST TO THE API TO SIGN UP NEW USER
    *                 AND RETURN OBSERVABLE WHICH YOU SHOULD SUBSCRIBE TO GET TH RESPONSE.
@@ -25,8 +23,7 @@ export class AuthenticationService{
    * [Returns] : Observable OBJECT
    */
   signup(newUser: { firstName: string; lastName: string; password: string; phone: string; email: string; username: string }){
-    return this.http.post('http://localhost:8080/register/newUser', newUser, {observe: 'response'})
-      .pipe(catchError(this.handleError));
+    return this.http.post('http://localhost:8080/register/newUser', newUser).pipe(catchError(this.handleError));
   }
 
   login(username: string, password: string){
@@ -37,16 +34,14 @@ export class AuthenticationService{
     const body = new HttpParams()
       .set('username', username)
       .set('password', password)
-      .set('grant_type', 'password')
-      .set('scope', 'read write');
+      .set('grant_type', 'password');
     return this.http.post('http://localhost:8080/oauth/token', body, {observe: 'response', headers}).pipe(
       catchError(this.handleError)
     )
       .subscribe(( response) => {
         if (response.status === 200 ){
+          // this.tokenService.saveToken(JSON.parse(JSON.stringify(response.body)).get('access_token'));
           this.tokenService.saveToken( response.body['access_token']);
-          this.userService.getUser();
-          this.blogService.getUpdates();
         }
       });
   }
@@ -67,5 +62,6 @@ export class AuthenticationService{
     }
     return throwError(errorMessage);
   }
+
 
 }

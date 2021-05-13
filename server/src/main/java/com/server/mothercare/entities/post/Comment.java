@@ -1,19 +1,18 @@
 package com.server.mothercare.entities.post;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.Image;
 import com.server.mothercare.entities.User;
+import com.server.mothercare.entities.post.Post;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "Comment")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})public class Comment implements Serializable {
+@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
+public class Comment implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,14 +32,15 @@ import java.util.List;
     @JoinColumn(name = "image_id",referencedColumnName = "id")
     private Image image;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comment_id")
-    List<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    Post post;
+
+
 
     public Comment(String text, String type, Timestamp
             date, User user) {
@@ -99,19 +99,13 @@ import java.util.List;
     public void setUser(User user) {
         this.user = user;
     }
-    public List<Comment> getComments() {
-        return comments;
+
+    public Post getPost() {
+        return post;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public void addComment(Comment theComment){
-        if (comments == null){
-            comments = new ArrayList<Comment>();
-        }
-        comments.add(theComment);
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     @Override
@@ -123,6 +117,7 @@ import java.util.List;
                 ", date=" + date +
                 ", image=" + image +
                 ", user=" + user +
+                ", post=" + post +
                 '}';
     }
 }

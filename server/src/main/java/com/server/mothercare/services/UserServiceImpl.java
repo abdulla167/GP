@@ -34,5 +34,4 @@ public class UserServiceImpl implements UserService {
     public User update(User thUser) {
         return userDAO.save(thUser);
     }
-
 }

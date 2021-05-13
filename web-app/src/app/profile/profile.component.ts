@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {PostModel} from "../models/post.model";
 import {UserService} from "../services/user.service";
 import {User} from "../models/user.model";
 
@@ -10,18 +11,16 @@ import {User} from "../models/user.model";
 export class ProfileComponent{
   mainPage : string = 'about';
   theUser : User;
+  userName : string = "Abdulla ELsayed";
   profileImg : any = "../../assets/images/default.jpg";
   selectedFile: File;
   message: string;
   imageName: any;
+  calender: any = [{name : 'First task', status : true}, {name : 'Second task', status : false}];
 
   constructor(public userService :UserService) {
     this.theUser = userService.theuser;
     this.theUser.profileImg = this.profileImg;
-  }
-
-  toggleNav(content : string){
-    this.mainPage = content;
   }
 
   updateProfileImg(event){
@@ -45,7 +44,7 @@ export class ProfileComponent{
     reader.onload = (_event) => {
       this.profileImg = reader.result;
       this.userService.theuser.profileImg = this.profileImg;
-    }
+    };
   }
 
 

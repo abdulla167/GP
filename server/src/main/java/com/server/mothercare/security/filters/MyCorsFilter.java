@@ -21,7 +21,6 @@ public class MyCorsFilter implements Filter {
     public final void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain) throws IOException, ServletException {
         final HttpServletResponse response = (HttpServletResponse) res;
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-//        response.setHeader("Access-Control-Allow-Origin", "http://192.168.43.42:4200");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");

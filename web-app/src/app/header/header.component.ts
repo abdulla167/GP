@@ -9,14 +9,13 @@ import {AuthenticationService} from '../services/authentication.service';
 })
 export class HeaderComponent implements OnInit {
   isCollapsed = true;
-  companyTitle = 'WELADTY';
+  companyTitle = 'MOTHER CARE';
   isAuthenticated = false;
   logoUrl = '../../assets/images/logo.svg';
-  leftNavItems: any[] = [['Home', '/home', true], ['Baby Vaccinations', '#', true], ['Healthy food', '#', true]];
-  rightNavItems: any[] = [['Login', '/login', false], ['Sign Up', '/signup', false], ['Profile', '/profile', true], ['TimeLine', '/timeline', false]];
+  leftNavItems: any[] = [['Baby Vaccinations', '#', true], ['Healthy food', '#', true], ['Training', '#', true]];
+  rightNavItems: any[] = [['Login', '/login', false], ['Sign Up', '/signup', false], ['Profile', '/profile', true]
+    , ['TimeLine', '/timeline', false]];
   userSubscription: Subscription;
-
-
 
   constructor(private authService: AuthenticationService) { }
 

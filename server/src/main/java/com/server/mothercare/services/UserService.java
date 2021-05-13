@@ -6,6 +6,5 @@ public interface UserService {
     public User registerUser(User theUser);
     public User userbyUserName(String theUserName);
     public User update(User thUser);
-
 }
 
