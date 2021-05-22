@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,6 +25,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> getUserbyUserName(String theUserName) {
+        return userDAO.getUserbyUserName(theUserName);
+    }
+
+    @Override
     @Transactional
     public User userbyUserName(String theUserName) {
         return userDAO.userbyUserName(theUserName);
@@ -33,5 +39,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User update(User thUser) {
         return userDAO.save(thUser);
+    }
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return userDAO.findById(id);
     }
 }

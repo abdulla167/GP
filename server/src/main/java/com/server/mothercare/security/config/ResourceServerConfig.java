@@ -33,6 +33,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.httpBasic();
         http.cors().and().addFilterBefore(myCorsFilter, ChannelProcessingFilter.class).authorizeRequests().mvcMatchers(HttpMethod.POST,"/register/newUser").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/confirm-account").permitAll()
+                .mvcMatchers(HttpMethod.POST,"/device/*").permitAll()
                 .anyRequest().authenticated().and().csrf().disable();
     }
 }

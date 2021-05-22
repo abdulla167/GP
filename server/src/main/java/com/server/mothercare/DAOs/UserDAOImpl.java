@@ -7,14 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 @Repository
-public class UserDAOImpl implements UserDAOCustom{
+public class UserDAOImpl implements UserDAOCustom {
 
     private EntityManager entityManager;
 
     @Autowired
-    public UserDAOImpl(EntityManager entityManager){
+    public UserDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -26,9 +27,23 @@ public class UserDAOImpl implements UserDAOCustom{
         try {
             user = (User) query.setParameter("theUserName", theUserName).getResultList().get(0);
             return user;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    @Override
+    public Optional<User> getUserbyUserName(String theUserName) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query query = currentSession.createQuery(" from User where username=:theUserName");
+        User user = null;
+        try {
+            user = (User) query.setParameter("theUserName", theUserName).getResultList().get(0);
+            return Optional.of(user);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return Optional.ofNullable(null);
         }
     }
 

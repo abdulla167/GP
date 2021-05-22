@@ -35,15 +35,18 @@ public class RegistrationController {
     @PostMapping(value = "/register/newUser")
     public ResponseEntity registerUser(@RequestBody User user) {
         User dbUser = null;
-        dbUser = this.userService.userbyUserName(user.getUsername());
-        if (dbUser == null) {
+        this.userService.getUserbyUserName(user.getUsername()).ifPresentOrElse(user1 -> {
+            try {
+                throw new Exception("The user is already found");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, ()->{
             user.setPassword(this.encoder.encode(user.getPassword()));
             this.userService.registerUser(user);
             confirm(user.getEmail(), user);
-            return new ResponseEntity(user, HttpStatus.OK);
-        } else {
-            return new ResponseEntity("\"User alredy exist\"", HttpStatus.CONFLICT);
-        }
+        });
+        return new ResponseEntity(user, HttpStatus.OK);
     }
 
     private void confirm(String email, User theUser) {

@@ -5,15 +5,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.kit.MonitoringDevice;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity(name = "User")
@@ -21,7 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-public class User implements UserDetails, Serializable {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
@@ -77,7 +74,8 @@ public class User implements UserDetails, Serializable {
     private byte[] profileImg;
 
     @Column(name = "confirmed")
-    boolean confirmed;
+    public boolean confirmed;
+
 
     @ElementCollection
     @CollectionTable(
@@ -128,31 +126,5 @@ public class User implements UserDetails, Serializable {
         this.email = email;
         this.phone = phone;
         this.confirmed = false;
-    }
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.confirmed;
     }
 }

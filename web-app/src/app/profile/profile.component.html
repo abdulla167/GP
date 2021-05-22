@@ -2,7 +2,7 @@
     <div class="row" style="margin-top: 40px">
       <div class="col-md-3" style ="text-align: center">
         <div class="profile-img " style="margin-left: -50px">
-          <img style="width: 255px;  height: 255px;border: solid #6c757d" [src]="profileImg" class="rounded-circle" alt="profile picture"/>
+          <img style="width: 255px;  height: 255px;border: solid blue" [src]="profileImg" class="rounded-circle" alt="profile picture"/>
           <div class="file btn btn-lg btn-primary">
             <span><a href='#' class="inactiveLink"><i class="fa fa-picture-o fa-2x" aria-hidden="true"></i></a><input class="activeLink" type='file' (change)="updateProfileImg($event)"/></span>
           </div>
@@ -20,8 +20,8 @@
       <div class="col-md-8">
         <div class="profile-head" >
           <div class="row">
-            <div class="col-6" fxLayout="column">
-              <p style="font-size:2vw;font-weight: normal">
+            <div class="col-6" fxLayout="column" fxLayoutAlign="center ">
+              <p style="font-size:2vw;font-weight: bold">
                 {{theUser.firstName + " " +theUser.lastName}}
               </p>
               <p style="font-size:1.4vw">

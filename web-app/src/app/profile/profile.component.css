@@ -76,3 +76,14 @@ a:hover {
 .example-margin {
   margin: 0 10px;
 }
+
+.mat-tab-label{
+  color:white;
+  min-width: 25px !important;
+  padding: 5px;
+  background-color:transparent;
+  color:blue;
+  font-weight: bolder;
+  font-size: x-large;
+}
+

@@ -3,16 +3,21 @@ import com.server.mothercare.entities.User;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
+@Table(name = "monitoring_device")
 @NoArgsConstructor
 public class MonitoringDevice {
+
     @Id
-    private long deviceId;
+    private Long deviceId;
+
 
     @ElementCollection
     @CollectionTable(

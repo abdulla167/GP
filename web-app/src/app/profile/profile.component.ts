@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component,  ViewEncapsulation} from "@angular/core";
 import {PostModel} from "../models/post.model";
 import {UserService} from "../services/user.service";
 import {User} from "../models/user.model";
@@ -6,7 +6,8 @@ import {User} from "../models/user.model";
 @Component({
   selector: 'user-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent{
   mainPage : string = 'about';
