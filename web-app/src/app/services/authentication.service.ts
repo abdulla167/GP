@@ -37,28 +37,19 @@ export class AuthenticationService{
       .set('grant_type', 'password');
     return this.http.post('http://localhost:8080/oauth/token', body, {observe: 'response', headers}).pipe(
       catchError(this.handleError)
-    )
-      .subscribe(( response) => {
-        if (response.status === 200 ){
-          // this.tokenService.saveToken(JSON.parse(JSON.stringify(response.body)).get('access_token'));
-          this.tokenService.saveToken( response.body['access_token']);
-        }
-      });
+    );
   }
 
   private handleError(errResp: HttpErrorResponse) {
-    let errorMessage = 'An unknown error message';
-    if (!errResp.error || !errResp.error.error) {
-      return throwError(errorMessage);
-    }
-    switch (errResp.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email is already exists';
+    console.log(errResp)
+    let errorMessage = 'Unknown error';
+    switch (errResp.error.error){
+      case ("invalid_grant"):
+        errorMessage = "Invalid username or password";
         break;
-      case 'INVALID_USERNAME_PASSWORD':
-        errorMessage = 'This is invalid username or password';
-      default:
-        errorMessage = 'Something wrong happened';
+      case ("user_exist"):
+        errorMessage =errResp.error.error_description;
+        break;
     }
     return throwError(errorMessage);
   }

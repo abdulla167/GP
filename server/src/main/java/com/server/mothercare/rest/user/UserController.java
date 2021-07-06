@@ -3,6 +3,7 @@ package com.server.mothercare.rest.user;
 import com.server.mothercare.entities.Event;
 import com.server.mothercare.entities.User;
 import com.server.mothercare.entities.kit.MonitoringDevice;
+import com.server.mothercare.services.BabyMonitorService;
 import com.server.mothercare.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -15,17 +16,20 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @Slf4j
 public class UserController {
     private UserService userService;
+    private BabyMonitorService babyMonitorService;
 
     @Autowired
-    public UserController(UserService userService)
+    public UserController(UserService userService, BabyMonitorService babyMonitorService)
     {
         this.userService = userService;
+        this.babyMonitorService = babyMonitorService;
     }
 
 
@@ -43,15 +47,29 @@ public class UserController {
     public ResponseEntity addDevice(@RequestBody String  jsonString, Principal user){
         JSONObject jsonObject = new JSONObject(jsonString);
         long deviceId = Long.valueOf(jsonObject.getLong("deviceId"));
+        String babyName = jsonObject.getString("babyName");
         MonitoringDevice monitoringDevice = new MonitoringDevice();
         monitoringDevice.setDeviceId(deviceId);
+        monitoringDevice.setBabyName(babyName);
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{
             monitoringDevice.setUser(user1);
             user1.getDevices().add(monitoringDevice);
-            this.userService.update(user1);
+            this.babyMonitorService.addDevice(monitoringDevice);
         });
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/getDevices")
+    public ResponseEntity getUserDevices(Principal user){
+        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
+        User theUser = optionalUser.get();
+        List<MonitoringDevice> monitoringDeviceList = theUser.getDevices();
+        for (MonitoringDevice device :
+                monitoringDeviceList) {
+            log.error(device.getBabyName());
+        }
+        return new ResponseEntity(monitoringDeviceList, HttpStatus.OK);
     }
 
 

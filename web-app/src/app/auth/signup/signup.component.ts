@@ -25,7 +25,6 @@ export class SignupComponent implements OnInit {
     this.datepickerValue = new Date();
   }
 
-  // tslint:disable-next-line:typedef
   onSubmitForm(form: NgForm){
     if (!form.valid){
       return;
@@ -36,10 +35,8 @@ export class SignupComponent implements OnInit {
                         password: form.value.password, email: form.value.email, phone: form.value.phone};
         this.isLoading = true;
         this.authService.signup(theUser).subscribe(resData => {
-          console.log(resData);
           this.router.navigate(['/login']);
         }, resError => {
-          console.log(resError);
           this.error = resError;
         });
         this.isLoading = false;
@@ -49,4 +46,5 @@ export class SignupComponent implements OnInit {
       }
     }
   }
+
 }

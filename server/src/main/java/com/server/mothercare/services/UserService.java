@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public interface UserService {
     public User registerUser(User theUser);
+
     public Optional<User> getUserbyUserName(String theUserName);
 
     public User userbyUserName(String theUserName);

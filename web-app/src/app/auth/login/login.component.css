@@ -3,9 +3,21 @@
   --input-padding-y: .75rem;
 }
 
-body {
-  background: #007bff;
-  background: linear-gradient(to right, #0062E6, #33AEFF);
+#body1{
+  background-image: url("../../../assets/images/newimg3.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  height:100%;
+
+}
+
+#loading-spinner-row{
+  text-align: center;
+  padding-top: 200px
 }
 
 .card-signin {

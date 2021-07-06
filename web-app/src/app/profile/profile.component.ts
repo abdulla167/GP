@@ -13,7 +13,7 @@ export class ProfileComponent{
   mainPage : string = 'about';
   theUser : User;
   userName : string = "Abdulla ELsayed";
-  profileImg : any = "../../assets/images/default.jpg";
+  profileImg : any = "../../assets/images/newimg2.jpeg";
   selectedFile: File;
   message: string;
   imageName: any;

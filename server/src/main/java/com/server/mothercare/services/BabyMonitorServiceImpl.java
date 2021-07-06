@@ -1,10 +1,9 @@
 package com.server.mothercare.services;
 
 import com.server.mothercare.DAOs.DeviceDAO;
-import com.server.mothercare.entities.kit.DeviceUsersSse;
-import com.server.mothercare.entities.kit.HeartRateRead;
-import com.server.mothercare.entities.kit.SP02Read;
-import com.server.mothercare.entities.kit.TempRead;
+import com.server.mothercare.DAOs.UserDAO;
+import com.server.mothercare.entities.User;
+import com.server.mothercare.entities.kit.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,12 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
 
     DeviceDAO deviceDAO;
 
+    UserDAO userDAO;
+
     @Autowired
-    BabyMonitorServiceImpl(DeviceDAO deviceDAO){
+    BabyMonitorServiceImpl(DeviceDAO deviceDAO, UserDAO userDAO){
         this.deviceDAO = deviceDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -38,24 +40,34 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
         return deviceUsers;
     }
 
-    public void addConnectedDevice(long id){
+    public void connectDevice(long id){
         this.deviceDAO.findById(id).ifPresentOrElse(device -> {
             this.deviceUsers.putIfAbsent(id, new ArrayList<>());
         }, ()-> new Exception("This device is not found"));
-
         log.warn(this.deviceUsers.get(id).toString());
     }
 
-    public void removeConnectedDevice(long id){
+    public void disconnectDevice(long id){
         this.deviceUsers.remove(id);
     }
 
-    public void subscribeDevice(Long deviceId, String username, SseEmitter emitter) throws Exception {
-        if(this.deviceUsers.containsKey(deviceId)){
-            this.deviceUsers.get(deviceId).add(new DeviceUsersSse(username ,emitter));
-        }else {
-            throw new Exception("Device is not connected");
+    public int subscribeDevice(String username, SseEmitter emitter){
+        int connectedDevice = 0;
+        Optional<List<MonitoringDevice>> userDevices = this.userDAO.getUserDevices(username);
+        userDevices.ifPresent(userDevicesList -> {
+            for (MonitoringDevice device : userDevicesList){
+                Long deviceId = device.getDeviceId();
+                if(this.deviceUsers.containsKey(deviceId)){
+                    this.deviceUsers.get(deviceId).add(new DeviceUsersSse(username ,emitter));
+                }
+            }
+
+        });
+        if (userDevices.isPresent())
+        {
+            connectedDevice = 1;
         }
+        return connectedDevice;
     }
 
     public void pushNewData(JSONObject json){
@@ -77,5 +89,18 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
             });
             executor.shutdown();
         }, ()-> new Exception("This device is not found"));
-    };
+    }
+
+    public void addDevice(MonitoringDevice device){
+        this.deviceDAO.save(device);
+    }
+
+    @Override
+    public void addUserDevice(Long id, String username) {
+        User theUser = this.userDAO.userbyUserName("boda");
+        this.deviceDAO.findById(id).ifPresentOrElse( device -> new Exception("This device is already exist")
+                , ()-> {
+                    this.deviceDAO.save(new MonitoringDevice(id, theUser));
+                });
+    }
 }

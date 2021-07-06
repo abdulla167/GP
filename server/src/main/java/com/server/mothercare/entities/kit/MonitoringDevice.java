@@ -18,6 +18,8 @@ public class MonitoringDevice {
     @Id
     private Long deviceId;
 
+    @Column(name = "baby_name")
+    private String babyName;
 
     @ElementCollection
     @CollectionTable(
@@ -41,7 +43,16 @@ public class MonitoringDevice {
     private List<SP02Read> spo2Reads;
 
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable=false)
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
+
+    public MonitoringDevice(Long id, User deviceUser){
+        deviceId = id;
+        user = deviceUser;
+    }
+
+    public MonitoringDevice(Long id){
+        deviceId = id;
+    }
 }

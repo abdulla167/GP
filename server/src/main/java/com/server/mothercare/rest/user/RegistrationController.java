@@ -3,17 +3,21 @@ package com.server.mothercare.rest.user;
 import com.server.mothercare.entities.ConfirmationToken;
 import com.server.mothercare.entities.User;
 import com.server.mothercare.DAOs.ConfirmationTokenDAO;
+import com.server.mothercare.exceptions.Error;
 import com.server.mothercare.services.EmailSenderService;
 import com.server.mothercare.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@Slf4j
 public class RegistrationController {
     private BCryptPasswordEncoder encoder;
     private UserService userService;
@@ -35,18 +39,18 @@ public class RegistrationController {
     @PostMapping(value = "/register/newUser")
     public ResponseEntity registerUser(@RequestBody User user) {
         User dbUser = null;
-        this.userService.getUserbyUserName(user.getUsername()).ifPresentOrElse(user1 -> {
-            try {
-                throw new Exception("The user is already found");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }, ()->{
+        ResponseEntity responseEntity = null;
+        try {
+            this.userService.getUserbyUserName(user.getUsername());
+            Error error = new Error("user_exist", "User is already exist");
+            responseEntity = new ResponseEntity(error, HttpStatus.CONFLICT);
+        } catch (UsernameNotFoundException e){
             user.setPassword(this.encoder.encode(user.getPassword()));
             this.userService.registerUser(user);
             confirm(user.getEmail(), user);
-        });
-        return new ResponseEntity(user, HttpStatus.OK);
+            responseEntity = new ResponseEntity(user, HttpStatus.OK);
+        }
+        return responseEntity;
     }
 
     private void confirm(String email, User theUser) {

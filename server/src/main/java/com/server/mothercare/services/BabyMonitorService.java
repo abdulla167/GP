@@ -1,6 +1,7 @@
 package com.server.mothercare.services;
 
 import com.server.mothercare.entities.kit.DeviceUsersSse;
+import com.server.mothercare.entities.kit.MonitoringDevice;
 import org.json.JSONObject;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -12,12 +13,16 @@ public interface BabyMonitorService {
 
     public Hashtable<Long, List<DeviceUsersSse>> getEmitters();
 
-    public void addConnectedDevice(long id);
+    public void connectDevice(long id);
 
-    public void removeConnectedDevice(long id);
+    public void disconnectDevice(long id);
 
-    public void subscribeDevice(Long deviceId,String username, SseEmitter emitter) throws Exception;
+    public int subscribeDevice(String username, SseEmitter emitter);
 
     public void pushNewData(JSONObject json);
+
+    public void addUserDevice(Long id, String username);
+
+    public void addDevice(MonitoringDevice device);
 
 }

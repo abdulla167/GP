@@ -2,13 +2,16 @@ package com.server.mothercare.services;
 
 import com.server.mothercare.DAOs.UserDAO;
 import com.server.mothercare.entities.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
@@ -25,8 +28,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserbyUserName(String theUserName) {
-        return userDAO.getUserbyUserName(theUserName);
+    public Optional<User> getUserbyUserName(String theUserName) throws UsernameNotFoundException{
+            Optional<User> optionalUser = userDAO.getUserbyUserName(theUserName);
+            optionalUser.orElseThrow(() -> new UsernameNotFoundException("User is not found"));
+            return optionalUser;
     }
 
     @Override

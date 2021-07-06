@@ -1,11 +1,15 @@
 <div class="row">
-  <div  style="margin-left: 20px;margin-top: 20px" fxLayout="row" >
+  <div  style="margin-left: 20px;margin-top: 20px; position: center" fxLayout="row" >
     <div class="form-group">
       <label for="inputCode">Enter your device code</label>
-      <input id="inputCode" style="width: 80%" class="form-control" type="text" placeholder="code" >
+      <input id="inputCode" style="width: 80%" class="form-control" type="text" placeholder="Device code" #code>
+    </div>
+    <div class="form-group">
+      <label for="inputName">Enter your baby name</label>
+      <input id="inputName" style="width: 80%" class="form-control" type="text" placeholder="Baby name" #name>
     </div>
     <div>
-      <button mat-raised-button style="margin-top: 28px">add</button>
+      <button mat-raised-button style="margin-top: 28px" (click)="addNewDevice(code.value, name.value)">add</button>
     </div>
   </div>
 

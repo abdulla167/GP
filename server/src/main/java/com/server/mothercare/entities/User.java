@@ -84,7 +84,7 @@ public class User implements Serializable {
     )
     private List<Event> events;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<MonitoringDevice> devices;
 
     public User(User user) {

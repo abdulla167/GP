@@ -6,8 +6,8 @@
   </div>
   <div id="signup-form" class="row"  *ngIf="!isLoading">
     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <div class="alert alert-danger" *ngIf="error">
-        <h4>{{error}}</h4>
+      <div class="alert alert-danger" style="height: 50px" *ngIf="error">
+        <h4 style="text-align: center;font-size: 20px;color: red">{{error}}</h4>
       </div>
       <div class="card card-signin my-5">
         <div class="card-body">
@@ -47,7 +47,7 @@
             </div>
 
             <div class="form-group">
-              <label for="datepicker"> Datepicker </label>
+              <label for="datepicker"> Birthday </label>
               <div class="row flex-fill">
                 <div class="col-9">
                   <input id="datepicker" name="datepicker" type="text"
@@ -82,7 +82,7 @@
             </div>
 
 
-            <button class="btn btn-lg btn-secondary btn-block text-uppercase" [disabled]="!form.valid" type="submit">Sign up</button>
+            <button class="btn btn-lg btn-primary btn-block text-uppercase" [disabled]="!form.valid" type="submit">Sign up</button>
           </form>
         </div>
       </div>

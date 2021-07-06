@@ -3,6 +3,10 @@ a{
   text-decoration: none;
 }
 
+mat-list-item{
+  color: white;
+}
+
 a:hover, a:active{
   color: lightgray;
 }
