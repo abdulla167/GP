@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import 'flatpickr/dist/flatpickr.css';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -22,8 +22,7 @@ import {BabyMonitorComponent} from './profile/baby-monitor/baby-monitor.componen
 import {UserInfoComponent} from './profile/user-info/user-info.component';
 import {PostsComponent} from './profile/posts/posts.component';
 import { TimelineComponent } from './timeline/timeline.component';
-import { PostComponent } from './timeline/post/post.component';
-import { CreatePostComponent } from './timeline/create-post/create-post.component';
+
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -47,6 +46,14 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventChoiceComponent } from './profile/calendar/event-choice/event-choice.component';
 import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { BlogListComponent } from './timeline/blog-list/blog-list.component';
+import { BlogComponent } from './timeline/blog-list/blog/blog.component';
+import { SideListComponent } from './timeline/side-list/side-list.component';
+import { CreateBlogComponent } from './timeline/create-blog/create-blog.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import { TextEditorComponent } from './timeline/create-blog/text-editor/text-editor.component';
+import {QuillModule} from 'ngx-quill';
 
 
 
@@ -65,13 +72,17 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     UserInfoComponent,
     PostsComponent,
     TimelineComponent,
-    PostComponent,
-    CreatePostComponent,
+
     CalendarComponent,
     TempChartComponent,
     RespirChartComponent,
     HeartRateChartComponent,
-    EventChoiceComponent
+    EventChoiceComponent,
+    BlogListComponent,
+    BlogComponent,
+    SideListComponent,
+    CreateBlogComponent,
+    TextEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -106,7 +117,10 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     }),
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatSelectModule,
+    MatInputModule,
+    QuillModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
