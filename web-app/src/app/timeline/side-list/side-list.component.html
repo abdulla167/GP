@@ -1,0 +1,33 @@
+
+<button mat-mini-fab class="setting-button" color="primary" aria-label="Example icon button with a menu icon"
+         (click)="drawer.toggle(); opened = !opened" *ngIf="!opened">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<button mat-icon-button class="setting-button" color="primary" aria-label="Example icon button with a menu icon"
+        (click)="drawer.toggle(); opened = !opened" *ngIf="opened">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-drawer-container class="example-container" (window:resize)="onResize($event)">
+
+  <mat-drawer opened mode="side" #drawer  class="nav-list">
+
+    <mat-nav-list role="list" style="margin-top: 40px" >
+      <mat-list-item role="listitem" class="nav-list-item" (click)="openDialog()">
+        <!--        <button mat-raised-button color="primary">Primary</button>-->
+        Create Blog
+      </mat-list-item>
+      <mat-list-item role="listitem" class="nav-list-item">
+        Saved Blogs
+      </mat-list-item>
+      <mat-list-item role="listitem" class="nav-list-item">
+        My Blogs
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
+
+  <mat-drawer-content>
+
+    <app-blog-list></app-blog-list>
+  </mat-drawer-content>
+</mat-drawer-container>

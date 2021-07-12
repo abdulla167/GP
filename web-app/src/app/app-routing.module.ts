@@ -5,7 +5,6 @@ import {SignupComponent} from './auth/signup/signup.component';
 import {LoginComponent} from './auth/login/login.component';
 import {DoctorListComponent} from './doctor-list/doctor-list.component';
 import {ProfileComponent} from "./profile/profile.component";
-import {CreatePostComponent} from './timeline/create-post/create-post.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {AdditionalInfoComponent} from "./auth/additional-info/additional-info.component";
 
@@ -16,7 +15,6 @@ const appRoutes: Routes = [
   {path: 'bookdoctor', component: DoctorListComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'timeline', component: TimelineComponent},
-  {path: 'new_post', component: CreatePostComponent},
   {path: 'userInfo', component: AdditionalInfoComponent}
 ];
 
