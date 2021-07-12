@@ -1,4 +1,4 @@
-package com.server.mothercare.entities.kit;
+package com.server.mothercare.models.kit;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +9,9 @@ import java.util.Date;
 
 @Embeddable
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class SP02Read {
+@AllArgsConstructor
+public class PositionRead {
     private double value;
     private Date time;
 }

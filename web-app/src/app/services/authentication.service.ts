@@ -41,14 +41,19 @@ export class AuthenticationService{
   }
 
   private handleError(errResp: HttpErrorResponse) {
-    console.log(errResp)
-    let errorMessage = 'Unknown error';
+    let errorMessage;
     switch (errResp.error.error){
       case ("invalid_grant"):
         errorMessage = "Invalid username or password";
         break;
       case ("user_exist"):
         errorMessage =errResp.error.error_description;
+        break;
+      case ("server_problem"):
+        errorMessage = errResp.error.error_description;
+        break;
+      default:
+        errorMessage =  'Unknown error';
         break;
     }
     return throwError(errorMessage);

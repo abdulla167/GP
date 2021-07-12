@@ -1,4 +1,4 @@
-package com.server.mothercare.exceptions;
+package com.server.mothercare.models;
 
 import lombok.Data;
 

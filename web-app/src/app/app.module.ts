@@ -19,7 +19,6 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {BabyMonitorComponent} from './profile/baby-monitor/baby-monitor.component';
-import {UserInfoComponent} from './profile/user-info/user-info.component';
 import {PostsComponent} from './profile/posts/posts.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { PostComponent } from './timeline/post/post.component';
@@ -47,6 +46,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventChoiceComponent } from './profile/calendar/event-choice/event-choice.component';
 import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { AdditionalInfoComponent } from './auth/additional-info/additional-info.component';
+import {UserInfoComponent} from "./profile/user-info/user-info.component";
 
 
 
@@ -62,7 +63,6 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     LoadingSpinnerComponent,
     ProfileComponent,
     BabyMonitorComponent,
-    UserInfoComponent,
     PostsComponent,
     TimelineComponent,
     PostComponent,
@@ -71,7 +71,9 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     TempChartComponent,
     RespirChartComponent,
     HeartRateChartComponent,
-    EventChoiceComponent
+    EventChoiceComponent,
+    AdditionalInfoComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -84,8 +84,8 @@
   </div>
 
   <div fxFlex></div>
-  <button mat-raised-button fxFlexAlign="end" color="primary" (click)="addEvent()" > ADD</button>
-  <button mat-raised-button fxFlexAlign="end" color="primary" (click)="editEvent()"> Submit</button>
+  <button mat-raised-button fxFlexAlign="end" color="primary" (click)="addEvent()" *ngIf="actionType == 'add'"> ADD</button>
+  <button mat-raised-button fxFlexAlign="end" color="primary" (click)="editEvent()" *ngIf="actionType == 'edit'"> Submit</button>
   <button mat-icon-button fxFlexAlign="end" color="primary" (click)="deleteEvent()"> <mat-icon>delete</mat-icon></button>
 
 </div>

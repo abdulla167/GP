@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Subject} from "rxjs";
 import {EventsService} from "../../../services/events.service";
 import {addDays, endOfMonth, subDays} from "date-fns";
 import {CalendarEvent} from "angular-calendar";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-event-choice',
@@ -13,8 +13,9 @@ import {MatDialogRef} from "@angular/material/dialog";
 export class EventChoiceComponent implements OnInit {
   date = new Date();
   event : CalendarEvent;
+  actionType : string;
 
-  constructor(public eventsService : EventsService,  public dialogRef : MatDialogRef<EventChoiceComponent>) {}
+  constructor(public eventsService : EventsService,  public dialogRef : MatDialogRef<EventChoiceComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
     this.event = {
@@ -24,6 +25,8 @@ export class EventChoiceComponent implements OnInit {
       title: this.eventsService.event.title,
       id : this.eventsService.event.id
     }
+    this.actionType = this.data.num;
+    console.log(this.actionType)
   }
 
 

@@ -17,12 +17,10 @@ public interface BabyMonitorService {
 
     public void disconnectDevice(long id);
 
-    public int subscribeDevice(String username, SseEmitter emitter);
+    public int subscribeDevice(SseEmitter emitter, Long id);
 
     public void pushNewData(JSONObject json);
 
-    public void addUserDevice(Long id, String username);
 
     public void addDevice(MonitoringDevice device);
-
 }

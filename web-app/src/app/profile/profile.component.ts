@@ -1,4 +1,4 @@
-import {Component,  ViewEncapsulation} from "@angular/core";
+import {Component, OnInit, ViewEncapsulation} from "@angular/core";
 import {PostModel} from "../models/post.model";
 import {UserService} from "../services/user.service";
 import {User} from "../models/user.model";
@@ -9,7 +9,7 @@ import {User} from "../models/user.model";
   styleUrls: ['./profile.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProfileComponent{
+export class ProfileComponent implements  OnInit{
   mainPage : string = 'about';
   theUser : User;
   userName : string = "Abdulla ELsayed";
@@ -18,6 +18,7 @@ export class ProfileComponent{
   message: string;
   imageName: any;
   calender: any = [{name : 'First task', status : true}, {name : 'Second task', status : false}];
+  tab : number = 0;
 
   constructor(public userService :UserService) {
     this.theUser = userService.theuser;
@@ -46,6 +47,13 @@ export class ProfileComponent{
       this.profileImg = reader.result;
       this.userService.theuser.profileImg = this.profileImg;
     };
+  }
+
+  ngOnInit(): void {
+  }
+
+  show(event){
+    console.log(event)
   }
 
 

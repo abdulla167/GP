@@ -35,7 +35,7 @@ export class SignupComponent implements OnInit {
                         password: form.value.password, email: form.value.email, phone: form.value.phone};
         this.isLoading = true;
         this.authService.signup(theUser).subscribe(resData => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/userInfo']);
         }, resError => {
           this.error = resError;
         });

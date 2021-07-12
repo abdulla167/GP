@@ -1,12 +1,13 @@
 package com.server.mothercare.entities.kit;
 import com.server.mothercare.entities.User;
 
+import com.server.mothercare.models.kit.HeartRateRead;
+import com.server.mothercare.models.kit.SPO2Read;
+import com.server.mothercare.models.kit.TempRead;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,7 +41,7 @@ public class MonitoringDevice {
             name = "spo2_reads",
             joinColumns = @JoinColumn(name = "deviceId")
     )
-    private List<SP02Read> spo2Reads;
+    private List<SPO2Read> spo2Reads;
 
 
     @ManyToOne(cascade = CascadeType.REMOVE)
