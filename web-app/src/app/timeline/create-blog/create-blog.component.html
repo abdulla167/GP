@@ -1,9 +1,9 @@
-<form class="example-form" width = "1000px" (window:resize)="onResize($event)">
+<form class="example-form" width = "1000px" #form="ngForm" (window:resize)="onResize($event)">
 
   <p>
     <mat-form-field  class="example-full-width"  appearance="legacy">
       <mat-label>Blog Title</mat-label>
-      <input matInput placeholder="Placeholder">
+      <input matInput id="title" placeholder="Placeholder" #title ngModel  autofocus>
       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       <mat-hint>write meanignful title</mat-hint>
     </mat-form-field>
@@ -12,20 +12,33 @@
   <p>
     <mat-form-field class="example-full-width"  appearance="legacy">
       <mat-label>Blog Discreption</mat-label>
-      <input matInput placeholder="Placeholder">
+      <input matInput id="description" placeholder="Placeholder" #decription  ngModel autofocus>
           <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       <mat-hint>write shortly</mat-hint>
     </mat-form-field>
   </p>
 
   <p>
+    <input type="file" id ="img" style="display: none" #fileInput accept="image/*" (change)="onChangeFileInput()" ngModel  autofocus/>
+    <button mat-raised-button color="primary" class="file-select-button" (click)="onClickFileInputButton()">
+      <mat-icon>add_photo_alternate</mat-icon>
+      select Image
+    </button>
+
+  </p>
+
+  <p>
     <mat-form-field class="example-full-width"  appearance="fill">
       <mat-label>Toppings</mat-label>
-      <mat-select [formControl]="categories" multiple>
+      <mat-select [formControl]="categories" multiple >
         <mat-option *ngFor="let category of categoryList" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
   </p>
 
-  <app-text-editor></app-text-editor>
+  <quill-editor [styles]="{'min-height': '250px', 'max-height': '300px'}" [(ngModel)]="BlogContent" ></quill-editor>
+
+  <p>
+    <button mat-raised-button  color="primary" type="submit" [disabled]="!title.value|| !decription.value|| !file" (click)="submit(title.value, decription.value)" >create </button>
+  </p>
 </form>

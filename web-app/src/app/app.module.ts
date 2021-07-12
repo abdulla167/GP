@@ -55,6 +55,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import { TextEditorComponent } from './timeline/create-blog/text-editor/text-editor.component';
 import {QuillModule} from 'ngx-quill';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 
@@ -121,6 +122,7 @@ import {QuillModule} from 'ngx-quill';
     MatButtonToggleModule,
     MatSelectModule,
     MatInputModule,
+    MatPaginatorModule,
     QuillModule.forRoot()
   ],
   providers: [],
