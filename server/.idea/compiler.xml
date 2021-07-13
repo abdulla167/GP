@@ -14,7 +14,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="mother-care" target="16" />
+      <module name="mother-care" target="15" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

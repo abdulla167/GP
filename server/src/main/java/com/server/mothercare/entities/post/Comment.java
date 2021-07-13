@@ -37,8 +37,8 @@ public class Comment implements Serializable {
     User user;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    Post post;
+    @JoinColumn(name = "blog_id", referencedColumnName = "id")
+    Blog blog;
 
 
 
@@ -100,12 +100,12 @@ public class Comment implements Serializable {
         this.user = user;
     }
 
-    public Post getPost() {
-        return post;
+    public Blog getBlog() {
+        return blog;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setBlog(Blog blog) {
+        this.blog = blog;
     }
 
     @Override
@@ -117,7 +117,7 @@ public class Comment implements Serializable {
                 ", date=" + date +
                 ", image=" + image +
                 ", user=" + user +
-                ", post=" + post +
+                ", post=" + blog +
                 '}';
     }
 }

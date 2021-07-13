@@ -48,7 +48,7 @@
 
 <mat-grid-list [cols]="breakpoint" rowHeight="550px" (window:resize)="onResize($event)">
   <mat-grid-tile
-    *ngFor="let tile of blogs" >
-    <app-blog></app-blog>
+    *ngFor="let blog of blogs" >
+    <app-blog [blog]="blog"></app-blog>
   </mat-grid-tile>
 </mat-grid-list>

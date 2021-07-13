@@ -3,7 +3,6 @@ package com.server.mothercare.entities.post;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.User;
-import com.server.mothercare.entities.post.Post;
 
 
 import javax.persistence.*;
@@ -18,8 +17,8 @@ public class Like implements Serializable {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private Post post;
+    @JoinColumn(name = "blog_id", referencedColumnName = "id")
+    private Blog bog;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -37,12 +36,12 @@ public class Like implements Serializable {
         this.id = id;
     }
 
-    public Post getPost() {
-        return post;
+    public Blog getBlog() {
+        return bog;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setBlog(Blog bog) {
+        this.bog = bog;
     }
 
     public User getUser() {
