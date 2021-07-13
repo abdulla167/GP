@@ -46,14 +46,19 @@ public class RegistrationController {
             responseEntity = new ResponseEntity(error, HttpStatus.CONFLICT);
         } catch (UsernameNotFoundException usernameNotFoundException){
             user.setPassword(this.encoder.encode(user.getPassword()));
-            try {
-                confirm(user.getEmail(), user);
-                this.userService.registerUser(user);
-                responseEntity = new ResponseEntity(user, HttpStatus.OK);
-            } catch (Exception e){
-                Error error = new Error("server_problem", "Server has a problem now try again later");
-                responseEntity = new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            this.userService.registerUser(user);
+            confirm(user.getEmail(), user);
+            responseEntity = new ResponseEntity(user, HttpStatus.OK);
+
+//            try {
+//                this.userService.registerUser(user);
+////                var confirmationToken = confirm(user.getEmail(), user);
+//                responseEntity = new ResponseEntity(user, HttpStatus.OK);
+//            } catch (Exception e){
+//                log.warn(e.getMessage());
+//                Error error = new Error("server_problem", "Server has a problem now try again later");
+//                responseEntity = new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
         }
         return responseEntity;
     }
@@ -63,10 +68,13 @@ public class RegistrationController {
         confirmationTokenDAO.save(confirmationToken);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
+
+
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setFrom("abdullaelsayed167@yahoo.com");
         mailMessage.setText("To confirm your account, please click here : "
                 + "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken());
+
         emailSenderService.sendEmail(mailMessage);
     }
 
@@ -77,9 +85,6 @@ public class RegistrationController {
             User user = userService.userbyUserName(token.getUser().getUsername());
             user.setConfirmed(true);
             userService.update(user);
-            System.out.println("Success token");
-        } else {
-            System.out.println("Failure token");
-        }
+        } else {}
     }
 }
