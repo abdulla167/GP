@@ -1,5 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import { BlogModel } from 'src/app/models/blog.model';
+import { BlogService } from 'src/app/services/Blog.service';
 import {CreateBlogComponent} from '../create-blog/create-blog.component';
 
 @Component({
@@ -13,7 +15,9 @@ export class SideListComponent implements OnInit {
   opened = true;
   showButton = false;
   alwaysOpened = true;
-  constructor(public dialog: MatDialog) { }
+  blogs: BlogModel[];
+  savedBlogs: boolean = false;
+  constructor(public dialog: MatDialog, private blogService: BlogService) { }
 
   ngOnInit() {
     const toggle = window.innerWidth  > 800 ? true : false;
@@ -53,5 +57,15 @@ export class SideListComponent implements OnInit {
    dialogRef.afterClosed().subscribe(result => {
      console.log(`Dialog result: ${result}`);
    });
+  }
+
+  getSavedBlogs() {
+    this.savedBlogs = true;
+    this.blogService.bommarks().subscribe((response) => {
+      if (response.status === 200) {
+        this.blogs = (response.body as BlogModel[]);
+      }
+    });
+    
   }
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 public class BlogServiceImpl implements BlogService{
     @Autowired
     private BlogRepository blogRepository;
+
     @Override
     @Transactional
     public Blog save(Blog theBlog) {
@@ -27,6 +28,7 @@ public class BlogServiceImpl implements BlogService{
     }
 
     @Override
+    @Transactional
     public void deleteById(int theId) {
         blogRepository.deleteById(theId);
     }
@@ -48,4 +50,5 @@ public class BlogServiceImpl implements BlogService{
         }
         return  blog;
     }
+
 }

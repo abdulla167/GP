@@ -20,7 +20,7 @@ public class Blog implements Serializable {
 
 
     @Lob
-    @Column(name = "html",length = 16777216)
+    @Column(name = "html", length = 16777216)
     private String html;
 
     @Column(name = "date")
@@ -42,17 +42,17 @@ public class Blog implements Serializable {
     @JoinColumn(name = "image_id")
     private Image image;
 
-    @OneToMany(cascade =  CascadeType.ALL , mappedBy ="blog")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "blog")
     private List<Like> likes;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade =  CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    public Blog(String html, boolean fromAdmin,Timestamp date, String title, String description, Image image, User user) {
+    public Blog(String html, boolean fromAdmin, Timestamp date, String title, String description, Image image, User user) {
         this.html = html;
         this.date = date;
         this.title = title;
@@ -66,15 +66,16 @@ public class Blog implements Serializable {
 
     }
 
-    public void addComment(Comment theComment){
-        if (comments == null){
+    public void addComment(Comment theComment) {
+        if (comments == null) {
             comments = new ArrayList<Comment>();
         }
         comments.add(theComment);
 //        theComment.setBlog(this);
     }
-    public void addLikes(Like theLike){
-        if (likes == null){
+
+    public void addLikes(Like theLike) {
+        if (likes == null) {
             likes = new ArrayList<Like>();
         }
         likes.add(theLike);
@@ -168,5 +169,4 @@ public class Blog implements Serializable {
     public void setLikes(List<Like> likes) {
         this.likes = likes;
     }
-
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {absRound} from 'ngx-bootstrap/chronos/utils/abs-round';
 import {PageEvent} from '@angular/material/paginator';
 import {BlogService} from '../../services/Blog.service';
 import {BlogModel} from '../../models/blog.model';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-blog-list',
@@ -14,24 +15,18 @@ export class BlogListComponent implements OnInit {
   pageEvent: PageEvent;
   totalLength: number = 0;
   pageIndex: number = 0;
-  blogs: BlogModel[];
+  @Input() blogs: BlogModel[];
+  @Input() savedBlogs: boolean = false;
   constructor(private blogService: BlogService) { }
 
   ngOnInit() {
-    // this.blogService.uploadBlogs(1)
-    // this.blogService.BlogsCount().subscribe(
-    //   (response) => {
-    //     if (response.status === 200) {
-    //       this.totalLength = response.body['count'];
-    //       this.blogService.uploadBlogs(1);
-    //     }
-    //   }
-    // );
-    this.blogService.blogSubject.subscribe((blogs) => {
-      this.blogs = this.blogService.getBlogs();
-      console.log(this.blogs.length);
-    });
-    this.blogService.uploadBlogs(1);
+    
+      this.blogService.blogSubject.subscribe((blogs) => {
+        this.blogs = this.blogService.getBlogs();
+        console.log(this.blogs.length);
+      });
+      this.blogService.uploadBlogs(1);
+    
     this.breakpoint = (window.innerWidth - 150) > 400 ? (( (window.innerWidth - 150) / 370) - ((window.innerWidth - 150) % 370) / 370) : 1;
   }
 
@@ -41,7 +36,11 @@ export class BlogListComponent implements OnInit {
 
   getServerData(event: PageEvent){
     // event.pageIndex
+    if (!this.savedBlogs){
     this.blogService.uploadBlogs(0);
+    }
     return event;
   }
+
+
 }

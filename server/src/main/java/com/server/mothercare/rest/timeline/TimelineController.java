@@ -7,6 +7,7 @@ import com.server.mothercare.entities.User;
 import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.Comment;
 import com.server.mothercare.entities.post.Like;
+import com.server.mothercare.entities.post.SavedBlog;
 import com.server.mothercare.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,9 @@ public class TimelineController {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private SavedBlogService savedBlogService;
 
 
     @PostMapping(value = "/blog/save")
@@ -88,6 +92,29 @@ public class TimelineController {
         blogService.deleteById(id);
 
         return new ResponseEntity("\"SUCCESS\"", HttpStatus.OK) ;
+    }
+
+    @PostMapping(value = "/blog/bommark/{blogId}")
+    private ResponseEntity bommarkBlog(@PathVariable int blogId,  Principal userPrincipal){
+        User theUser = userService.userbyUserName(userPrincipal.getName());
+        Blog theBlog = blogService.getBlogById(blogId);
+        if (theUser.equals(null) || theBlog.equals(null)){
+            return  new ResponseEntity("\"Failure\"", HttpStatus.BAD_REQUEST);
+        }else {
+            SavedBlog theSavedBlog = new SavedBlog();
+            theSavedBlog.setBlog(theBlog);
+            theSavedBlog.setUser(theUser);
+            boolean saved = savedBlogService.bommarkBlog(theSavedBlog);
+            return  saved  ? new ResponseEntity(theUser, HttpStatus.OK) : new ResponseEntity("\"Failure\"", HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping(value = "/blog/bommark")
+    private ResponseEntity bommarkBlog(  Principal userPrincipal){
+            List<Blog> blogs = null;
+            blogs = savedBlogService.userBommarks(userPrincipal.getName());
+
+            return  blogs.equals(null)  ?  new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT) : new ResponseEntity(blogs, HttpStatus.OK) ;
+
     }
 
     @GetMapping(value = "/blog/get/{first}")

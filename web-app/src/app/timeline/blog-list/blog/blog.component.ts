@@ -7,6 +7,8 @@ import {BlogDetailComponent} from './blog-detail/blog-detail.component';
 import {BlogService} from '../../../services/Blog.service';
 import {LikeModel} from '../../../models/like.model';
 import {UserService} from '../../../services/user.service';
+import { isThisSecond } from 'date-fns';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-blog',
@@ -62,5 +64,16 @@ export class BlogComponent implements OnInit {
         }
       });
     }
+  }
+
+  bommarkBlog(){
+    this.blogService.bommarkBlog(this.blog.id)
+      .subscribe((response) => {
+        if (response.status === 200) {
+          this.userService.theuser = (response.body as User);
+
+        }
+      });
+    
   }
 }

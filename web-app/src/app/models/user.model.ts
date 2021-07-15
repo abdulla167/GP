@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import { BlogModel } from "./blog.model";
 
 @Injectable({providedIn:"root"})
 export class User{
