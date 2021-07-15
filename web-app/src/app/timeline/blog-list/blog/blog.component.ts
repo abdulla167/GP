@@ -27,7 +27,7 @@ export class BlogComponent implements OnInit {
     const object = 'data:' + this.blog.image.type + ';base64,' + this.blog.image.picByte;
     this.image = this.sanitizer.bypassSecurityTrustUrl(object);
     for (const like of this.blog.likes) {
-      if (like.user.username === this.userService.theuser.username) {
+      if (like.user.username === this.userService.theUser.username) {
         this.likeIt = true;
         this.likeIndex = this.blog.likes.indexOf(like);
         break;
