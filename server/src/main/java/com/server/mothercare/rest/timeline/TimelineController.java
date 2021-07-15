@@ -1,23 +1,23 @@
 package com.server.mothercare.rest.timeline;
 
-import com.server.mothercare.entities.*;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.mothercare.entities.User;
+import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.Comment;
 import com.server.mothercare.entities.post.Like;
-import com.server.mothercare.entities.post.Post;
-import com.server.mothercare.services.ImageService;
-import com.server.mothercare.services.PostService;
-import com.server.mothercare.services.UserService;
+import com.server.mothercare.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -26,87 +26,159 @@ import java.util.zip.Inflater;
 public class TimelineController {
 
     @Autowired
-    private PostService postService;
+    private CommentService commentService;
+    @Autowired
+    private BlogService blogService;
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private ImageService imageService;
 
-    @PostMapping(value = "/post/save")
-    private ResponseEntity savePost(@RequestBody Post thePost,
-                                    HttpServletRequest request
+    @Autowired
+    private SseService sseService;
+
+    @Autowired
+    private LikeService likeService;
+
+
+    @PostMapping(value = "/blog/save")
+    private ResponseEntity saveBlog(@RequestBody Blog theBlog,
+                                    Principal userPrincipal
     ){
-        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-        imageService.save(thePost.getImage());
-        thePost.setUser(user);
-        thePost.setDate(new Timestamp(new Date().getTime()));
-        postService.save(thePost);
-//        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-//        Post post;
-//        if (theImage == null){
-//            post =  new Post(tex, "TEXT", new Timestamp(new Date().getTime() ), user);
-//            boolean saved = postService.save(post);
-//            return  saved == true? new ResponseEntity("Success", HttpStatus.OK) : new ResponseEntity("FAILURE", HttpStatus.CONFLICT);
-//        }else{
-//            post =  new Post(tex, "TEXT_IMAGE", new Timestamp(new Date().getTime() ), user);
-//            try {
-//                Image image = new Image(theImage.getOriginalFilename(), theImage.getContentType(), theImage.getBytes());
-//                boolean imSaved = imageService.save(image);
-//                post.setImage(image);
-//                boolean saved = postService.save(post);
-//
-//                return saved == true && imSaved== true? new ResponseEntity("Success", HttpStatus.OK) : new ResponseEntity("FAILURE", HttpStatus.CONFLICT);
-//            } catch (IOException e) {
-//                return new ResponseEntity("IMAGE_ERROR", HttpStatus.BAD_REQUEST);
-//            }
-//        }
-        return null;
+        User user= userService.userbyUserName(userPrincipal.getName());
+        theBlog.setUser(user);
+        theBlog.setDate(new Timestamp(new Date().getTime()));
+        Blog savedBlog = blogService.save(theBlog);
+        return savedBlog != null? new ResponseEntity(savedBlog, HttpStatus.OK) : new ResponseEntity(savedBlog, HttpStatus.CONFLICT);
     }
-    @GetMapping(value = "/post/get/{first}")
-    private ResponseEntity getPosts(@PathVariable int first){
-        List<Post> posts = null;
-        posts = postService.getPosts(first);
-        return posts == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(posts, HttpStatus.OK);
+
+    @PostMapping(value = "/blog/update/{id}")
+    private ResponseEntity getBlogUpdates(@PathVariable int id,@RequestBody Blog theBlog,  Principal userPrincipal) {
+
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Blog DBBlog = blogService.getBlogById(id);
+
+        if (DBBlog.equals(null)){
+            return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
+        }
+
+        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
+
+            return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
+        }
+        theBlog.setId(id);
+        theBlog.setUser(user);
+        theBlog.setDate(new Timestamp(new Date().getTime()));
+        blogService.update(theBlog);
+        return new ResponseEntity(theBlog, HttpStatus.OK) ;
+    }
+
+    @PostMapping(value = "/blog/delete/{id}")
+    private ResponseEntity seleteBlog(@PathVariable int id,  Principal userPrincipal) {
+
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Blog DBBlog = blogService.getBlogById(id);
+
+        if (DBBlog.equals(null)){
+            return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
+        }
+
+        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
+            return new ResponseEntity("\"FAILURE\"", HttpStatus.UNAUTHORIZED) ;
+        }
+        blogService.deleteById(id);
+
+        return new ResponseEntity("\"SUCCESS\"", HttpStatus.OK) ;
+    }
+
+    @GetMapping(value = "/blog/get/{first}")
+    private ResponseEntity getBlogs(@PathVariable int first){
+        List<Blog> blogs = null;
+        blogs = blogService.getBlogs(first);
+        ResponseEntity response = blogs == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(blogs, HttpStatus.OK);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String json = mapper.writeValueAsString(blogs);
+            System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 
     @PostMapping(value = "/comment/{theId}")
     private ResponseEntity saveComment(@PathVariable int theId,
                                        @RequestBody Comment theComment,
-                                       HttpServletRequest request){
+                                       Principal userPrincipal){
 
-        Post post = postService.getPostById(theId);
-        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-        if (post == null){
+        Blog DbBlog = blogService.getBlogById(theId);
+        User user= userService.userbyUserName(userPrincipal.getName());
+        if (DbBlog == null){
             return new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT);
         }else {
             theComment.setDate(new Timestamp(new Date().getTime()));
             theComment.setUser(user);
-            post.addComment(theComment);
-            boolean commentSaved = postService.saveComment(theComment);
-            boolean saved = postService.update(post);
-            System.out.println(saved + " " + post.getComments().get(0));
-            return saved == false && commentSaved == false ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(post, HttpStatus.OK);
+            DbBlog.addComment(theComment);
+            Blog blog = blogService.update(DbBlog);
+            return  blog == null ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(blog, HttpStatus.OK);
         }
     }
 
-    @PostMapping(value = "like/{postId}")
-    public ResponseEntity addLike(@PathVariable int postId, HttpServletRequest request){
-        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-        Like theLike = new Like();
-        theLike.setUser(user);
-        Post thePost = postService.getPostById(postId);
-        thePost.addLikes(theLike);
-        boolean saved =postService.update(thePost);
-        return saved== true? new ResponseEntity(thePost, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+    @PostMapping(value = "/commentToComment/{commentId}")
+    private ResponseEntity saveCommentToComment(@PathVariable int commentId,
+                                                @RequestBody Comment theComment,
+                                                Principal userPrincipal){
+
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Comment commentDB = commentService.getCommentById(commentId);
+        theComment.setDate(new Timestamp(new Date().getTime()));
+        theComment.setUser(user);
+        commentDB.addComment(theComment);
+        Comment comment = commentService.update(commentDB);
+        return  comment == null ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(comment, HttpStatus.OK);
     }
 
-    @GetMapping(value = "liked_posts")
-    public ResponseEntity likedPosts(HttpServletRequest request){
-        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-        List<Post> likedPosts = postService.likedPosts(user);
-        return likedPosts != null? new ResponseEntity(likedPosts, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+
+    @PostMapping(value = "like/{blogId}")
+    public ResponseEntity addLike(@PathVariable int blogId, Principal userPrincipal){
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Like theLike = new Like();
+        theLike.setUser(user);
+        Blog DbBlog = blogService.getBlogById(blogId);
+        DbBlog.addLikes(theLike);
+        Blog blog = blogService.update(DbBlog);
+        return blog== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(theLike, HttpStatus.OK);
     }
+
+    @PostMapping(value = "like/delete/{likeId}")
+    public ResponseEntity deleteLike(@PathVariable int likeId, Principal userPrincipal){
+        User user= userService.userbyUserName(userPrincipal.getName());
+        Like theLike = null;
+        boolean deleted = false;
+        theLike = likeService.getLikeById(likeId).get();
+        if (theLike.equals(null)){
+
+        }else {
+            deleted = likeService.deleteLike(theLike.getId());
+        }
+
+        return (theLike== null || deleted == false)?
+                new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) :
+                new ResponseEntity("\"Like Deleted Successsufly\"", HttpStatus.OK);
+    }
+
+    @GetMapping("/blog/updates")
+    public @ResponseBody
+    SseEmitter getEmitter() {
+        System.out.println("in updates");
+        return sseService.registerClient();
+    }
+//    @GetMapping(value = "liked_posts")
+//    public ResponseEntity likedPosts(HttpServletRequest request){
+//        User user= userService.userbyUserName(request.getUserPrincipal().getName());
+//        List<Post> likedPosts = postService.likedPosts(user);
+//        return likedPosts != null? new ResponseEntity(likedPosts, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+//    }
+
     public static byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
         deflater.setInput(data);

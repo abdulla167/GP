@@ -40,6 +40,7 @@ export class UserService{
     );
   }
 
+
   skipUserInfo(){
     const headers = {
       Authorization: 'Bearer ' + this.tokenService.getToken(),
@@ -49,6 +50,7 @@ export class UserService{
       catchError(this.handleError)
     );
   }
+
 
   private handleError(errResp: HttpErrorResponse) {
     let errorMessage;

@@ -39,6 +39,12 @@ public class UserController {
         this.notificationService = notificationService;
     }
 
+    @GetMapping("/user")
+    public ResponseEntity getUserProfile(Principal userPrincipal){
+        User user= userService.userbyUserName(userPrincipal.getName());
+        return user != null? new ResponseEntity(user, HttpStatus.OK) : new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+    }
+
     @GetMapping("/connect/{username}")
     public SseEmitter connect(@PathVariable String username){
         User theUser = this.userService.userbyUserName(username);

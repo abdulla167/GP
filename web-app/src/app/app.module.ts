@@ -56,6 +56,8 @@ import {QuillModule} from 'ngx-quill';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatRadioModule} from "@angular/material/radio";
+import { BlogDetailComponent } from './timeline/blog-list/blog/blog-detail/blog-detail.component';
+import { BlogNewTapComponent } from './timeline/blog-list/blog/blog-new-tap/blog-new-tap.component';
 
 
 
@@ -84,7 +86,9 @@ import {MatRadioModule} from "@angular/material/radio";
     BlogComponent,
     SideListComponent,
     CreateBlogComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    BlogDetailComponent,
+    BlogNewTapComponent
   ],
   imports: [
     BrowserModule,
