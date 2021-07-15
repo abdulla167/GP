@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.User;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,9 +15,10 @@ public class Like implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @ManyToOne
     @JoinColumn(name = "blog_id", referencedColumnName = "id")
-    private Blog bog;
+    private Blog blog;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -37,11 +37,11 @@ public class Like implements Serializable {
     }
 
     public Blog getBlog() {
-        return bog;
+        return blog;
     }
 
-    public void setBlog(Blog bog) {
-        this.bog = bog;
+    public void setBlog(Blog blog) {
+        this.blog = blog;
     }
 
     public User getUser() {

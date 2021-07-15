@@ -7,8 +7,17 @@
             <span><a href='#' class="inactiveLink"><i class="fa fa-picture-o fa-2x" aria-hidden="true"></i></a><input class="activeLink" type='file' (change)="updateProfileImg($event)"/></span>
           </div>
         </div>
-        <ul class="list-group" style="width: 90%">
-          <li class="list-group-item text-muted" style="font-weight: bold; font-size: x-large">Calendar <i class="fa fa-calendar fa-1x"></i></li>
+        <ul class="list-group" style="width: 90%" *ngIf="tab == 0">
+          <li class="list-group-item " style="font-weight: bold; font-size: x-large;color: #0062E6">Upcoming events <i class="fa fa-calendar fa-1x"></i></li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span><mat-checkbox></mat-checkbox></li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span><mat-checkbox></mat-checkbox></li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span><mat-checkbox></mat-checkbox></li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span><mat-checkbox></mat-checkbox></li>
+        </ul>
+
+        <ul class="list-group" style="width: 90%" *ngIf="tab == 1">
+          <li class="list-group-item " style="font-weight: bold; font-size: x-large;color: #0062E6">Baby Issues <i class="fa fa-bomb" aria-hidden="true"></i>
+          </li>
           <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span><mat-checkbox></mat-checkbox></li>
           <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span><mat-checkbox></mat-checkbox></li>
           <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span><mat-checkbox></mat-checkbox></li>
@@ -17,7 +26,7 @@
         <br>
       </div>
 
-      <div class="col-md-8">
+      <div class="col-md-9">
         <div class="profile-head" >
           <div class="row">
             <div class="col-6" fxLayout="column" fxLayoutAlign="center ">
@@ -41,7 +50,7 @@
           </div>
           <br>
 
-          <mat-tab-group mat-align-tabs="left">
+          <mat-tab-group mat-align-tabs="left" (selectedTabChange)="tab = $event.index">
             <mat-tab label="Calendar">
               <br>
               <br>

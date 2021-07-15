@@ -1,5 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {Chart} from '../../../../../node_modules/chart.js';
+import {SensorsService} from "../../../services/sensors-service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-temp-chart',
@@ -7,52 +10,76 @@ import {Chart} from '../../../../../node_modules/chart.js';
   styleUrls: ['./temp-chart.component.css']
 })
 export class TempChartComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-    const myChart = new Chart('myChart', {
-      type: 'line',
-      data: {
-        labels: ['0', '1', '2', '3', '4', '5'],
-        datasets: [{
-          label: 'Tempreature Reads',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        title: {
-          display: true,
-          text: 'Temperature Reading'
+  myChart : Chart;
+  currentChart;
+  graphUpdateSubscription : Subscription;
+  options = {
+    scales: {
+      xAxes: [{
+        barPercentage: 0.8,
+        barThickness: 8,
+        maxBarThickness: 10,
+        minBarLength: 2,
+        gridLines: {
+          offsetGridLines: true
         },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
+        yAxes: [{
+          ticks: {
+            min: 0,
+            max: 50,
+            stepSize: 10
+          }
+        }]
+      }],
+      layout: {
+        padding: {
+          left: 50,
+          right: 0,
+          top: 0,
+          bottom: 0
         }
       }
-    });
-  }
+    }
+  };
+  config = {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        label: "Temperature",
+        borderColor: "rgba(54, 162, 235, 1)",
+        fill : false,
+        pointBackgroundColor : "rgba(54, 162, 235, 1)",
+        pointHoverBorderColor : "rgba(100, 50, 85, 1)",
+        pointHoverBackgroundColor : "rgba(54, 162, 235, 1)",
+        borderWidth : 1,
+        pointRadius : 4,
+        pointHoverRadius : 8,
+        data: []
+      }],
+      responsive: true,
+      maintainAspectRatio : true,
+      options: this.options
+    }
+  };
 
+  constructor(private sensorService : SensorsService, public dialogRef: MatDialogRef<TempChartComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  ngOnInit(): void {
+    this.graphUpdateSubscription = this.sensorService.getGraphSubject().subscribe((graphNum) => {
+      this.config.data.labels = this.sensorService.monitoringDevices[graphNum].tempReads.readTime;
+      this.config.data.datasets[0].data = this.sensorService.monitoringDevices[graphNum].tempReads.tempRead;
+      if (this.currentChart == graphNum){
+        this.myChart.update();
+      }
+    });
+    let deviceIndex = this.sensorService.monitoringDevices.findIndex(device => device.deviceId == this.data.num);
+    this.currentChart = deviceIndex;
+    this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].tempReads.readTime;
+    this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].tempReads.tempRead;
+    this.myChart = new Chart('myChart', this.config);
+  }
 
 
 }

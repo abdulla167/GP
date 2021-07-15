@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import 'flatpickr/dist/flatpickr.css';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -19,10 +19,9 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {BabyMonitorComponent} from './profile/baby-monitor/baby-monitor.component';
-import {UserInfoComponent} from './profile/user-info/user-info.component';
 import {PostsComponent} from './profile/posts/posts.component';
 import { TimelineComponent } from './timeline/timeline.component';
-
+import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -44,17 +43,23 @@ import { CommonModule } from '@angular/common';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventChoiceComponent } from './profile/calendar/event-choice/event-choice.component';
-import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { AdditionalInfoComponent } from './auth/additional-info/additional-info.component';
+import {UserInfoComponent} from "./profile/user-info/user-info.component";
 import { BlogListComponent } from './timeline/blog-list/blog-list.component';
 import { BlogComponent } from './timeline/blog-list/blog/blog.component';
 import { SideListComponent } from './timeline/side-list/side-list.component';
 import { CreateBlogComponent } from './timeline/create-blog/create-blog.component';
-import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import { TextEditorComponent } from './timeline/create-blog/text-editor/text-editor.component';
 import {QuillModule} from 'ngx-quill';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatStepperModule} from "@angular/material/stepper";
+import {MatRadioModule} from "@angular/material/radio";
+import { BlogDetailComponent } from './timeline/blog-list/blog/blog-detail/blog-detail.component';
+import { BlogNewTapComponent } from './timeline/blog-list/blog/blog-new-tap/blog-new-tap.component';
+
 
 
 
@@ -70,20 +75,22 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     LoadingSpinnerComponent,
     ProfileComponent,
     BabyMonitorComponent,
-    UserInfoComponent,
     PostsComponent,
     TimelineComponent,
-
     CalendarComponent,
     TempChartComponent,
     RespirChartComponent,
     HeartRateChartComponent,
     EventChoiceComponent,
+    AdditionalInfoComponent,
+    UserInfoComponent,
     BlogListComponent,
     BlogComponent,
     SideListComponent,
     CreateBlogComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    BlogDetailComponent,
+    BlogNewTapComponent
   ],
   imports: [
     BrowserModule,
@@ -111,6 +118,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     CommonModule,
     FormsModule,
     NgbModalModule,
+    MatCheckboxModule,
+    MatRadioModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -121,8 +130,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatButtonToggleModule,
     MatSelectModule,
     MatInputModule,
+    MatStepperModule,
     MatPaginatorModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

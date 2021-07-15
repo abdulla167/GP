@@ -4,6 +4,7 @@ import com.server.mothercare.entities.Event;
 import com.server.mothercare.entities.User;
 import com.server.mothercare.entities.kit.MonitoringDevice;
 import com.server.mothercare.services.BabyMonitorService;
+import com.server.mothercare.services.NotificationService;
 import com.server.mothercare.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -24,12 +26,32 @@ import java.util.Optional;
 public class UserController {
     private UserService userService;
     private BabyMonitorService babyMonitorService;
+    private NotificationService notificationService;
 
     @Autowired
-    public UserController(UserService userService, BabyMonitorService babyMonitorService)
+    public UserController(UserService userService, BabyMonitorService babyMonitorService, NotificationService notificationService)
     {
         this.userService = userService;
         this.babyMonitorService = babyMonitorService;
+        this.notificationService = notificationService;
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity getUserProfile(Principal userPrincipal){
+        User user= userService.userbyUserName(userPrincipal.getName());
+        return user != null? new ResponseEntity(user, HttpStatus.OK) : new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+    }
+
+    @GetMapping("/connect/{username}")
+    public SseEmitter connect(@PathVariable String username){
+        User theUser = this.userService.userbyUserName(username);
+        SseEmitter sseEmitter = new SseEmitter(-1L);
+        sseEmitter.onError((error) -> {
+            this.notificationService.removeUser(theUser.getUserId());
+        });
+        log.error("adding user to be online with id : " + theUser.getUserId());
+        this.notificationService.addUser(theUser.getUserId(), sseEmitter);
+        return sseEmitter;
     }
 
 

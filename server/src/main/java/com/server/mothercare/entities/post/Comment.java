@@ -1,18 +1,17 @@
 package com.server.mothercare.entities.post;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.server.mothercare.entities.Image;
 import com.server.mothercare.entities.User;
-import com.server.mothercare.entities.post.Post;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Comment")
-@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
-public class Comment implements Serializable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})public class Comment implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,15 +31,14 @@ public class Comment implements Serializable {
     @JoinColumn(name = "image_id",referencedColumnName = "id")
     private Image image;
 
+
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "blog_id", referencedColumnName = "id")
-    Blog blog;
-
-
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "comment_id")
+    List<Comment> comments;
 
     public Comment(String text, String type, Timestamp
             date, User user) {
@@ -99,13 +97,19 @@ public class Comment implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public Blog getBlog() {
-        return blog;
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public void setBlog(Blog blog) {
-        this.blog = blog;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void addComment(Comment theComment){
+        if (comments == null){
+            comments = new ArrayList<Comment>();
+        }
+        comments.add(theComment);
     }
 
     @Override
@@ -117,7 +121,6 @@ public class Comment implements Serializable {
                 ", date=" + date +
                 ", image=" + image +
                 ", user=" + user +
-                ", post=" + blog +
                 '}';
     }
 }

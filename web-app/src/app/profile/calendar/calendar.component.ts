@@ -57,8 +57,13 @@ export class CalendarComponent implements OnInit {
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.eventsService.populateEvent(event);
-        this.configurePopUp();
-        this.dialog.open(EventChoiceComponent);
+        const dialogConfig = {
+          autoFocus : true,
+          data : {
+            num : 'edit'
+          }
+        };
+        this.dialog.open(EventChoiceComponent, dialogConfig);
       },
     },
     {
@@ -81,7 +86,6 @@ export class CalendarComponent implements OnInit {
     for ( let i = 0; i < this.events.length ; i++){
       this.events[i].actions = this.actions;
     }
-    console.log(this.events)
   }
 
   ngOnInit(): void {
@@ -125,13 +129,23 @@ export class CalendarComponent implements OnInit {
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.eventsService.populateEvent(event);
-    this.configurePopUp();
-    this.dialog.open(EventChoiceComponent);
+    const dialogConfig = {
+      autoFocus : true,
+      data : {
+        num : 'edit'
+      }
+    };
+    this.dialog.open(EventChoiceComponent, dialogConfig);
   }
 
   addEvent(): void {
-    this.configurePopUp();
-    this.dialog.open(EventChoiceComponent);
+    const dialogConfig = {
+      autoFocus : true,
+      data : {
+        num : 'add'
+      }
+    };
+    this.dialog.open(EventChoiceComponent, dialogConfig);
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
@@ -146,11 +160,11 @@ export class CalendarComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
 
-  configurePopUp(){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '100%';
-  }
+  // configurePopUp(){
+  //   const dialogConfig = new MatDialogConfig();
+  //   dialogConfig.disableClose = true;
+  //   dialogConfig.autoFocus = true;
+  //   dialogConfig.width = '100%';
+  // }
 
 }

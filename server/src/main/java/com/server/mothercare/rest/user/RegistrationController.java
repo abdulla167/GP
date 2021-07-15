@@ -3,7 +3,7 @@ package com.server.mothercare.rest.user;
 import com.server.mothercare.entities.ConfirmationToken;
 import com.server.mothercare.entities.User;
 import com.server.mothercare.DAOs.ConfirmationTokenDAO;
-import com.server.mothercare.exceptions.Error;
+import com.server.mothercare.models.Error;
 import com.server.mothercare.services.EmailSenderService;
 import com.server.mothercare.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +44,21 @@ public class RegistrationController {
             this.userService.getUserbyUserName(user.getUsername());
             Error error = new Error("user_exist", "User is already exist");
             responseEntity = new ResponseEntity(error, HttpStatus.CONFLICT);
-        } catch (UsernameNotFoundException e){
+        } catch (UsernameNotFoundException usernameNotFoundException){
             user.setPassword(this.encoder.encode(user.getPassword()));
             this.userService.registerUser(user);
             confirm(user.getEmail(), user);
             responseEntity = new ResponseEntity(user, HttpStatus.OK);
+
+//            try {
+//                this.userService.registerUser(user);
+////                var confirmationToken = confirm(user.getEmail(), user);
+//                responseEntity = new ResponseEntity(user, HttpStatus.OK);
+//            } catch (Exception e){
+//                log.warn(e.getMessage());
+//                Error error = new Error("server_problem", "Server has a problem now try again later");
+//                responseEntity = new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
         }
         return responseEntity;
     }
@@ -58,6 +68,8 @@ public class RegistrationController {
         confirmationTokenDAO.save(confirmationToken);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
+
+
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setFrom("abdullaelsayed167@yahoo.com");
         mailMessage.setText("To confirm your account, please click here : "
@@ -73,9 +85,6 @@ public class RegistrationController {
             User user = userService.userbyUserName(token.getUser().getUsername());
             user.setConfirmed(true);
             userService.update(user);
-            System.out.println("Success token");
-        } else {
-            System.out.println("Failure token");
-        }
+        } else {}
     }
 }

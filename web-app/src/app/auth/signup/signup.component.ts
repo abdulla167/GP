@@ -3,6 +3,9 @@ import {NgForm} from '@angular/forms';
 import {User} from '../../models/user.model';
 import {AuthenticationService} from '../../services/authentication.service';
 import {Router} from '@angular/router';
+import {MatDialog} from "@angular/material/dialog";
+import {AdditionalInfoComponent} from "../additional-info/additional-info.component";
+import {TempChartComponent} from "../../profile/baby-monitor/temp-chart/temp-chart.component";
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +20,7 @@ export class SignupComponent implements OnInit {
   isLoading = false;
   error: string = null;
 
-  constructor(private authService: AuthenticationService, private router: Router) {}
+  constructor(private dialog: MatDialog, private authService: AuthenticationService, private router: Router) {}
 
 
 
@@ -35,12 +38,18 @@ export class SignupComponent implements OnInit {
                         password: form.value.password, email: form.value.email, phone: form.value.phone};
         this.isLoading = true;
         this.authService.signup(theUser).subscribe(resData => {
+          const dialogConfig = {
+            autoFocus : true,
+            disableClose : true
+
+          };
           this.router.navigate(['/login']);
+          this.dialog.open(AdditionalInfoComponent, dialogConfig);
+          form.reset();
         }, resError => {
           this.error = resError;
         });
         this.isLoading = false;
-        form.reset();
       }else {
         this.invalidConfirmPassword = true;
       }
