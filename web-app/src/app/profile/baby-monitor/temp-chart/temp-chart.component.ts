@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {Chart} from '../../../../../node_modules/chart.js';
-import {SensorsService} from "../../../services/sensors-service";
+import {DeviceService} from "../../../services/device-service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Subscription} from "rxjs";
 
@@ -63,7 +63,7 @@ export class TempChartComponent implements OnInit {
     }
   };
 
-  constructor(private sensorService : SensorsService, public dialogRef: MatDialogRef<TempChartComponent>,
+  constructor(private sensorService : DeviceService, public dialogRef: MatDialogRef<TempChartComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {

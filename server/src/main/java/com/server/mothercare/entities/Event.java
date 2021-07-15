@@ -2,11 +2,9 @@ package com.server.mothercare.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
@@ -14,10 +12,12 @@ import java.sql.Date;
 @Data
 @NoArgsConstructor
 public class Event {
+    @Column(unique = true)
+    private Long id;
 
     @NotNull
     @Column(name = "event_name")
-    private String eventName;
+    private String title;
 
     @NotNull
     @Column(name = "start_date")

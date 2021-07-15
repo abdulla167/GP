@@ -14,13 +14,32 @@ import {Router} from "@angular/router";
 export class AdditionalInfoComponent implements OnInit {
   userInfo : UserInfoModel;
   error : string;
+  pregnant : string;
+  haveChildren : string;
 
   constructor(public dialogRef: MatDialogRef<AdditionalInfoComponent>, private userService : UserService, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userInfo = new UserInfoModel();
+    this.userInfo.bloodType = "";
+    this.userInfo.pregnant = false;
+    this.userInfo.haveChildren = false;
+    this.userInfo.weight = 0;
+    this.userInfo.height = 0;
+    this.userInfo.childrenNum = 0;
+    this.userInfo.pregnancyDate = null;
+    this.userInfo.periodLength = 0;
+    this.userInfo.lastPeriodDate = null;
+  }
 
   addUserInfo(){
-    console.log(this.userInfo);
+    if (this.pregnant == "yes"){
+      this.userInfo.pregnant = true;
+    }
+    if (this.haveChildren == "yes"){
+      this.userInfo.haveChildren = true;
+    }
+    this.userInfo.periodLength = +this.userInfo.periodLength;
     this.userService.addUserInfo(this.userInfo).subscribe(resData => {
       this.dialogRef.close();
       this.router.navigate(['/profile']);
@@ -30,8 +49,11 @@ export class AdditionalInfoComponent implements OnInit {
   }
 
   skipUserInfo(){
-    this.dialogRef.close();
-    this.router.navigate(['/profile']);
+    this.userService.skipUserInfo().subscribe(resp => {
+      this.dialogRef.close();
+      this.router.navigate(['/profile']);
+    }, respError => {
+      this.error = respError;
+    })
   }
-
 }

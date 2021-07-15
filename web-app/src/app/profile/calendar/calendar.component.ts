@@ -24,8 +24,7 @@ import {
   CalendarView,
 } from 'angular-calendar';
 import {EventsService} from "../../services/events.service";
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {TempChartComponent} from "../baby-monitor/temp-chart/temp-chart.component";
+import {MatDialog} from '@angular/material/dialog';
 import {EventChoiceComponent} from "./event-choice/event-choice.component";
 
 
@@ -89,6 +88,7 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.events = this.eventsService.events;
     this.eventsService.addedEvents.subscribe(() => {
       this.events = this.eventsService.events;
       this.changeDetectorRef.detectChanges();

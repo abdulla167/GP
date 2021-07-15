@@ -12,26 +12,34 @@
 
     <tbody>
       <td>
-        <input
-          [(ngModel)]="this.event.title"
-          type="text"
-          class="form-control"
-        />
+        <div class="form-group">
+          <mat-form-field appearance="outline" style="height: 50px;width: 240px">
+            <mat-label style="color: black">None </mat-label>
+            <mat-select [(ngModel)]="this.event.title">
+              <mat-option value="option1"><i class="fa fa-user-md" aria-hidden="true" style="margin-right: 3px"></i> Doctor visit</mat-option>
+              <mat-option value="option2"><i class="fa fa-medkit" aria-hidden="true" style="margin-right: 3px"></i> Medication time</mat-option>
+              <mat-option value="option3">Others</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </td>
       <td>
         <input
+          style="margin-top: 20px; margin-left: 20px"
           [(ngModel)]="this.event.color.primary"
           type="color"
         />
       </td>
       <td>
         <input
+          style="margin-top: 20px; margin-left: 20px"
           [(ngModel)]="this.event.color.secondary"
           type="color"
         />
       </td>
       <td>
         <input
+          style="margin-top: 20px; margin-left: 20px"
           class="form-control"
           type="text"
           mwlFlatpickr
@@ -52,6 +60,7 @@
       </td>
       <td>
         <input
+          style="margin-top: 20px; margin-left: 20px"
           class="form-control"
           type="text"
           mwlFlatpickr
@@ -77,9 +86,9 @@
 <div fxLayout="row" fxLayoutGap="10px">
   <div fxLayout="column" fxLayoutGap="5px">
     <label style="font-weight: bold; text-align: center">Alarm</label>
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle value="bold">No</mat-button-toggle>
-      <mat-button-toggle value="italic">Yes</mat-button-toggle>
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [(ngModel)]="reminder">
+      <mat-button-toggle value="no">No</mat-button-toggle>
+      <mat-button-toggle value="yes">Yes</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 

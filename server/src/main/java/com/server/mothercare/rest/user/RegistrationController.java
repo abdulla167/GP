@@ -46,36 +46,30 @@ public class RegistrationController {
             responseEntity = new ResponseEntity(error, HttpStatus.CONFLICT);
         } catch (UsernameNotFoundException usernameNotFoundException){
             user.setPassword(this.encoder.encode(user.getPassword()));
-            this.userService.registerUser(user);
-            confirm(user.getEmail(), user);
-            responseEntity = new ResponseEntity(user, HttpStatus.OK);
-
-//            try {
-//                this.userService.registerUser(user);
-////                var confirmationToken = confirm(user.getEmail(), user);
-//                responseEntity = new ResponseEntity(user, HttpStatus.OK);
-//            } catch (Exception e){
-//                log.warn(e.getMessage());
-//                Error error = new Error("server_problem", "Server has a problem now try again later");
-//                responseEntity = new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
+            try {
+                var confirmationToken = confirm(user.getEmail(), user);
+                this.userService.registerUser(user);
+                this.confirmationTokenDAO.save(confirmationToken);
+                responseEntity = new ResponseEntity(user, HttpStatus.OK);
+            } catch (Exception e){
+                log.warn(e.getMessage());
+                Error error = new Error("server_problem", "Server has a problem now try again later");
+                responseEntity = new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
         return responseEntity;
     }
 
-    private void confirm(String email, User theUser) {
+    private ConfirmationToken confirm(String email, User theUser) {
         ConfirmationToken confirmationToken = new ConfirmationToken(theUser);
-        confirmationTokenDAO.save(confirmationToken);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
-
-
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setFrom("abdullaelsayed167@yahoo.com");
         mailMessage.setText("To confirm your account, please click here : "
                 + "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken());
-
         emailSenderService.sendEmail(mailMessage);
+        return confirmationToken;
     }
 
     @GetMapping("/confirm-account")
@@ -85,6 +79,9 @@ public class RegistrationController {
             User user = userService.userbyUserName(token.getUser().getUsername());
             user.setConfirmed(true);
             userService.update(user);
-        } else {}
+            System.out.println("Success token");
+        } else {
+            System.out.println("Failure token");
+        }
     }
 }

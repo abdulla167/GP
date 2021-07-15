@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity(name = "User")
@@ -51,11 +52,17 @@ public class User implements Serializable {
     @Column(name = "phone")
     String phone;
 
-    @Column(name = "relation_status")
-    private boolean married;
-
     @Column(name = "status")
     private boolean pregnant;
+
+    @Column(name = "pregnancy_date")
+    private LocalDateTime pregnancyDate;
+
+    @Column(name = "have_children")
+    private boolean haveChildren;
+
+    @Column(name = "children_num")
+    private int childrenNum;
 
     @Column(name = "height")
     private float height;
@@ -67,7 +74,10 @@ public class User implements Serializable {
     private String bloodType;
 
     @Column(name = "last_period")
-    private Date lastPeriod;
+    private LocalDateTime lastPeriod;
+
+    @Column(name = "period_length")
+    private int periodLength;
 
     @Lob
     @Column(name = "image")
@@ -75,6 +85,9 @@ public class User implements Serializable {
 
     @Column(name = "confirmed")
     public boolean confirmed;
+
+    @Column(name = "additional_info")
+    public boolean additionalInfo = false;
 
 
     @ElementCollection
@@ -97,14 +110,17 @@ public class User implements Serializable {
         this.birthOfDate = user.birthOfDate;
         this.email = user.email;
         this.phone = user.phone;
-        this.married = user.married;
         this.pregnant = user.pregnant;
         this.height = user.height;
         this.weight = user.weight;
         this.bloodType = user.bloodType;
         this.lastPeriod = user.lastPeriod;
+        this.periodLength = user.periodLength;
+        this.childrenNum = user.childrenNum;
         this.profileImg = user.profileImg;
         this.confirmed = user.confirmed;
+        this.pregnancyDate = user.pregnancyDate;
+        this.haveChildren = user.haveChildren;
     }
 
     public User(String firstName, String lastName, String encodedPassword, String username, String email, String phone) {

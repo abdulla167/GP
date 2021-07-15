@@ -4,6 +4,10 @@ import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
 import {EventChoiceComponent} from "../profile/calendar/event-choice/event-choice.component";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {catchError} from "rxjs/operators";
+import {EventModel} from "../models/event.model";
+import {TokenService} from "./Token.service";
 
 
 
@@ -66,6 +70,9 @@ export class EventsService{
 
   color = {primary: "", secondary: ""}
 
+  constructor(private http : HttpClient, private tokenService : TokenService) {
+  }
+
   event : CalendarEvent = {
     title: '',
     color : this.color,
@@ -76,20 +83,45 @@ export class EventsService{
 
   addedEvents = new Subject<boolean>();
 
-  addEvent (event : CalendarEvent){
-    this.events = [...this.events, event];
-    this.addedEvents.next(true);
+  // getEvents(event : CalendarEvent){
+  //
+  //
+  //   return this.http.post('http://localhost:8080/oauth/token', body, {observe: 'response', headers});
+  // }
+
+  addOrEditEvent (event : CalendarEvent, reminder : string,  addOrEdit : string){
+    const headers = {
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      'Content-type': 'application/json'
+    };
+    let userEvent = new EventModel();
+    userEvent.id = +this.event.id;
+    userEvent.title = this.event.title;
+    userEvent.endDate = this.event.end;
+    userEvent.startDate = this.event.start;
+    userEvent.primaryColor = this.event.color.primary;
+    userEvent.secondaryColor = this.event.color.secondary;
+    if (reminder == "yes"){
+      userEvent.reminder = true;
+    } else {
+      userEvent.reminder = false;
+    }
+    switch (addOrEdit){
+      case "add":
+        return this.http.post('http://localhost:8080/addEvent', userEvent, {observe: 'response', headers}).subscribe(resData => {
+          this.events.push(event);
+          this.addedEvents.next(true);
+        });
+      case "edit":
+        return this.http.post('http://localhost:8080/editEvent', userEvent, {observe: 'response', headers}).subscribe(resData => {
+          let index = this.events.findIndex(event1 => event1.id == event.id);
+          this.events[index] = event;
+          this.addedEvents.next(true);
+        });
+    }
   }
 
-  editEvent(event : CalendarEvent){
-    let index = this.events.findIndex(oldEvent => oldEvent.id == event.id);
-    console.log(index)
-    this.events[index].title = event.title;
-    this.events[index].start = event.start;
-    this.events[index].end = event.end;
-    this.events[index].color = event.color;
-    this.addedEvents.next(true);
-  }
+
 
   deleteEvent(eventId: number){
     let index = this.events.findIndex(oldEvent => oldEvent.id == eventId);

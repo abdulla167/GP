@@ -19,7 +19,6 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {BabyMonitorComponent} from './profile/baby-monitor/baby-monitor.component';
-import {PostsComponent} from './profile/posts/posts.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
@@ -73,7 +72,6 @@ import {MatRadioModule} from "@angular/material/radio";
     LoadingSpinnerComponent,
     ProfileComponent,
     BabyMonitorComponent,
-    PostsComponent,
     TimelineComponent,
     CalendarComponent,
     TempChartComponent,

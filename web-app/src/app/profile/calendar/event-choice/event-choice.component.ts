@@ -4,6 +4,7 @@ import {EventsService} from "../../../services/events.service";
 import {addDays, endOfMonth, subDays} from "date-fns";
 import {CalendarEvent} from "angular-calendar";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {EventModel} from "../../../models/event.model";
 
 @Component({
   selector: 'app-event-choice',
@@ -14,6 +15,7 @@ export class EventChoiceComponent implements OnInit {
   date = new Date();
   event : CalendarEvent;
   actionType : string;
+  reminder : string = "no";
 
   constructor(public eventsService : EventsService,  public dialogRef : MatDialogRef<EventChoiceComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
@@ -26,18 +28,16 @@ export class EventChoiceComponent implements OnInit {
       id : this.eventsService.event.id
     }
     this.actionType = this.data.num;
-    console.log(this.actionType)
   }
 
 
   addEvent(){
-    console.log(this.event)
-    this.eventsService.addEvent(this.event);
+    this.eventsService.addOrEditEvent(this.event, this.reminder, "add");
     this.onClose();
   }
 
   editEvent(){
-    this.eventsService.editEvent(this.event);
+    this.eventsService.addOrEditEvent(this.event, this.reminder, "edit");
     this.onClose();
   }
 

@@ -24,14 +24,11 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.authService.login(username, password)
       .subscribe(( response) => {
-        console.log(response)
         if (response.status === 200 ){
-          // this.tokenService.saveToken(JSON.parse(JSON.stringify(response.body)).get('access_token'));
           this.tokenService.saveToken( response.body['access_token']);
           this.router.navigate(['/profile']);
         }
       }, resError => {
-        console.log(resError)
         this.error = resError;
       });
     this.isLoading = false;
