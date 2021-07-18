@@ -36,7 +36,6 @@ export class BabyMonitorComponent implements OnInit {
           switch (message){
             case "connected":
               this.updateDevice();
-              console.log("update system devices")
               break;
             case "disconnected":
               this.updateDevice();

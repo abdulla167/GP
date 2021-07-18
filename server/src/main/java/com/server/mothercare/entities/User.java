@@ -88,6 +88,9 @@ public class User implements Serializable {
     @Column(name = "additional_info")
     public boolean additionalInfo = false;
 
+    @Column(name ="num_of_events")
+    public Long numOfEvents = (long)0;
+
 
     @ElementCollection
     @CollectionTable(

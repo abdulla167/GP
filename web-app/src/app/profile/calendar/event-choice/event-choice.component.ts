@@ -20,24 +20,26 @@ export class EventChoiceComponent implements OnInit {
   constructor(public eventsService : EventsService,  public dialogRef : MatDialogRef<EventChoiceComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
-    this.event = {
-      color: this.eventsService.event.color,
-      end: this.eventsService.event.end,
-      start: this.eventsService.event.start,
-      title: this.eventsService.event.title,
-      id : this.eventsService.event.id
-    }
+    this.event= {
+      id : this.eventsService.event.id,
+      start : this.eventsService.event.start,
+      end : this.eventsService.event.end,
+      title : this.eventsService.event.title,
+      color : this.eventsService.event.color
+  }
     this.actionType = this.data.num;
   }
 
 
   addEvent(){
-    this.eventsService.addOrEditEvent(this.event, this.reminder, "add");
+    console.log("add event : " + this.event);
+    this.eventsService.addEvent(this.event, this.reminder);
     this.onClose();
   }
 
   editEvent(){
-    this.eventsService.addOrEditEvent(this.event, this.reminder, "edit");
+    console.log("edited event after:  " +this.event)
+    this.eventsService.editEvent(this.event);
     this.onClose();
   }
 

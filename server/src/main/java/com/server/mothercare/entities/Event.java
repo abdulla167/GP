@@ -16,7 +16,7 @@ public class Event {
     private Long id;
 
     @NotNull
-    @Column(name = "event_name")
+    @Column(name = "title")
     private String title;
 
     @NotNull

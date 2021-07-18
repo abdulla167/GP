@@ -37,7 +37,7 @@
                 {{theUser.username}}
               </p>
             </div>
-            <div class="col-6" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+            <div class="col-6" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" *ngIf="pregnancyAccomplishment != null">
               <p style="font-weight: bolder;font-size: xx-large;font-family: 'Apple Color Emoji';padding-bottom: 20px"> Pregnancy </p>
               <mat-progress-spinner
                 class="example-margin"
@@ -49,7 +49,6 @@
               </mat-progress-spinner>
               <p style="font-weight: bold; font-family: 'Apple Color Emoji'; font-size: x-large">{{pregnancyAccomplishment}}%</p>
             </div>
-
           </div>
           <br>
 

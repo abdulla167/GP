@@ -26,6 +26,7 @@ export class AdditionalInfoComponent implements OnInit {
     this.userInfo.haveChildren = false;
     this.userInfo.weight = 0;
     this.userInfo.height = 0;
+    this.userInfo.anemiaRate = 0;
     this.userInfo.childrenNum = 0;
     this.userInfo.pregnancyDate = null;
     this.userInfo.periodLength = 0;

@@ -48,6 +48,7 @@ public class RegistrationController {
             user.setPassword(this.encoder.encode(user.getPassword()));
             try {
                 var confirmationToken = confirm(user.getEmail(), user);
+                user.setNumOfEvents((long)0);
                 this.userService.registerUser(user);
                 this.confirmationTokenDAO.save(confirmationToken);
                 responseEntity = new ResponseEntity(user, HttpStatus.OK);

@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ViewChild,
   TemplateRef,
-  OnInit, ChangeDetectorRef
+  OnInit, ChangeDetectorRef, NgZone, Input, DoCheck
 } from '@angular/core';
 import {
   startOfDay,
@@ -55,6 +55,9 @@ export class CalendarComponent implements OnInit {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
+        console.log(event.id)
+        console.log(event.title)
+        console.log(event.color.primary)
         this.eventsService.populateEvent(event);
         const dialogConfig = {
           autoFocus : true,
@@ -76,11 +79,11 @@ export class CalendarComponent implements OnInit {
   ];
 
 
-  events: CalendarEvent[] ;
+  events: CalendarEvent[];
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal, private eventsService : EventsService, private dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef) {
+  constructor(private modal: NgbModal, private eventsService : EventsService, private dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef, private ngZone : NgZone) {
     this.events = this.eventsService.events;
     for ( let i = 0; i < this.events.length ; i++){
       this.events[i].actions = this.actions;
@@ -88,11 +91,12 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.events = this.eventsService.events;
-    this.eventsService.addedEvents.subscribe(() => {
-      this.events = this.eventsService.events;
+    this.events = [...this.eventsService.events];
+    this.eventsService.addedEvents.subscribe(value => {
+      console.log("notified")
+      this.events = [...this.eventsService.events];
       this.changeDetectorRef.detectChanges();
-    })
+    });
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -124,15 +128,16 @@ export class CalendarComponent implements OnInit {
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
+    this.editEvent('Dropped or resized', event);
   }
 
-  handleEvent(action: string, event: CalendarEvent): void {
+  editEvent(action: string, event: CalendarEvent): void {
+    console.log(event)
     this.eventsService.populateEvent(event);
     const dialogConfig = {
       autoFocus : true,
       data : {
-        num : 'edit'
+        num : action
       }
     };
     this.dialog.open(EventChoiceComponent, dialogConfig);
@@ -159,12 +164,5 @@ export class CalendarComponent implements OnInit {
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
   }
-
-  // configurePopUp(){
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.disableClose = true;
-  //   dialogConfig.autoFocus = true;
-  //   dialogConfig.width = '100%';
-  // }
 
 }

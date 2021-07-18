@@ -7,6 +7,7 @@ import com.server.mothercare.services.BabyMonitorService;
 import com.server.mothercare.services.NotificationService;
 import com.server.mothercare.services.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,8 +61,11 @@ public class UserController {
 
     @PostMapping("/addEvent")
     public ResponseEntity addEvent(@RequestBody Event event, Principal user){
+        log.error(event.getTitle());
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{
+            user1.numOfEvents++;
+            event.setId(user1.numOfEvents);
             user1.getEvents().add(event);
             this.userService.update(user1);
         });
@@ -72,12 +76,42 @@ public class UserController {
     public ResponseEntity editEvent(@RequestBody Event event, Principal user){
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{
-            var index = user1.getEvents().indexOf(event);
-            user1.getEvents().add(index, event);;
+            log.error("new event : " + event.getTitle() + "id" + String.valueOf(event.getId()));
+            log.error("new event : " + event.getPrimaryColor() + " " + event.getSecondaryColor());
+            for (var e :
+                    user1.getEvents()) {
+                log.warn("event : " + e.getTitle() + "id" + String.valueOf(e.getId()));
+
+                if (e.getId() == event.getId()){
+                    log.error("old event : " + e.getTitle());
+                    e.setTitle(event.getTitle());
+                    e.setReminder(event.isReminder());
+                    e.setPrimaryColor(event.getPrimaryColor());
+                    e.setSecondaryColor(event.getSecondaryColor());
+                    e.setTitle(event.getTitle());
+                    e.setStartDate(event.getStartDate());
+                    e.setEndDate(event.getEndDate());
+                }
+            }
             this.userService.update(user1);
         });
         return new ResponseEntity(event, HttpStatus.OK);
     }
+
+    @PostMapping("/deleteEvent")
+    public ResponseEntity deleteEvent(@RequestBody Event event, Principal user){
+        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
+        optionalUser.ifPresent(user1 ->{
+            for (var e :
+                    user1.getEvents()) {
+                user1.getEvents().removeIf(event1 -> event1.getId() == event.getId());
+            }
+            this.userService.update(user1);
+        });
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 
     @PostMapping("/addUserInfo")
     public ResponseEntity addUserInfo(@RequestBody String jsonString, Principal user){
@@ -88,9 +122,16 @@ public class UserController {
             user1.setHeight((float) jsonObject.getDouble("height"));
             user1.setHeight((float) jsonObject.getDouble("weight"));
             user1.setHeight((float) jsonObject.getDouble("anemiaRate"));
-            log.warn(jsonObject.getString("lastPeriodDate"));
-            user1.setLastPeriod(LocalDateTime.parse(jsonObject.getString("lastPeriodDate"), formatter));
-            user1.setPregnancyDate(LocalDateTime.parse(jsonObject.getString("pregnancyDate"), formatter));
+            try{
+                user1.setLastPeriod(LocalDateTime.parse(jsonObject.getString("lastPeriodDate"), formatter));
+            } catch (JSONException jsonException){
+                user1.setLastPeriod(null);
+            }
+            try {
+                user1.setPregnancyDate(LocalDateTime.parse(jsonObject.getString("pregnancyDate"), formatter));
+            } catch (JSONException jsonException){
+                user1.setPregnancyDate(null);
+            }
             user1.setPeriodLength(jsonObject.getInt("periodLength"));
             user1.setPregnant(jsonObject.getBoolean("pregnant"));
             user1.setHaveChildren(jsonObject.getBoolean("haveChildren"));

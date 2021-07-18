@@ -58,6 +58,7 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {MatRadioModule} from "@angular/material/radio";
 import { BlogDetailComponent } from './timeline/blog-list/blog/blog-detail/blog-detail.component';
 import { BlogNewTapComponent } from './timeline/blog-list/blog/blog-new-tap/blog-new-tap.component';
+import { LogoutComponent } from './auth/logout/logout.component';
 
 
 
@@ -88,7 +89,8 @@ import { BlogNewTapComponent } from './timeline/blog-list/blog/blog-new-tap/blog
     CreateBlogComponent,
     TextEditorComponent,
     BlogDetailComponent,
-    BlogNewTapComponent
+    BlogNewTapComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

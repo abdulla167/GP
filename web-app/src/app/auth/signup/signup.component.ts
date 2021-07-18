@@ -34,10 +34,8 @@ export class SignupComponent implements OnInit {
     }else {
       if (form.value.password === form.value.confirmPassword){
         this.invalidConfirmPassword = false;
-        let user = new User(form.value.firstName, form.value.lastName, form.value.username, this.defaultGender, form.value.password,
+        let user = new User(form.value.firstName, form.value.lastName, form.value.username,  form.value.password, this.defaultGender,
                             form.value.email,form.value.birthOfDate, form.value.phone);
-        // const theUser = {firstName : form.value.firstName, lastName : form.value.lastName, username: form.value.username,
-        //                 password: form.value.password, email: form.value.email, phone: form.value.phone};
         this.isLoading = true;
         this.authService.signup(user).subscribe(resData => {
           this.router.navigate(['/login']);

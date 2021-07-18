@@ -4,6 +4,10 @@ import {UserService} from "../services/user.service";
 import {User} from "../models/user.model";
 import {MatDialog} from "@angular/material/dialog";
 import {AdditionalInfoComponent} from "../auth/additional-info/additional-info.component";
+import {EventsService} from "../services/events.service";
+import {Router} from "@angular/router";
+import {TokenService} from "../services/Token.service";
+import {CalendarEvent} from "angular-calendar";
 
 @Component({
   selector: 'user-profile',
@@ -13,7 +17,7 @@ import {AdditionalInfoComponent} from "../auth/additional-info/additional-info.c
 })
 export class ProfileComponent implements  OnInit{
   mainPage : string = 'about';
-  pregnancyAccomplishment = 40;
+  pregnancyAccomplishment = null;
   theUser : User;
   profileImg : any = "../../assets/images/newimg2.jpeg";
   selectedFile: File;
@@ -22,7 +26,8 @@ export class ProfileComponent implements  OnInit{
   calender: any = [{name : 'First task', status : true}, {name : 'Second task', status : false}];
   tab : number = 0;
 
-  constructor(public userService :UserService, private dialog: MatDialog, ) {}
+  constructor(public userService :UserService, private dialog: MatDialog, private eventService : EventsService, private tokenService : TokenService, private router : Router)
+  {}
 
   updateProfileImg(event){
     if(!event.target.files[0] || event.target.files[0].length == 0) {
@@ -49,15 +54,46 @@ export class ProfileComponent implements  OnInit{
   }
 
   ngOnInit(): void {
+    if (this.tokenService.getToken() == null){
+      this.router.navigate(['/login']);
+      return;
+    }
     this.userService.getUser().subscribe(resp => {
       this.userService.theUser = resp.body;
+      for (let i in this.userService.theUser.events){
+        const color  = {
+          primary : this.userService.theUser.events[i].primaryColor,
+          secondary : this.userService.theUser.events[i].secondaryColor
+        }
+        const event : CalendarEvent = {
+          id : this.userService.theUser.events[i].id,
+          title : this.userService.theUser.events[i].title,
+          start : this.userService.theUser.events[i].startDate,
+          end : this.userService.theUser.events[i].endDate,
+          color : color,
+          draggable : true
+        }
+        this.eventService.events.push(event)
+        this.eventService.addedEvents.next(true);
+        console.log(i)
+      }
+      console.log(this.eventService.events);
       this.theUser = this.userService.theUser;
+      let pregnancyDate = this.userService.theUser.pregnancyDate;
       if (this.userService.theUser.additionalInfo == false){
         const dialogConfig = {
           autoFocus : true,
           disableClose : true
         };
         this.dialog.open(AdditionalInfoComponent, dialogConfig);
+      }
+      if (pregnancyDate != null){
+        let currentDate = new Date();
+        let dateOfPregnancy = new Date(pregnancyDate);
+        let dateOfbirth = new Date(dateOfPregnancy.getTime() + 23328000000);
+        let diff = Math.ceil(Math.abs((currentDate.getTime() - dateOfPregnancy.getTime())/ (1000 * 3600 * 24)));
+        let diff2 = Math.ceil(Math.abs( (dateOfbirth.getTime() - dateOfPregnancy.getTime()) / (1000 * 3600 * 24)));
+        this.pregnancyAccomplishment = Math.round((diff / diff2) * 100 * 100) / 100;
       }
     })
   }
