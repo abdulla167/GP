@@ -72,6 +72,7 @@ export class BlogComponent implements OnInit {
         if (response.status === 200) {
           this.userService.theUser = (response.body as User);
 
+
         }
       });
 
