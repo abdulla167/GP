@@ -1,4 +1,4 @@
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import {TokenService} from './Token.service';
@@ -14,6 +14,7 @@ export class BlogService{
   public blogSubject = new Subject<BlogModel[]>();
   blogs: BlogModel[] ;
   blogUpdateEvent: EventSource;
+  headers =  new HttpHeaders().set('Authorization', 'Bearer ' + this.tokenService.getToken());
 
   constructor(private http: HttpClient, private tokenService: TokenService, private userService: UserService) {
   }
@@ -29,40 +30,23 @@ export class BlogService{
 
   saveBlog(blog: BlogModel ){
     console.log(this.tokenService.getToken());
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
-      'Content-type': 'application/json'
-    };
+
     // tslint:disable-next-line:max-line-length
-    return this.http.post('http://localhost:8080/blog/save',
-      JSON.parse(JSON.stringify(blog)) ,
-      {observe: 'response', headers })
-      .subscribe((response) => {
-        if (response.status === 200) {
-          // this.addPost(new Post(stringify(post.get('text')), null, null, null));
-          console.log('Image uploaded successfully');
-        } else {
-          console.log('Image not uploaded successfully');
-        }
-      });
+    return this.http.post('http://localhost:8080/blog/save' ,blog , {observe: 'response', headers: this.headers });
   }
 
-  BlogsCount() {
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-    return this.http.get('\'http://localhost:8080/blog/count' , {observe: 'response', headers});
+  BlogsCount(user: string, category: string) {
+
+    return this.http.get('http://localhost:8080/blog/count/' + user + '/' + category , {observe: 'response', headers: this.headers});
   }
-  uploadBlogs(cycle: number){
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-    this.http.get('http://localhost:8080/blog/get/' + cycle, {observe: 'response', headers}).subscribe(
+  uploadBlogs(lastId: number,userName: string, category: string){
+
+    this.http.get('http://localhost:8080/blog/get/' + userName + '/' + category + '/' + lastId, {observe: 'response', headers: this.headers}).subscribe(
       (response) => {
         const blogs: BlogModel[] = (response.body as BlogModel[]);
         console.log('service', response.body);
         if ( isIterable(blogs)){
-          if (cycle === 0)
+          if (lastId !== 0)
           {
             for (const blog of blogs) {
               this.addBlog(blog);
@@ -79,77 +63,56 @@ export class BlogService{
 
   }
   saveComment(blohgId: number, comment: CommentModel){
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
+
     console.log('http://localhost:8080/comment' + blohgId);
-    return this.http.post('http://localhost:8080/comment/' + blohgId, comment, { observe: 'response', headers});
+    return this.http.post('http://localhost:8080/comment/' + blohgId, comment, { observe: 'response', headers: this.headers});
 
   }
 
   deleteBlog(id: number){
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-    return this.http.post('http://localhost:8080/blog/delete/' + id, null, {observe: 'response', headers}).subscribe((response) => {
+
+    return this.http.post('http://localhost:8080/blog/delete/' + id, null, {observe: 'response', headers: this.headers}).subscribe((response) => {
       if (response.status === 200){
         console.log(response.body);
       }
     });
   }
   saveCommentToComment(commentId: number, comment: CommentModel){
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-    return this.http.post('http://localhost:8080/commentToComment/' + commentId, comment, { observe: 'response', headers});
+
+    return this.http.post('http://localhost:8080/commentToComment/' + commentId, comment, { observe: 'response', headers: this.headers});
 
   }
   addLike(blogId: number){
 
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-
-    return this.http.post('http://localhost:8080/like/' + blogId, null, {observe: 'response', headers});
+    return this.http.post('http://localhost:8080/like/' + blogId, null, {observe: 'response', headers: this.headers});
   }
   deleteLike(likeId: number){
 
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-
-    return this.http.post('http://localhost:8080/like/delete/' + likeId, null, {observe: 'response', headers});
+    return this.http.post('http://localhost:8080/like/delete/' + likeId, null, {observe: 'response', headers: this.headers});
   }
 
   bommarkBlog(blogId: number) {
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-    return this.http.post('http://localhost:8080/blog/bommark/'+blogId, null, {observe: 'response', headers});
+
+    return this.http.post('http://localhost:8080/blog/bommark/'+blogId, null, {observe: 'response', headers: this.headers});
   }
 
   bommarks() {
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-    return this.http.post('http://localhost:8080/blog/bommark', null, {observe: 'response', headers});
+
+    return this.http.get('http://localhost:8080/blog/bommark', {observe: 'response', headers: this.headers});
   }
 
   likedBlogs(){
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-    return this.http.get('http://localhost:8080/liked_blogs', {observe: 'response', headers}).subscribe((response) => {
-      if (response.status === 200){
-        console.log(response.body);
-      }
-    });
+
+    return this.http.get('http://localhost:8080/liked_blogs', {observe: 'response', headers: this.headers});
+  }
+
+  myBlogs(){
+
+    return this.http.get('http://localhost:8080/blog/my_blogs', {observe: 'response', headers: this.headers});
   }
 
   getUpdates(){
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
+
     this.blogUpdateEvent = new EventSource('http://localhost:8080/blog/updates');
     // tslint:disable-next-line:typedef only-arrow-functions
     this.blogUpdateEvent.onmessage = function(e)
@@ -159,16 +122,9 @@ export class BlogService{
     };
   }
 
-  updateBlog(theBlog: BlogModel, index: number) {
-    const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
-    };
-    console.log(theBlog);
-    this.http.post('http://localhost:8080/blog/update/' + theBlog.id, theBlog, {observe: 'response', headers}).subscribe((response) => {
-      if (response.status === 200){
-        this.blogs[index] = (response.body as BlogModel);
-      }
-    });
+  updateBlog(theBlog: BlogModel) {
+
+    return this.http.post('http://localhost:8080/blog/update/' , theBlog, {observe: 'response', headers: this.headers});
   }
 
   private handleError(errResp: HttpErrorResponse) {

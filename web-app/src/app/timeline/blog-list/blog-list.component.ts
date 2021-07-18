@@ -11,36 +11,12 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./blog-list.component.css']
 })
 export class BlogListComponent implements OnInit {
-  breakpoint;
-  pageEvent: PageEvent;
-  totalLength: number = 0;
-  pageIndex: number = 0;
-  @Input() blogs: BlogModel[];
+
   @Input() savedBlogs: boolean = false;
-  constructor(private blogService: BlogService) { }
+  @Input() myBlogs: boolean = false;
+  constructor() { }
 
   ngOnInit() {
-    
-      this.blogService.blogSubject.subscribe((blogs) => {
-        this.blogs = this.blogService.getBlogs();
-        console.log(this.blogs.length);
-      });
-      this.blogService.uploadBlogs(1);
-    
-    this.breakpoint = (window.innerWidth - 150) > 400 ? (( (window.innerWidth - 150) / 370) - ((window.innerWidth - 150) % 370) / 370) : 1;
+
   }
-
-  onResize(event) {
-    this.breakpoint = (event.target.innerWidth - 150) > 400 ? (((event.target.innerWidth - 150) / 370) - ((event.target.innerWidth - 150) % 370) / 370) : 1;
-  }
-
-  getServerData(event: PageEvent){
-    // event.pageIndex
-    if (!this.savedBlogs){
-    this.blogService.uploadBlogs(0);
-    }
-    return event;
-  }
-
-
 }
