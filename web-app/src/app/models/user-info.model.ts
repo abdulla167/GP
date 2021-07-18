@@ -1,11 +1,11 @@
-export interface UserInfoModel{
+export class UserInfoModel{
   height : number;
   weight : number;
   anemiaRate : number;
   lastPeriodDate : Date;
   periodLength : number;
-  pregnant : string;
-  haveChildren : string;
+  pregnant : boolean;
+  haveChildren : boolean;
   pregnancyDate : Date;
   bloodType : string;
   childrenNum : number;

@@ -17,7 +17,7 @@
         <!--        <button mat-raised-button color="primary">Primary</button>-->
         Create Blog
       </mat-list-item>
-      <mat-list-item role="listitem" class="nav-list-item">
+      <mat-list-item role="listitem" class="nav-list-item" (click)="getSavedBlogs()">
         Saved Blogs
       </mat-list-item>
       <mat-list-item role="listitem" class="nav-list-item">
@@ -28,6 +28,6 @@
 
   <mat-drawer-content>
 
-    <app-blog-list></app-blog-list>
+    <app-blog-list [blogs]="blogs" [savedBlogs]="savedBlogs"></app-blog-list>
   </mat-drawer-content>
 </mat-drawer-container>

@@ -13,7 +13,11 @@
         <module name="mother-care" />
       </profile>
     </annotationProcessing>
+<<<<<<< HEAD
     <bytecodeTargetLevel target="15">
+=======
+    <bytecodeTargetLevel>
+>>>>>>> 3b89196b9afa72707dcedce3b65e01ba9563dd24
       <module name="mother-care" target="15" />
     </bytecodeTargetLevel>
   </component>

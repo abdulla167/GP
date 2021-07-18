@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {PostModel} from '../models/post.model';
-import {PostService} from '../services/post.service';
-import {Subject} from 'rxjs';
+import {BlogService} from '../services/Blog.service';
+import {BlogModel} from '../models/blog.model';
+import {TokenService} from "../services/Token.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-timeline',
@@ -9,15 +10,13 @@ import {Subject} from 'rxjs';
   styleUrls: ['./timeline.component.css']
 })
 export class TimelineComponent implements OnInit {
-  posts: PostModel[];
-  constructor(private postService: PostService) { }
+  constructor(private tokenSErvice :  TokenService, private router : Router) { }
 
   ngOnInit(): void {
-    this.postService.postsSubject.subscribe((posts) => {
-      this.posts = this.postService.getPosts();
-      console.log(this.posts.length);
-    });
-    this.postService.uploadPosts();
+    if (this.tokenSErvice.getToken() == null){
+      this.router.navigate(['/login']);
+      return;
+    }
   }
 
 }

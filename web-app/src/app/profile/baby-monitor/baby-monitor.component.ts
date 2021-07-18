@@ -3,11 +3,13 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {TempChartComponent} from './temp-chart/temp-chart.component';
 import {HeartRateChartComponent} from './heart-rate-chart/heart-rate-chart.component';
 import {RespirChartComponent} from './respir-chart/respir-chart.component';
-import {SensorsService} from "../../services/sensors-service";
+import {DeviceService} from "../../services/device-service";
 import {Observable, Subscription} from "rxjs";
 import {NotificationService} from "../../services/notification.service";
 import {DeviceModel} from "../../models/device.model";
 import {copyArrayItem} from "@angular/cdk/drag-drop";
+import {AdditionalInfoComponent} from "../../auth/additional-info/additional-info.component";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'baby-monitor',
@@ -22,7 +24,7 @@ export class BabyMonitorComponent implements OnInit {
   spo2Read = 0;
 
 
-  constructor(private dialog: MatDialog, private  sensorService: SensorsService, private notificationService: NotificationService, public zone: NgZone) {}
+  constructor(private dialog: MatDialog, private  sensorService: DeviceService, private notificationService: NotificationService, public zone: NgZone, private userService : UserService) {}
 
   ngOnInit() {
     this.updateDevice();
@@ -30,11 +32,10 @@ export class BabyMonitorComponent implements OnInit {
       if (data == true){
         while (this.notificationService.notifications.length > 0){
           let message = this.notificationService.notifications.pop();
-          console.log("" + message)
+          console.log(message)
           switch (message){
             case "connected":
               this.updateDevice();
-              console.log("update system devices")
               break;
             case "disconnected":
               this.updateDevice();
@@ -62,14 +63,13 @@ export class BabyMonitorComponent implements OnInit {
         this.devices.push(newDevice);
       }
       console.log(this.devices)
-    });;
+    });
     setTimeout(() =>{
       this.zone.run(() =>{
         let observables = this.sensorService.connectDevices();
         for (let observable in observables){
           let subscription = observables[observable].subscribe(data =>{
             let dataJson = JSON.parse(data)
-            console.log(dataJson)
             this.sensorService.monitoringDevices[observable].tempReads.tempRead.push(dataJson.tempRead.value);
             this.sensorService.monitoringDevices[observable].tempReads.readTime.push(dataJson.tempRead.time);
             this.tempRead = dataJson.tempRead.value;
@@ -84,7 +84,7 @@ export class BabyMonitorComponent implements OnInit {
           this.subscriptions.push(subscription);
         }
       })
-    }, 100);
+    }, 50);
     for (let device of this.sensorService.monitoringDevices){
       this.devices.push(device)
     }

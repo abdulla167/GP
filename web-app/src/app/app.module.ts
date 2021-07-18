@@ -19,7 +19,6 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {BabyMonitorComponent} from './profile/baby-monitor/baby-monitor.component';
-import {PostsComponent} from './profile/posts/posts.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
@@ -57,6 +56,9 @@ import {QuillModule} from 'ngx-quill';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatRadioModule} from "@angular/material/radio";
+import { BlogDetailComponent } from './timeline/blog-list/blog/blog-detail/blog-detail.component';
+import { BlogNewTapComponent } from './timeline/blog-list/blog/blog-new-tap/blog-new-tap.component';
+import { LogoutComponent } from './auth/logout/logout.component';
 
 
 
@@ -73,7 +75,6 @@ import {MatRadioModule} from "@angular/material/radio";
     LoadingSpinnerComponent,
     ProfileComponent,
     BabyMonitorComponent,
-    PostsComponent,
     TimelineComponent,
     CalendarComponent,
     TempChartComponent,
@@ -86,7 +87,10 @@ import {MatRadioModule} from "@angular/material/radio";
     BlogComponent,
     SideListComponent,
     CreateBlogComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    BlogDetailComponent,
+    BlogNewTapComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

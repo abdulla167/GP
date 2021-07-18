@@ -1,20 +1,26 @@
 
 <mat-card class="example-card">
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Shiba Inu</mat-card-title>
+    <div mat-card-avatar  class="example-header-image"></div>
+    <mat-card-title> {{blog.user.username}}</mat-card-title>
     <mat-card-subtitle>Dog Breed</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+  <img mat-card-image [src]="image"  width="200px" height="200px" alt="Photo of a Shiba Inu">
   <mat-card-content>
+    <h2>
+      {{ blog.title }}
+    </h2>
     <p>
-      The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-      A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-      bred for hunting.
+      {{ blog.description }}
     </p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button>LIKE</button>
-    <button mat-button>SHARE</button>
+    <mat-icon color="primary" *ngIf="likeIt" (click)="like(true)">favorite</mat-icon>
+    <mat-icon color="primary" *ngIf="!likeIt" (click)="like(false)">favorite_border</mat-icon>
+    <small> {{blog.likes.length }}</small>
+    <mat-icon color="primary" (click)="bommarkBlog()">save</mat-icon>
+
+    <button mat-raised-button color="primary" (click)="openDialog()" style="align-self: flex-end">more</button>
+
   </mat-card-actions>
 </mat-card>

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {SensorsService} from "../../../services/sensors-service";
+import {DeviceService} from "../../../services/device-service";
 import {Chart} from '../../../../../node_modules/chart.js';
 import {Subscription} from "rxjs";
 
@@ -65,7 +65,7 @@ export class RespirChartComponent implements OnInit {
     }
   };
 
-  constructor(private sensorService : SensorsService, public dialogRef: MatDialogRef<RespirChartComponent>,
+  constructor(private sensorService : DeviceService, public dialogRef: MatDialogRef<RespirChartComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {

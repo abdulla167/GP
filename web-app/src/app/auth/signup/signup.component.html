@@ -39,7 +39,7 @@
                 <div class="col">
                   <div class="form-group">
                     <label for="gender"> Gender</label>
-                    <select id="gender" class="form-control" [ngModel]="defaultGender" name="gender">
+                    <select id="gender" class="form-control" [ngModel]="defaultGender" name="gender" >
                       <option>Male</option>
                       <option> Female</option>
                     </select>
@@ -54,7 +54,7 @@
                     <input id="datepicker" name="datepicker" type="text"
                            placeholder="Datepicker"
                            class="form-control"
-                           bsDatepicker [bsConfig]="{ isAnimated: true }">
+                           bsDatepicker [bsConfig]="{ isAnimated: true }" ngModel name="birthOfDate">
                   </div>
                   <div class="col-1" style="padding-bottom: 10px">
                     <span> <i  class="fa fa-calendar fa-3x" aria-hidden="true"></i></span>
@@ -63,8 +63,13 @@
 
 
                 </div>
-
               </div>
+
+              <div class="form-group">
+                <label for="inputEmail"> Phone </label>
+                <input type="number" id="phone" class="form-control" placeholder="Phone" ngModel name="phone"  required autofocus #phone="ngModel">
+              </div>
+
               <div class="form-group">
                 <label for="inputEmail"> Email </label>
                 <input type="email" id="inputEmail" class="form-control" placeholder="Email" ngModel name="email"  required autofocus email #email="ngModel">
