@@ -59,6 +59,11 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {MatRadioModule} from "@angular/material/radio";
 import { BlogDetailComponent } from './timeline/blog-list/blog/blog-detail/blog-detail.component';
 import { BlogNewTapComponent } from './timeline/blog-list/blog/blog-new-tap/blog-new-tap.component';
+import { SavedBlogsComponent } from './timeline/blog-list/saved-blogs/saved-blogs.component';
+import { MyBlogsComponent } from './timeline/blog-list/my-blogs/my-blogs.component';
+import { AllBlogsComponent } from './timeline/blog-list/all-blogs/all-blogs.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 
@@ -90,7 +95,11 @@ import { BlogNewTapComponent } from './timeline/blog-list/blog/blog-new-tap/blog
     CreateBlogComponent,
     TextEditorComponent,
     BlogDetailComponent,
-    BlogNewTapComponent
+    BlogNewTapComponent,
+    SavedBlogsComponent,
+    MyBlogsComponent,
+    AllBlogsComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -132,6 +141,8 @@ import { BlogNewTapComponent } from './timeline/blog-list/blog/blog-new-tap/blog
     MatInputModule,
     MatStepperModule,
     MatPaginatorModule,
+    MatSnackBarModule,
+    MatMenuModule,
     QuillModule.forRoot(),
   ],
   providers: [],

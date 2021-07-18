@@ -55,11 +55,11 @@ public class TimelineController {
         return savedBlog != null? new ResponseEntity(savedBlog, HttpStatus.OK) : new ResponseEntity(savedBlog, HttpStatus.CONFLICT);
     }
 
-    @PostMapping(value = "/blog/update/{id}")
-    private ResponseEntity getBlogUpdates(@PathVariable int id,@RequestBody Blog theBlog,  Principal userPrincipal) {
+    @PostMapping(value = "/blog/update")
+    private ResponseEntity getBlogUpdates(@RequestBody Blog theBlog,  Principal userPrincipal) {
 
         User user= userService.userbyUserName(userPrincipal.getName());
-        Blog DBBlog = blogService.getBlogById(id);
+        Blog DBBlog = blogService.getBlogById(theBlog.getId());
 
         if (DBBlog.equals(null)){
             return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
@@ -69,9 +69,7 @@ public class TimelineController {
 
             return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
         }
-        theBlog.setId(id);
-        theBlog.setUser(user);
-        theBlog.setDate(new Timestamp(new Date().getTime()));
+
         blogService.update(theBlog);
         return new ResponseEntity(theBlog, HttpStatus.OK) ;
     }
@@ -108,19 +106,26 @@ public class TimelineController {
             return  saved  ? new ResponseEntity(theUser, HttpStatus.OK) : new ResponseEntity("\"Failure\"", HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping(value = "/blog/bommark")
+    @GetMapping(value = "/blog/bommark")
     private ResponseEntity bommarkBlog(  Principal userPrincipal){
             List<Blog> blogs = null;
             blogs = savedBlogService.userBommarks(userPrincipal.getName());
 
             return  blogs.equals(null)  ?  new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT) : new ResponseEntity(blogs, HttpStatus.OK) ;
-
     }
 
-    @GetMapping(value = "/blog/get/{first}")
-    private ResponseEntity getBlogs(@PathVariable int first){
+    @GetMapping(value = "/blog/my_blogs")
+    private ResponseEntity getUserBlogs(  Principal userPrincipal){
+            List<Blog> blogs = null;
+            blogs = blogService.getUserBlogs(userPrincipal.getName());
+
+            return  new ResponseEntity(blogs, HttpStatus.OK) ;
+    }
+
+    @GetMapping(value = "/blog/get/{user}/{category}/{first}")
+    private ResponseEntity getBlogs(@PathVariable int first, @PathVariable String user, @PathVariable String category){
         List<Blog> blogs = null;
-        blogs = blogService.getBlogs(first);
+        blogs = blogService.getBlogs(first, user, category);
         ResponseEntity response = blogs == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(blogs, HttpStatus.OK);
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -130,6 +135,11 @@ public class TimelineController {
             e.printStackTrace();
         }
         return response;
+    }
+    @GetMapping(value = "/blog/count/{user}/{category}")
+    private ResponseEntity getBlogs(@PathVariable String user, @PathVariable String category){
+        long count = blogService.blogsCount(user, category);
+        return new ResponseEntity(count, HttpStatus.OK);
     }
 
     @PostMapping(value = "/comment/{theId}")

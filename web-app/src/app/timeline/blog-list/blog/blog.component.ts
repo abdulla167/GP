@@ -41,7 +41,7 @@ export class BlogComponent implements OnInit {
     this.dialogRef = this.dialog.open(BlogDetailComponent);
     this.dialogRef.componentInstance.blog = this.blog;
     this.dialogRef.componentInstance.index = this.index;
-    this.dialogRef.componentInstance.dialogRef = this.dialogRef;
+    this.dialogRef.componentInstance.detailDialogRef = this.dialogRef;
     this.dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
@@ -74,6 +74,6 @@ export class BlogComponent implements OnInit {
 
         }
       });
-    
+
   }
 }

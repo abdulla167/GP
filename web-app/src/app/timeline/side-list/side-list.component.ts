@@ -15,11 +15,12 @@ export class SideListComponent implements OnInit {
   opened = true;
   showButton = false;
   alwaysOpened = true;
-  blogs: BlogModel[];
   savedBlogs: boolean = false;
+  myBlogs: boolean = false;
   constructor(public dialog: MatDialog, private blogService: BlogService) { }
 
   ngOnInit() {
+    this.getAllBlogs();
     const toggle = window.innerWidth  > 800 ? true : false;
     this.responsiveSideNav(toggle);
   }
@@ -61,11 +62,15 @@ export class SideListComponent implements OnInit {
 
   getSavedBlogs() {
     this.savedBlogs = true;
-    this.blogService.bommarks().subscribe((response) => {
-      if (response.status === 200) {
-        this.blogs = (response.body as BlogModel[]);
-      }
-    });
-    
+    this.myBlogs = false;
+  }
+  getMyBlogs() {
+    this.myBlogs = true;
+    this.savedBlogs = false;
+  }
+
+  getAllBlogs() {
+    this.savedBlogs = false;
+    this.myBlogs = false;
   }
 }
