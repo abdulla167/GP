@@ -20,7 +20,7 @@ export class SignupComponent implements OnInit {
   isLoading = false;
   error: string = null;
 
-  constructor(private dialog: MatDialog, private authService: AuthenticationService, private router: Router) {}
+  constructor(private authService: AuthenticationService, private router: Router) {}
 
 
 
@@ -34,17 +34,11 @@ export class SignupComponent implements OnInit {
     }else {
       if (form.value.password === form.value.confirmPassword){
         this.invalidConfirmPassword = false;
-        const theUser = {firstName : form.value.firstName, lastName : form.value.lastName, username: form.value.username,
-                        password: form.value.password, email: form.value.email, phone: form.value.phone};
+        let user = new User(form.value.firstName, form.value.lastName, form.value.username,  form.value.password, this.defaultGender,
+                            form.value.email,form.value.birthOfDate, form.value.phone);
         this.isLoading = true;
-        this.authService.signup(theUser).subscribe(resData => {
-          const dialogConfig = {
-            autoFocus : true,
-            disableClose : true
-
-          };
+        this.authService.signup(user).subscribe(resData => {
           this.router.navigate(['/login']);
-          this.dialog.open(AdditionalInfoComponent, dialogConfig);
           form.reset();
         }, resError => {
           this.error = resError;

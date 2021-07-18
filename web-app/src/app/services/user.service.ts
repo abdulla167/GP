@@ -9,10 +9,18 @@ import {throwError} from "rxjs";
 
 @Injectable({providedIn:"root"})
 export class UserService{
-  theuser : User = new User("Abdulla", "Elsayed","Abdulla167","male","abdullaelsayed167@yahoo.com"
-                              ,null, "01100661997");
 
-  constructor(private httpClient : HttpClient, private tokenService : TokenService) {
+  theUser : any;
+  constructor(private httpClient : HttpClient, private tokenService : TokenService) {}
+
+  getUser(){
+    const headers = {
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      'Content-type': 'application/json'
+    };
+    return this.httpClient.get('http://localhost:8080/getUser', {observe: 'response', headers}).pipe(
+      catchError(this.handleError)
+    );
   }
 
   saveProfileImg(selectedFile : File){
@@ -23,26 +31,24 @@ export class UserService{
 
   addUserInfo(userInfo: UserInfoModel){
     const headers = {
-      'Authorization': 'Basic ' + btoa('mothercare-webapp:6969'),
-      'Content-type': 'application/x-www-form-urlencoded'
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      'Content-type': 'application/json'
     };
-
-    return this.httpClient.post('http://localhost:8080/oauth/token', userInfo, {observe: 'response', headers}).pipe(
+    console.log("request sent")
+    return this.httpClient.post('http://localhost:8080/addUserInfo', userInfo, {observe: 'response', headers}).pipe(
       catchError(this.handleError)
     );
   }
 
-  getUser() {
+
+  skipUserInfo(){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken()
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      'Content-type': 'application/json'
     };
-    this.httpClient.get('http://localhost:8080/user',{observe: 'response',headers}).subscribe(( response) => {
-      if (response.status === 200 ){
-        this.theuser = ( JSON.parse(JSON.stringify(response.body)) as User);
-      } else {
-        this.getUser();
-      }
-    });
+    return this.httpClient.post('http://localhost:8080/skipUserInfo', {observe: 'response', headers}).pipe(
+      catchError(this.handleError)
+    );
   }
 
 
@@ -64,5 +70,4 @@ export class UserService{
     }
     return throwError(errorMessage);
   }
-
 }

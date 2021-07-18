@@ -15,7 +15,7 @@ interface SensorReads{
 @Injectable({
   providedIn : 'root'
 })
-export class SensorsService{
+export class DeviceService {
 
    public monitoringDevices : DeviceModel[] = [];
 

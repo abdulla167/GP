@@ -9,8 +9,7 @@ import {User} from "../../models/user.model";
   styleUrls: ['./user-info.component.css']
 })
 export class UserInfoComponent{
-  theUser : User;
+  theUser : User = new User("ahmed", "mohamed", "mido", "heis123456789", "male", "asfgzffdfgg", null, "01120090244");
   constructor(public userService : UserService) {
-    this.theUser = userService.theuser;
   }
 }

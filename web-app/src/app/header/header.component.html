@@ -21,7 +21,7 @@
       </div>
       <div>
         <img width="50" height="50" [src]="logoUrl">
-        <span><a style="font-size: larger;padding-top: 30px" [routerLink]="'/home'" class="title">{{companyTitle}}</a></span>
+        <span><a style="font-size: larger;padding-top: 30px" [routerLink]="''" class="title">{{companyTitle}}</a></span>
       </div>
 
       <div fxFlex fxLayout fxLayoutAlign="flex-start" fxLayoutGap="20px" fxHide.sm fxHide.xs style="margin-left: 40px" >
@@ -41,6 +41,7 @@
           <li *ngIf="tokenService.getToken() == null"><a mat-list-item (click)="sidenav.close()" [routerLink]="'/login'" style="font-size: large;font-weight: bold"> Login </a></li>
           <li *ngIf="tokenService.getToken() != null"><a mat-list-item (click)="sidenav.close()" [routerLink]="'/timeline'" style="font-size: large;font-weight: bold"> Timeline </a></li>
           <li *ngIf="tokenService.getToken() != null"><a mat-list-item (click)="sidenav.close()" [routerLink]="'/profile'" style="font-size: large;font-weight: bold"> Profile </a></li>
+          <li *ngIf="tokenService.getToken() != null"><a mat-list-item style="cursor: pointer" (click)="logout()"> <i class="fa fa-sign-out" aria-hidden="true"></i> </a></li>
         </ul>
       </div>
 

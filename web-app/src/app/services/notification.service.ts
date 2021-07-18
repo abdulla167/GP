@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn : "root"
@@ -7,11 +8,11 @@ import {Observable} from "rxjs";
 export class NotificationService{
   public notifications : string[] = [];
 
-  constructor() {}
+  constructor(private userService : UserService) {}
 
   subscribeForNotification(){
     return new Observable<boolean>(observer => {
-      const eventSource = new EventSource('http://localhost:8080/connect/abdo')
+      const eventSource = new EventSource('http://localhost:8080/connect/' + this.userService.theUser.username)
       eventSource.onmessage = event => {
         this.notifications.push(event.data);
         observer.next(true);

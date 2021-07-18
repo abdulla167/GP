@@ -19,7 +19,6 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {BabyMonitorComponent} from './profile/baby-monitor/baby-monitor.component';
-import {PostsComponent} from './profile/posts/posts.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
@@ -64,6 +63,7 @@ import { MyBlogsComponent } from './timeline/blog-list/my-blogs/my-blogs.compone
 import { AllBlogsComponent } from './timeline/blog-list/all-blogs/all-blogs.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
+import { LogoutComponent } from './auth/logout/logout.component';
 
 
 
@@ -80,7 +80,6 @@ import {MatMenuModule} from '@angular/material/menu';
     LoadingSpinnerComponent,
     ProfileComponent,
     BabyMonitorComponent,
-    PostsComponent,
     TimelineComponent,
     CalendarComponent,
     TempChartComponent,
@@ -99,7 +98,7 @@ import {MatMenuModule} from '@angular/material/menu';
     SavedBlogsComponent,
     MyBlogsComponent,
     AllBlogsComponent,
-
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

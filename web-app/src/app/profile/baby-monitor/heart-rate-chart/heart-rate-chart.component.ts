@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Chart} from '../../../../../node_modules/chart.js';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {SensorsService} from "../../../services/sensors-service";
+import {DeviceService} from "../../../services/device-service";
 import {Subscription} from "rxjs";
 
 
@@ -67,7 +67,7 @@ export class HeartRateChartComponent implements OnInit {
     }
   };
 
-  constructor(private sensorService : SensorsService, public dialogRef: MatDialogRef<HeartRateChartComponent>,
+  constructor(private sensorService : DeviceService, public dialogRef: MatDialogRef<HeartRateChartComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {

@@ -12,7 +12,7 @@ import {BlogDetailComponent} from './timeline/blog-list/blog/blog-detail/blog-de
 import {BlogNewTapComponent} from './timeline/blog-list/blog/blog-new-tap/blog-new-tap.component';
 
 const appRoutes: Routes = [
-  {path: 'home', component: HomeComponent},
+  {path: '', component: HomeComponent},
   {path : 'signup', component: SignupComponent},
   {path: 'login', component: LoginComponent},
   {path: 'bookdoctor', component: DoctorListComponent},
