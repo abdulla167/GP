@@ -121,6 +121,20 @@ export class BlogService{
     return this.http.post('http://localhost:8080/like/delete/' + likeId, null, {observe: 'response', headers});
   }
 
+  bommarkBlog(blogId: number) {
+    const headers = {
+      Authorization: 'Bearer ' + this.tokenService.getToken()
+    };
+    return this.http.post('http://localhost:8080/blog/bommark/'+blogId, null, {observe: 'response', headers});
+  }
+
+  bommarks() {
+    const headers = {
+      Authorization: 'Bearer ' + this.tokenService.getToken()
+    };
+    return this.http.post('http://localhost:8080/blog/bommark', null, {observe: 'response', headers});
+  }
+
   likedBlogs(){
     const headers = {
       Authorization: 'Bearer ' + this.tokenService.getToken()

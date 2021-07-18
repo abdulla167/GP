@@ -1,8 +1,11 @@
 package com.server.mothercare.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.kit.MonitoringDevice;
+import com.server.mothercare.entities.post.Blog;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +21,7 @@ import java.util.List;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "user_username", columnNames = {"username"})})
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

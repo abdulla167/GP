@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {UserInfoModel} from "./user-info.model";
 
+
 @Injectable({providedIn:"root"})
 export class User{
   public profileImg: any;
