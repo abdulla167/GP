@@ -93,7 +93,7 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
             this.deviceUsers.putIfAbsent(id, new ArrayList<>());
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.execute(()->{
-                TempRead tempRead = new TempRead(json.getDouble("tempRead"), new Date());
+                    TempRead tempRead = new TempRead(json.getDouble("tempRead"), new Date());
                 HeartRateRead heartRateRead = new HeartRateRead(json.getDouble("heartrateRead"), new Date());
                 SPO2Read spo2Read = new SPO2Read(json.getDouble("spo2Read"), new Date());
                 PositionRead positionRead = new PositionRead(json.getDouble("positionRead"), new Date());

@@ -46,6 +46,7 @@ public class User implements Serializable {
     private Date birthOfDate;
 
     @Column(name = "email")
+    @NotNull
     private String email;
 
     @Column(name = "phone")
