@@ -48,7 +48,7 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
         this.deviceDAO.findById(id).ifPresentOrElse(device -> {
             this.deviceUsers.putIfAbsent(id, new ArrayList<>());
             try {
-                log.error("loading...");
+                log.info("loading...");
                 this.notificationService.notifyConnectedDevice(device.getUser().getUserId(), "connected");
             } catch (IOException e) {
                 e.printStackTrace();

@@ -31,7 +31,7 @@ public class BabyMonitorController {
     @PostMapping("device/connect/{deviceId}")
     public void connectDevice(@PathVariable String deviceId){
         Long id = Long.valueOf(deviceId);
-        log.error("connect device : " + id);
+        log.info("connect device : " + id);
         this.babyMonitorService.connectDevice(id);
     }
 
@@ -62,7 +62,7 @@ public class BabyMonitorController {
     /* Device send to this endpoint to send sensors data to its subscribers */
     @PostMapping("device/push")
     public void sendData(@RequestBody String data){
-        log.error(data);
+        log.info(data);
         JSONObject json = new JSONObject(data);
         this.babyMonitorService.pushNewData(json);
     }

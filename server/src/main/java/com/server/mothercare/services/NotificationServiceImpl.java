@@ -17,10 +17,8 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     public void notifyConnectedDevice(Long id, String message) throws IOException {
-        log.error("send message to user with id : " + id);
-
         if (this.notificationList.containsKey(id)){
-            log.error("send message to user with id : " + id);
+            log.info("send message to user with id : " + id);
             this.notificationList.get(id).send(message);
         }
     }
