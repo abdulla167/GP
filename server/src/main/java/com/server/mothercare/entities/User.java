@@ -21,7 +21,6 @@ import java.util.List;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "user_username", columnNames = {"username"})})
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

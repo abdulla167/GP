@@ -4,6 +4,11 @@ import {BlogService} from '../../../../services/Blog.service';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateBlogComponent} from '../../../create-blog/create-blog.component';
+import {LikeModel} from '../../../../models/like.model';
+import {UserService} from '../../../../services/user.service';
+import {ImageModel} from '../../../../models/image.model';
+import {CommentModel} from '../../../../models/comment.model';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-blog-detail',
@@ -12,18 +17,37 @@ import {CreateBlogComponent} from '../../../create-blog/create-blog.component';
 })
 export class BlogDetailComponent implements OnInit {
   blog: BlogModel;
+  // tslint:disable-next-line:variable-name
   @Input() blog_: BlogModel = null;
-  @Input() newTap: boolean = false;
+  @Input() newTap = false;
   detailDialogRef;
   createDialogRef;
   index: number;
+  selectedFile: File;
+  likeIt = false;
+  likeIndex: number;
+  image;
   defaultImae = '../../assets/images/default.jpg';
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private userService: UserService,
+              private blogService: BlogService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     if (this.blog_ !== null){
       this.blog = this.blog_;
+    }
+    if (this.blog.user.profileImg === null) {
+      this.image = this.defaultImae;
+    } else {
+      const object = 'data:' + this.blog.user.profileImg.type + ';base64,' + this.blog.user.profileImg.picByte;
+      this.image = this.sanitizer.bypassSecurityTrustUrl(object);
+    }
+    for (const like of this.blog.likes) {
+      if (like.user.username === this.userService.theUser.username) {
+        this.likeIt = true;
+        this.likeIndex = this.blog.likes.indexOf(like);
+        break;
+      }
     }
   }
   closeDialog() {
@@ -41,5 +65,62 @@ export class BlogDetailComponent implements OnInit {
     });
   }
 
+  onFileChanged(event){
+    this.selectedFile = event.target.files[0];
+  }
 
+  saveComment(text: HTMLInputElement){
+
+    if (this.selectedFile != null) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // tslint:disable-next-line:one-variable-per-declaration
+        const array = new Uint8Array(e.target.result as ArrayBuffer),
+          image = this.selectedFile != null ? new ImageModel(0, this.selectedFile.name,
+            this.selectedFile.type, btoa(String.fromCharCode.apply(null, array))) : null;
+        const comment = new CommentModel(0, text.value, image, null, null, null);
+
+        this.blogService.saveComment(this.blog.id, comment).subscribe(response => {
+          if (response.status === 200) {
+            this.blog = response.body as BlogModel;
+            console.log(this.blog);
+          } else {
+            console.log('response', response.body);
+          }
+        });
+      };
+      reader.readAsArrayBuffer(this.selectedFile);
+    }else {
+      const comment = new CommentModel(0, text.value, null, null, null, null);
+
+      this.blogService.saveComment(this.blog.id, comment).subscribe(response => {
+        if (response.status === 200) {
+          this.blog = response.body as BlogModel;
+          console.log(this.blog);
+        } else {
+          console.log('response', response.body);
+        }
+      });
+    }
+  }
+
+  like(deleteLike: boolean){
+    if (deleteLike){
+      const likeId = this.blog.likes[this.likeIndex].id;
+      this.blogService.deleteLike(likeId).subscribe((response) => {
+        if (response.status === 200) {
+          this.likeIt = false;
+          this.blogService.blogs[this.index].likes.splice(this.likeIndex, 1);
+        }
+      });
+    } else {
+      this.blogService.addLike(this.blog.id).subscribe((response) => {
+        if (response.status === 200) {
+          this.likeIt = true;
+          this.likeIndex = this.blog.likes.length;
+          this.blogService.blogs[this.index].likes.push( response.body as LikeModel);
+        }
+      });
+    }
+  }
 }

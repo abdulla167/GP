@@ -84,6 +84,7 @@ export class CreateBlogComponent implements OnInit {
       return this.blogService.updateBlog(this.blogEdit).subscribe((response) => {
         if (response.status === 200){
           this.blogService.blogs[this.blogIndex] = (response.body as BlogModel);
+          this.dialogRef.close();
         }
       });
     } else {
@@ -94,6 +95,7 @@ export class CreateBlogComponent implements OnInit {
   }
   activateSnack(status){
     if (status === 200) {
+      this.dialogRef.close();
       this.snackBar.open('blog created suceesfully!!', 'ok', {
         duration: 2000,
         panelClass: ['green-snack']

@@ -54,7 +54,7 @@ export class SideListComponent implements OnInit {
 
   openDialog(){
    const dialogRef = this.dialog.open(CreateBlogComponent);
-
+   dialogRef.componentInstance.dialogRef = dialogRef;
    dialogRef.afterClosed().subscribe(result => {
      console.log(`Dialog result: ${result}`);
    });

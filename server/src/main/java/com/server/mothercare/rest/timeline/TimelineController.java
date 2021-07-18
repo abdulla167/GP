@@ -122,10 +122,10 @@ public class TimelineController {
             return  new ResponseEntity(blogs, HttpStatus.OK) ;
     }
 
-    @GetMapping(value = "/blog/get/{user}/{category}/{first}")
-    private ResponseEntity getBlogs(@PathVariable int first, @PathVariable String user, @PathVariable String category){
+    @GetMapping(value = "/blog/get/{user}/{category}/{lastId}")
+    private ResponseEntity getBlogs(@PathVariable int lastId, @PathVariable String user, @PathVariable String category){
         List<Blog> blogs = null;
-        blogs = blogService.getBlogs(first, user, category);
+        blogs = blogService.getBlogs(lastId, user, category);
         ResponseEntity response = blogs == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(blogs, HttpStatus.OK);
         ObjectMapper mapper = new ObjectMapper();
         try {

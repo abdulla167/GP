@@ -64,6 +64,7 @@ import { AllBlogsComponent } from './timeline/blog-list/all-blogs/all-blogs.comp
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
 import { LogoutComponent } from './auth/logout/logout.component';
+import { CommentComponent } from './timeline/blog-list/blog/blog-detail/comment/comment.component';
 
 
 
@@ -98,7 +99,8 @@ import { LogoutComponent } from './auth/logout/logout.component';
     SavedBlogsComponent,
     MyBlogsComponent,
     AllBlogsComponent,
-    LogoutComponent
+    LogoutComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,

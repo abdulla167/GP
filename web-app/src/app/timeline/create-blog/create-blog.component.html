@@ -36,7 +36,7 @@
     </mat-form-field>
   </p>
 
-  <quill-editor [styles]="{'min-height': '250px', 'max-height': '300px'}" [(ngModel)]="blogEdit.html" ></quill-editor>
+  <quill-editor [styles]="{'min-height': '250px', 'max-height': '300px'}" [(ngModel)]="blogEdit.html" name="quill" ></quill-editor>
 
   <p>
     <button mat-raised-button  color="primary" type="submit" [disabled]="!title.value|| !decription.value|| !file" (click)="submit(title.value, decription.value)" >create </button>

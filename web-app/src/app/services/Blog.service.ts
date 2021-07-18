@@ -39,14 +39,14 @@ export class BlogService{
 
     return this.http.get('http://localhost:8080/blog/count/' + user + '/' + category , {observe: 'response', headers: this.headers});
   }
-  uploadBlogs(cycle: number,userName: string, category: string){
+  uploadBlogs(lastId: number,userName: string, category: string){
 
-    this.http.get('http://localhost:8080/blog/get/' + userName + '/' + category + '/' + cycle, {observe: 'response', headers: this.headers}).subscribe(
+    this.http.get('http://localhost:8080/blog/get/' + userName + '/' + category + '/' + lastId, {observe: 'response', headers: this.headers}).subscribe(
       (response) => {
         const blogs: BlogModel[] = (response.body as BlogModel[]);
         console.log('service', response.body);
         if ( isIterable(blogs)){
-          if (cycle !== 0)
+          if (lastId !== 0)
           {
             for (const blog of blogs) {
               this.addBlog(blog);

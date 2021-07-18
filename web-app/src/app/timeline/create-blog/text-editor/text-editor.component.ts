@@ -36,6 +36,7 @@ export class TextEditorComponent implements OnInit {
         ['link', 'image', 'video']                         // link and image, video
       ],
       // imageSizes: true,
+      theme: 'snow'
     };
   }
 
