@@ -97,7 +97,7 @@ export class EventsService{
       Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
-    return this.http.post('http://localhost:8080/deleteEvent/{eventId}', {observe: 'response', headers}).subscribe(resData => {
+    return this.http.post('http://localhost:8080/deleteEvent/' + eventId, {observe: 'response', headers}).subscribe(resData => {
       let index = this.events.findIndex(oldEvent => oldEvent.id == eventId);
       this.events.splice(index, 1);
     });

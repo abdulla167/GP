@@ -70,10 +70,9 @@ export class BlogComponent implements OnInit {
     this.blogService.bommarkBlog(this.blog.id)
       .subscribe((response) => {
         if (response.status === 200) {
-          this.userService.theuser = (response.body as User);
-
+          this.userService.theUser = response.body as User;
         }
       });
-    
+
   }
 }
