@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @Slf4j
+
 public class UserController {
     private UserService userService;
     private BabyMonitorService babyMonitorService;
@@ -40,14 +41,23 @@ public class UserController {
         this.notificationService = notificationService;
     }
 
-    @GetMapping("/user")
-    public ResponseEntity getUserProfile(Principal userPrincipal){
-        User user= userService.userbyUserName(userPrincipal.getName());
-        return user != null? new ResponseEntity(user, HttpStatus.OK) : new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+
+    @GetMapping("/getUser")
+    public ResponseEntity getUser(Principal user){
+        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
+        ResponseEntity responseEntity = null;
+        var resultUser = optionalUser.get();
+        if (user != null){
+            responseEntity = new ResponseEntity(resultUser, HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        return responseEntity;
     }
 
     @GetMapping("/connect/{username}")
     public SseEmitter connect(@PathVariable String username){
+        log.warn("connected to server");
         User theUser = this.userService.userbyUserName(username);
         SseEmitter sseEmitter = new SseEmitter(-1L);
         sseEmitter.onError((error) -> {
@@ -57,61 +67,6 @@ public class UserController {
         this.notificationService.addUser(theUser.getUserId(), sseEmitter);
         return sseEmitter;
     }
-
-
-    @PostMapping("/addEvent")
-    public ResponseEntity addEvent(@RequestBody Event event, Principal user){
-        log.error(event.getTitle());
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        optionalUser.ifPresent(user1 ->{
-            user1.numOfEvents++;
-            event.setId(user1.numOfEvents);
-            user1.getEvents().add(event);
-            this.userService.update(user1);
-        });
-        return new ResponseEntity(event, HttpStatus.OK);
-    }
-
-    @PostMapping("/editEvent")
-    public ResponseEntity editEvent(@RequestBody Event event, Principal user){
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        optionalUser.ifPresent(user1 ->{
-            log.error("new event : " + event.getTitle() + "id" + String.valueOf(event.getId()));
-            log.error("new event : " + event.getPrimaryColor() + " " + event.getSecondaryColor());
-            for (var e :
-                    user1.getEvents()) {
-                log.warn("event : " + e.getTitle() + "id" + String.valueOf(e.getId()));
-
-                if (e.getId() == event.getId()){
-                    log.error("old event : " + e.getTitle());
-                    e.setTitle(event.getTitle());
-                    e.setReminder(event.isReminder());
-                    e.setPrimaryColor(event.getPrimaryColor());
-                    e.setSecondaryColor(event.getSecondaryColor());
-                    e.setTitle(event.getTitle());
-                    e.setStartDate(event.getStartDate());
-                    e.setEndDate(event.getEndDate());
-                }
-            }
-            this.userService.update(user1);
-        });
-        return new ResponseEntity(event, HttpStatus.OK);
-    }
-
-    @PostMapping("/deleteEvent")
-    public ResponseEntity deleteEvent(@RequestBody Event event, Principal user){
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        optionalUser.ifPresent(user1 ->{
-            for (var e :
-                    user1.getEvents()) {
-                user1.getEvents().removeIf(event1 -> event1.getId() == event.getId());
-            }
-            this.userService.update(user1);
-        });
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-
 
     @PostMapping("/addUserInfo")
     public ResponseEntity addUserInfo(@RequestBody String jsonString, Principal user){
@@ -153,48 +108,5 @@ public class UserController {
         });
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @GetMapping("/getUser")
-    public ResponseEntity getUser(Principal user){
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        ResponseEntity responseEntity = null;
-        var resultUser = optionalUser.get();
-        if (user != null){
-            responseEntity = new ResponseEntity(resultUser, HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity(HttpStatus.CONFLICT);
-        }
-        return responseEntity;
-    }
-
-    @PostMapping("/addDevice")
-    public ResponseEntity addDevice(@RequestBody String  jsonString, Principal user){
-        JSONObject jsonObject = new JSONObject(jsonString);
-        long deviceId = Long.valueOf(jsonObject.getLong("deviceId"));
-        String babyName = jsonObject.getString("babyName");
-        MonitoringDevice monitoringDevice = new MonitoringDevice();
-        monitoringDevice.setDeviceId(deviceId);
-        monitoringDevice.setBabyName(babyName);
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        optionalUser.ifPresent(user1 ->{
-            monitoringDevice.setUser(user1);
-            user1.getDevices().add(monitoringDevice);
-            this.babyMonitorService.addDevice(monitoringDevice);
-        });
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @GetMapping("/getDevices")
-    public ResponseEntity getUserDevices(Principal user){
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        User theUser = optionalUser.get();
-        List<MonitoringDevice> monitoringDeviceList = theUser.getDevices();
-        for (MonitoringDevice device :
-                monitoringDeviceList) {
-            log.error(device.getBabyName());
-        }
-        return new ResponseEntity(monitoringDeviceList, HttpStatus.OK);
-    }
-
 
 }

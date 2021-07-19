@@ -35,9 +35,7 @@ export class AuthenticationService{
       .set('username', username)
       .set('password', password)
       .set('grant_type', 'password');
-    return this.http.post('http://localhost:8080/oauth/token', body, {observe: 'response', headers}).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post('http://localhost:8080/oauth/token', body, {observe: 'response', headers}).pipe(catchError(this.handleError));
   }
 
   private handleError(errResp: HttpErrorResponse) {

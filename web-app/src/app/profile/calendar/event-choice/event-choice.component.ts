@@ -13,33 +13,38 @@ import {EventModel} from "../../../models/event.model";
 })
 export class EventChoiceComponent implements OnInit {
   date = new Date();
-  event : CalendarEvent;
+  event : EventModel = new EventModel();
   actionType : string;
   reminder : string = "no";
 
   constructor(public eventsService : EventsService,  public dialogRef : MatDialogRef<EventChoiceComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
-    this.event= {
-      id : this.eventsService.event.id,
-      start : this.eventsService.event.start,
-      end : this.eventsService.event.end,
-      title : this.eventsService.event.title,
-      color : this.eventsService.event.color
-  }
+    if (this.data.num == 'add'){
+      this.resetEvent();
+    } else {
+      this.event.startDate = this.eventsService.event.startDate;
+      this.event.endDate = this.eventsService.event.endDate;
+      this.event.id = +this.eventsService.event.id;
+      this.event.title = this.eventsService.event.title;
+      this.event.primaryColor = this.eventsService.event.primaryColor;
+      this.event.secondaryColor = this.eventsService.event.secondaryColor;
+      this.event.reminder = this.eventsService.event.reminder;
+      this.event.description = this.eventsService.event.description;
+      this.event.image = this.eventsService.event.image;
+    }
     this.actionType = this.data.num;
   }
 
 
   addEvent(){
-    console.log("add event : " + this.event);
+    console.log("add event : " + this.event.title);
     this.eventsService.addEvent(this.event, this.reminder);
     this.onClose();
   }
 
   editEvent(){
-    console.log("edited event after:  " +this.event)
-    this.eventsService.editEvent(this.event);
+    this.eventsService.editEvent(this.event, this.reminder);
     this.onClose();
   }
 
@@ -50,14 +55,16 @@ export class EventChoiceComponent implements OnInit {
 
   onClose(){
     this.dialogRef.close();
-    // this.resetEvent();
+    this.resetEvent();
   }
 
   resetEvent(){
-    this.event.title ='';
-    this.event.start = new Date();
-    this.event.end = new Date();
-    this.event.color.primary ='';
-    this.event.color.secondary='';
+    this.eventsService.event.title ='';
+    this.eventsService.event.startDate = new Date();
+    this.eventsService.event.endDate = new Date();
+    this.eventsService.event.primaryColor ='';
+    this.eventsService.event.secondaryColor='';
+    this.eventsService.event.description = '';
+    this.eventsService.event.image = null;
   }
 }

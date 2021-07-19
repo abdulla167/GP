@@ -9,10 +9,8 @@
         </div>
         <ul class="list-group" style="width: 90%; margin-top: 20px" *ngIf="tab == 0">
           <li class="list-group-item " style="font-weight: bold; font-size: x-large;color: #0062E6">Upcoming events <i class="fa fa-calendar fa-1x"></i></li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span><mat-checkbox></mat-checkbox></li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span><mat-checkbox></mat-checkbox></li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span><mat-checkbox></mat-checkbox></li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span><mat-checkbox></mat-checkbox></li>
+          <li *ngFor="let event of upcomingEvents" class="list-group-item text-right"><span class="pull-left"><strong>{{event.title}} </strong></span>{{event.description}}</li>
+
         </ul>
 
         <ul class="list-group" style="width: 90%; padding-top: 20px" *ngIf="tab == 1">

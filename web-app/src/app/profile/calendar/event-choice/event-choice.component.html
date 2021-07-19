@@ -3,8 +3,10 @@
     <thead>
     <tr>
       <th>Title</th>
+      <th>Description</th>
       <th>Primary color</th>
       <th>Secondary color</th>
+      <th>Memory time</th>
       <th>Starts at</th>
       <th>Ends at</th>
     </tr>
@@ -14,70 +16,79 @@
       <td>
         <div class="form-group">
           <mat-form-field appearance="outline" style="height: 50px;width: 240px">
-            <mat-label style="color: black">None </mat-label>
+            <mat-label style="color: black">Event type</mat-label>
             <mat-select [(ngModel)]="this.event.title">
               <mat-option value="Doctor visit"><i class="fa fa-user-md" aria-hidden="true" style="margin-right: 3px"></i> Doctor visit</mat-option>
               <mat-option value="Medication time"><i class="fa fa-medkit" aria-hidden="true" style="margin-right: 3px"></i> Medication time</mat-option>
-              <mat-option value="option3">Others</mat-option>
+              <mat-option value="Memory"><i class="fa fa-birthday-cake" aria-hidden="true"></i> Memory</mat-option>
+              <mat-option value="Others">Others</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </td>
       <td>
+        <div class="form-group" style="margin-top: 12px">
+          <input type="text" class="form-control" placeholder="Description"  [(ngModel)]="this.event.description"  autofocus>
+        </div>
+      </td>
+      <td>
         <input
           style="margin-top: 20px; margin-left: 20px"
-          [(ngModel)]="this.event.color.primary"
+          [(ngModel)]="this.event.primaryColor"
           type="color"
         />
       </td>
       <td>
         <input
           style="margin-top: 20px; margin-left: 20px"
-          [(ngModel)]="this.event.color.secondary"
+          [(ngModel)]="this.event.secondaryColor"
           type="color"
         />
       </td>
       <td>
-        <input
-          style="margin-top: 20px; margin-left: 20px"
-          class="form-control"
-          type="text"
-          mwlFlatpickr
-          [(ngModel)]="this.event.start"
-          [altInput]="true"
-          [convertModelValue]="true"
-          [enableTime]="true"
-          [enable]=" [
+        <div style="margin-top: 12px; width: 170px">
+          <input
+            style="width: 90px"
+            class="form-control"
+            type="text"
+            mwlFlatpickr
+            [(ngModel)]="this.event.startDate"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
+            [enable]=" [
             {
               from: '2000-04-01',
               to: '2500-05-01'
             }
           ]"
-          dateFormat="Y-m-dTH:i"
-          altFormat="F j, Y H:i"
-          placeholder="Not set"
-        />
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="Not set"
+          />
+        </div>
       </td>
       <td>
-        <input
-          style="margin-top: 20px; margin-left: 20px"
-          class="form-control"
-          type="text"
-          mwlFlatpickr
-          [(ngModel)]="this.event.end"
-          [altInput]="true"
-          [convertModelValue]="true"
-          [enableTime]="true"
-          [enable]=" [
+        <div style="margin-top: 12px; width: 170px">
+          <input
+            class="form-control"
+            type="text"
+            mwlFlatpickr
+            [(ngModel)]="this.event.endDate"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
+            [enable]=" [
             {
               from: '2000-04-01',
               to: '2500-05-01'
             }
           ]"
-          dateFormat="Y-m-dTH:i"
-          altFormat="F j, Y H:i"
-          placeholder="Not set"
-        />
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="Not set"
+          />
+        </div>
       </td>
 
     </tbody>
@@ -93,8 +104,10 @@
   </div>
 
   <div fxFlex></div>
-  <button mat-raised-button fxFlexAlign="end" color="primary" (click)="addEvent()" *ngIf="actionType == 'add'"> ADD</button>
+  <button mat-raised-button fxFlexAlign="end" color="primary" (click)="addEvent()" *ngIf="actionType == 'add'"> Add</button>
+  <button mat-raised-button fxFlexAlign="end" color="primary" (click)="onClose()" *ngIf="actionType == 'add'"> Cancel</button>
+
   <button mat-raised-button fxFlexAlign="end" color="primary" (click)="editEvent()" *ngIf="actionType == 'edit'"> Submit</button>
-  <button mat-icon-button fxFlexAlign="end" color="primary" (click)="deleteEvent()"> <mat-icon>delete</mat-icon></button>
+  <button mat-icon-button fxFlexAlign="end" color="primary" (click)="deleteEvent()" *ngIf="actionType == 'edit'"> <mat-icon>delete</mat-icon></button>
 
 </div>

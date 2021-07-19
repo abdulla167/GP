@@ -44,7 +44,7 @@ public class MonitoringDevice {
     private List<SPO2Read> spo2Reads;
 
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
 

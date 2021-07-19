@@ -34,4 +34,11 @@ public class Event {
 
     @Column(name = "reminder")
     private boolean reminder = false;
+
+    @Column(name = "description")
+    private String description;
+
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
 }

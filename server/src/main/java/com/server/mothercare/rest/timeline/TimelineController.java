@@ -4,6 +4,7 @@ package com.server.mothercare.rest.timeline;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.mothercare.entities.User;
+//import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.Comment;
 import com.server.mothercare.entities.post.Like;
@@ -49,8 +50,8 @@ public class TimelineController {
                                     Principal userPrincipal
     ){
         User user= userService.userbyUserName(userPrincipal.getName());
-        theBlog.setUser(user);
-        theBlog.setDate(new Timestamp(new Date().getTime()));
+//        theBlog.setUser(user);
+//        theBlog.setDate(new Timestamp(new Date().getTime()));
         Blog savedBlog = blogService.save(theBlog);
         return savedBlog != null? new ResponseEntity(savedBlog, HttpStatus.OK) : new ResponseEntity(savedBlog, HttpStatus.CONFLICT);
     }
@@ -65,13 +66,13 @@ public class TimelineController {
             return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
         }
 
-        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
-
-            return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
-        }
-        theBlog.setId(id);
-        theBlog.setUser(user);
-        theBlog.setDate(new Timestamp(new Date().getTime()));
+//        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
+//
+//            return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
+//        }
+//        theBlog.setId(id);
+//        theBlog.setUser(user);
+//        theBlog.setDate(new Timestamp(new Date().getTime()));
         blogService.update(theBlog);
         return new ResponseEntity(theBlog, HttpStatus.OK) ;
     }
@@ -86,9 +87,9 @@ public class TimelineController {
             return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
         }
 
-        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
-            return new ResponseEntity("\"FAILURE\"", HttpStatus.UNAUTHORIZED) ;
-        }
+//        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
+//            return new ResponseEntity("\"FAILURE\"", HttpStatus.UNAUTHORIZED) ;
+//        }
         blogService.deleteById(id);
 
         return new ResponseEntity("\"SUCCESS\"", HttpStatus.OK) ;
@@ -144,7 +145,7 @@ public class TimelineController {
         }else {
             theComment.setDate(new Timestamp(new Date().getTime()));
             theComment.setUser(user);
-            DbBlog.addComment(theComment);
+//            DbBlog.addComment(theComment);
             Blog blog = blogService.update(DbBlog);
             return  blog == null ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(blog, HttpStatus.OK);
         }
@@ -171,7 +172,7 @@ public class TimelineController {
         Like theLike = new Like();
         theLike.setUser(user);
         Blog DbBlog = blogService.getBlogById(blogId);
-        DbBlog.addLikes(theLike);
+//        DbBlog.addLikes(theLike);
         Blog blog = blogService.update(DbBlog);
         return blog== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(theLike, HttpStatus.OK);
     }

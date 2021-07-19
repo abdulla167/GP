@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
         if (response.status === 200 ){
           this.tokenService.saveToken( response.body['access_token']);
           this.userService.getUser();
-          console.log(this.tokenService.getToken());
           this.router.navigate(['/profile']);
         }
       }, resError => {

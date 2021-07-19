@@ -41,7 +41,7 @@ export class DeviceService {
       Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
-    return this.http.get('http://localhost:8080/getDevices',{observe: 'response', headers})
+    return this.http.get('http://localhost:8080/getDevices',{observe: 'response', headers});
   }
 
   connectDevices(){

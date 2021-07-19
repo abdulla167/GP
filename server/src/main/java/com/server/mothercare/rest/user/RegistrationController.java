@@ -47,30 +47,17 @@ public class RegistrationController {
         } catch (UsernameNotFoundException usernameNotFoundException){
             user.setPassword(this.encoder.encode(user.getPassword()));
             try {
-                var confirmationToken = confirm(user.getEmail(), user);
+                var confirmationToken = emailSenderService.confirm(user.getEmail(), user);
                 user.setNumOfEvents((long)0);
                 this.userService.registerUser(user);
                 this.confirmationTokenDAO.save(confirmationToken);
                 responseEntity = new ResponseEntity(user, HttpStatus.OK);
             } catch (Exception e){
-                log.warn(e.getMessage());
                 Error error = new Error("server_problem", "Server has a problem now try again later");
                 responseEntity = new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         return responseEntity;
-    }
-
-    private ConfirmationToken confirm(String email, User theUser) {
-        ConfirmationToken confirmationToken = new ConfirmationToken(theUser);
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(email);
-        mailMessage.setSubject("Complete Registration!");
-        mailMessage.setFrom("abdullaelsayed167@yahoo.com");
-        mailMessage.setText("To confirm your account, please click here : "
-                + "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken());
-        emailSenderService.sendEmail(mailMessage);
-        return confirmationToken;
     }
 
     @GetMapping("/confirm-account")
@@ -80,9 +67,6 @@ public class RegistrationController {
             User user = userService.userbyUserName(token.getUser().getUsername());
             user.setConfirmed(true);
             userService.update(user);
-            System.out.println("Success token");
-        } else {
-            System.out.println("Failure token");
-        }
+        } else {}
     }
 }
