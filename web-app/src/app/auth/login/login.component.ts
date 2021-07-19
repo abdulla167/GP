@@ -4,6 +4,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {TokenService} from "../../services/Token.service";
 import {Router} from "@angular/router";
 import {UserService} from '../../services/user.service';
+import {BlogService} from '../../services/Blog.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   isLoading:boolean = false;
   error : string;
 
-  constructor(private authService : AuthenticationService, private tokenService: TokenService, private router: Router, private userService: UserService) { }
+  constructor(private authService : AuthenticationService, private tokenService: TokenService, private router: Router, private userService: UserService, private blogService: BlogService) { }
 
   ngOnInit(): void {
   }
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit {
           this.userService.getUser();
           console.log(this.tokenService.getToken());
           this.router.navigate(['/profile']);
+          // this.blogService.getUpdates();
         }
       }, resError => {
         this.error = resError;

@@ -53,12 +53,20 @@ public class BlogServiceImpl implements BlogService{
     @Override
     @Transactional
     public List<Blog> getUserBlogs(String userName) {
+
         return blogRepository.getUserBlogs(userName);
     }
+
     @Override
     @Transactional
     public long blogsCount(String author, String category) {
         return blogRepository.blogsCount(author, category);
+    }
+
+    @Override
+    @Transactional
+    public List<Blog> getLikedBlogs(String userName) {
+        return blogRepository.getLikedBlogs(userName);
     }
 
 }

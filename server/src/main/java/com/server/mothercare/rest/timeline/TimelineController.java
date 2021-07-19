@@ -175,7 +175,7 @@ public class TimelineController {
     }
 
 
-    @PostMapping(value = "like/{blogId}")
+    @PostMapping(value = "/like/{blogId}")
     public ResponseEntity addLike(@PathVariable int blogId, Principal userPrincipal){
         User user= userService.userbyUserName(userPrincipal.getName());
         Like theLike = new Like();
@@ -186,7 +186,7 @@ public class TimelineController {
         return like== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(like, HttpStatus.OK);
     }
 
-    @PostMapping(value = "like/delete/{likeId}")
+    @PostMapping(value = "/like/delete/{likeId}")
     public ResponseEntity deleteLike(@PathVariable int likeId, Principal userPrincipal){
         User user= userService.userbyUserName(userPrincipal.getName());
         Like theLike = null;
@@ -213,12 +213,11 @@ public class TimelineController {
         System.out.println("in updates");
         return sseService.registerClient();
     }
-//    @GetMapping(value = "liked_posts")
-//    public ResponseEntity likedPosts(HttpServletRequest request){
-//        User user= userService.userbyUserName(request.getUserPrincipal().getName());
-//        List<Post> likedPosts = postService.likedPosts(user);
-//        return likedPosts != null? new ResponseEntity(likedPosts, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
-//    }
+    @GetMapping(value = "/blog/liked")
+    public ResponseEntity likedPosts(Principal userPrincipal){
+        List<Blog> likedBlogs = blogService.getLikedBlogs(userPrincipal.getName());
+        return likedBlogs != null? new ResponseEntity(likedBlogs, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+    }
 
     public static byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();

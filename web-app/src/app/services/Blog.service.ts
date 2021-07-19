@@ -13,10 +13,13 @@ import {BlogModel} from '../models/blog.model';
 export class BlogService{
   public blogSubject = new Subject<BlogModel[]>();
   blogs: BlogModel[] ;
-  blogUpdateEvent: EventSource;
-  headers =  new HttpHeaders().set('Authorization', 'Bearer ' + this.tokenService.getToken());
+  headers ;
 
   constructor(private http: HttpClient, private tokenService: TokenService, private userService: UserService) {
+    this.headers  =  {
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      'Content-type': 'application/json'
+    };
   }
   getBlogs() {
     return this.blogs.slice();
@@ -103,7 +106,7 @@ export class BlogService{
 
   likedBlogs(){
 
-    return this.http.get('http://localhost:8080/liked_blogs', {observe: 'response', headers: this.headers});
+    return this.http.get('http://localhost:8080/blog/liked', {observe: 'response', headers: this.headers});
   }
 
   myBlogs(){
@@ -113,18 +116,23 @@ export class BlogService{
 
   getUpdates(){
 
-    this.blogUpdateEvent = new EventSource('http://localhost:8080/blog/updates');
+    const eventSourceInitDict = {headers: {'Authorization': 'Bearer ' + this.tokenService.getToken()}};
+    const blogUpdateEvent = new EventSource('http://localhost:8080/blog/updates');
     // tslint:disable-next-line:typedef only-arrow-functions
-    this.blogUpdateEvent.onmessage = function(e)
+    blogUpdateEvent.onmessage = event => {
+      console.log('Message Received');
+      console.log(event);
+    }
+    blogUpdateEvent.onerror = error =>
     {
       console.log('Message Received');
-      console.log(JSON.parse(e.data));
+      console.log(error);
     };
   }
 
   updateBlog(theBlog: BlogModel) {
 
-    return this.http.post('http://localhost:8080/blog/update/' , theBlog, {observe: 'response', headers: this.headers});
+    return this.http.post('http://localhost:8080/blog/update' , theBlog, {observe: 'response', headers: this.headers});
   }
 
   private handleError(errResp: HttpErrorResponse) {

@@ -20,7 +20,7 @@ export class SavedBlogsComponent implements OnInit {
   constructor(private blogService: BlogService) { }
 
   ngOnInit(): void {
-    this.blogService.bommarks().subscribe((response) => {
+    this.blogService.likedBlogs().subscribe((response) => {
       if (response.status === 200) {
         this.allBlogs = (response.body as BlogModel[]);
         this.totalLength = this.allBlogs.length;

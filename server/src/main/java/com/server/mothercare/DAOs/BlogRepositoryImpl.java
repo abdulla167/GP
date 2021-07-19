@@ -113,4 +113,17 @@ public class BlogRepositoryImpl implements BlogRepositoryCustom {
         return count;
     }
 
+    @Override
+    public List<Blog> getLikedBlogs(String userName) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query theQuery = currentSession.createQuery(" blog from Likes where Likes.blog.user.username =:userName");
+        List<Blog> blogs = null;
+        try {
+            blogs = theQuery.setParameter("userName", userName).getResultList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return blogs;
+    }
+
 }

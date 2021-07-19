@@ -14,6 +14,7 @@ public interface BlogService {
     public List<Blog> getBlogs(int cycle, String author, String category);
     public Blog getBlogById(int theId);
     public List<Blog> getUserBlogs(String userName);
+    public List<Blog> getLikedBlogs(String userName);
     public long blogsCount(String author, String category);
 
 }

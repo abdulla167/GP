@@ -15,10 +15,10 @@
     </p>
   </mat-card-content>
   <mat-card-actions>
-    <mat-icon color="primary" *ngIf="likeIt" (click)="onLike(true)">favorite</mat-icon>
-    <mat-icon color="primary" *ngIf="!likeIt" (click)="onLike(false)">favorite_border</mat-icon>
+    <mat-icon class="click" color="primary" *ngIf="likeIt" (click)="onLike(true)">favorite</mat-icon>
+    <mat-icon class="click" color="primary" *ngIf="!likeIt" (click)="onLike(false)">favorite_border</mat-icon>
     <small> {{blog.likes.length }}</small>
-    <mat-icon color="primary" (click)="bommarkBlog()">save</mat-icon>
+    <mat-icon class="click" color="primary" (click)="bommarkBlog()">save</mat-icon>
 
     <button mat-raised-button color="primary" (click)="openDialog()" style="align-self: flex-end">more</button>
 
