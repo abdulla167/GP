@@ -57,7 +57,6 @@ public class UserController {
 
     @GetMapping("/connect/{username}")
     public SseEmitter connect(@PathVariable String username){
-        log.warn("connected to server");
         User theUser = this.userService.userbyUserName(username);
         SseEmitter sseEmitter = new SseEmitter(-1L);
         sseEmitter.onError((error) -> {
@@ -108,5 +107,4 @@ public class UserController {
         });
         return new ResponseEntity(HttpStatus.OK);
     }
-
 }

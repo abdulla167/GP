@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 import org.json.*;
 
@@ -34,12 +36,13 @@ public class BabyMonitorController {
     }
 
     /* Device send to this endpoint to connect to server*/
-    @PostMapping("device/connect")
-    public void connectDevice(@RequestBody String jsonString){
-        var jsonObject = new JSONObject(jsonString);
-        log.error("connect device : " + jsonObject.getLong("deviceId"));
-        this.babyMonitorService.connectDevice(jsonObject.getLong("deviceId"));
+    @PostMapping("device/connect/{deviceId}")
+    public void connectDevice(@PathVariable String deviceId){
+        Long id = Long.valueOf(deviceId);
+        log.info("connect device : " + id);
+        this.babyMonitorService.connectDevice(id);
     }
+
 
     /* Device send to this endpoint to disconnect with server */
     @PostMapping("device/disconnect")
@@ -67,6 +70,7 @@ public class BabyMonitorController {
     /* Device send to this endpoint to send sensors data to its subscribers */
     @PostMapping("device/push")
     public void sendData(@RequestBody String data){
+        log.info(data);
         JSONObject json = new JSONObject(data);
         this.babyMonitorService.pushNewData(json);
     }

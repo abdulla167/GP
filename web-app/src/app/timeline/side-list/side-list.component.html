@@ -17,10 +17,15 @@
         <!--        <button mat-raised-button color="primary">Primary</button>-->
         Create Blog
       </mat-list-item>
-      <mat-list-item role="listitem" class="nav-list-item" (click)="getSavedBlogs()">
+      <mat-list-item [ngClass]="{'back-ground': !savedBlogs && !myBlogs }"   role="listitem" class="nav-list-item" (click)="getAllBlogs()" >
+        All Blogs
+      </mat-list-item>
+
+      <mat-list-item [ngClass]="{'back-ground': savedBlogs === true }"   role="listitem" class="nav-list-item" (click)="getSavedBlogs()" >
         Saved Blogs
       </mat-list-item>
-      <mat-list-item role="listitem" class="nav-list-item">
+
+      <mat-list-item [ngClass]="{'back-ground': myBlogs === true }"role="listitem" class="nav-list-item" (click)="getMyBlogs()">
         My Blogs
       </mat-list-item>
     </mat-nav-list>
@@ -28,6 +33,6 @@
 
   <mat-drawer-content>
 
-    <app-blog-list [blogs]="blogs" [savedBlogs]="savedBlogs"></app-blog-list>
+    <app-blog-list  [savedBlogs]="savedBlogs" [myBlogs]="myBlogs" ></app-blog-list>
   </mat-drawer-content>
 </mat-drawer-container>

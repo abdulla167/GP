@@ -1,8 +1,5 @@
 import {Component, OnInit, Output} from '@angular/core';
-import Quill from 'quill';
-// import { ImageResize }  from 'quill-image-resize-module';
-//
-// Quill.register('modules/imageResize', ImageResize);
+
 @Component({
   selector: 'app-text-editor',
   templateUrl: './text-editor.component.html',
@@ -35,7 +32,7 @@ export class TextEditorComponent implements OnInit {
 
         ['link', 'image', 'video']                         // link and image, video
       ],
-      // imageSizes: true,
+      imageSizes: true,
     };
   }
 

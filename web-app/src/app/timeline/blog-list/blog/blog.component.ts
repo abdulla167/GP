@@ -20,7 +20,7 @@ export class BlogComponent implements OnInit {
   @Input() index: number;
   dialogRef;
   likeIt: boolean = false;
-  likeIndex: number;
+  like: LikeModel = null;
   defaultImae = '../../assets/images/default.jpg';
   image;
   constructor(private sanitizer: DomSanitizer, public dialog: MatDialog, private blogService: BlogService, private userService: UserService) { }
@@ -31,36 +31,46 @@ export class BlogComponent implements OnInit {
     for (const like of this.blog.likes) {
       if (like.user.username === this.userService.theUser.username) {
         this.likeIt = true;
-        this.likeIndex = this.blog.likes.indexOf(like);
+        this.like = like;
         break;
       }
     }
   }
 
   openDialog(){
-    this.dialogRef = this.dialog.open(BlogDetailComponent);
+    this.dialogRef = this.dialog.open(BlogDetailComponent, {
+      height: '90%',
+      width: '80%'
+    });
     this.dialogRef.componentInstance.blog = this.blog;
     this.dialogRef.componentInstance.index = this.index;
-    this.dialogRef.componentInstance.dialogRef = this.dialogRef;
+    this.dialogRef.componentInstance.detailDialogRef = this.dialogRef;
     this.dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
   }
-  like(deleteLike: boolean){
+  onLike(deleteLike: boolean){
     if(deleteLike){
-      const likeId = this.blog.likes[this.likeIndex].id;
-      this.blogService.deleteLike(likeId).subscribe((response) =>{
-        if (response.status === 200) {
-          this.likeIt = false;
-          this.blogService.blogs[this.index].likes.splice(this.likeIndex,1);
-        }
-      });
+
+      if (this.like !== null) {
+        this.blogService.deleteLike(this.like.id).subscribe((response) => {
+          if (response.status === 200) {
+            this.likeIt = false;
+            const likeIndex = this.blog.likes.indexOf(this.like);
+            this.blogService.blogs[this.index].likes.splice(likeIndex, 1);
+            this.blog = this.blogService.blogs[this.index];
+            this.like = null;
+          }
+        });
+      }
     } else {
       this.blogService.addLike(this.blog.id).subscribe((response) => {
         if (response.status === 200) {
           this.likeIt = true;
-          this.likeIndex = this.blog.likes.length;
-          this.blogService.blogs[this.index].likes.push( response.body as LikeModel);
+
+          this.like = response.body as LikeModel;
+          this.blogService.blogs[this.index].likes.push(this.like);
+          this.blog = this.blogService.blogs[this.index];
         }
       });
     }
@@ -70,7 +80,9 @@ export class BlogComponent implements OnInit {
     this.blogService.bommarkBlog(this.blog.id)
       .subscribe((response) => {
         if (response.status === 200) {
-          this.userService.theUser = response.body as User;
+          this.userService.theUser = (response.body as User);
+
+
         }
       });
 

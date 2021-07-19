@@ -4,7 +4,6 @@ package com.server.mothercare.rest.timeline;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.mothercare.entities.User;
-//import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.Comment;
 import com.server.mothercare.entities.post.Like;
@@ -50,29 +49,27 @@ public class TimelineController {
                                     Principal userPrincipal
     ){
         User user= userService.userbyUserName(userPrincipal.getName());
-//        theBlog.setUser(user);
-//        theBlog.setDate(new Timestamp(new Date().getTime()));
+        theBlog.setUser(user);
+        theBlog.setDate(new Timestamp(new Date().getTime()));
         Blog savedBlog = blogService.save(theBlog);
         return savedBlog != null? new ResponseEntity(savedBlog, HttpStatus.OK) : new ResponseEntity(savedBlog, HttpStatus.CONFLICT);
     }
 
-    @PostMapping(value = "/blog/update/{id}")
-    private ResponseEntity getBlogUpdates(@PathVariable int id,@RequestBody Blog theBlog,  Principal userPrincipal) {
+    @PostMapping(value = "/blog/update")
+    private ResponseEntity getBlogUpdates(@RequestBody Blog theBlog,  Principal userPrincipal) {
 
         User user= userService.userbyUserName(userPrincipal.getName());
-        Blog DBBlog = blogService.getBlogById(id);
+        Blog DBBlog = blogService.getBlogById(theBlog.getId());
 
         if (DBBlog.equals(null)){
             return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
         }
 
-//        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
-//
-//            return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
-//        }
-//        theBlog.setId(id);
-//        theBlog.setUser(user);
-//        theBlog.setDate(new Timestamp(new Date().getTime()));
+        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
+
+            return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
+        }
+
         blogService.update(theBlog);
         return new ResponseEntity(theBlog, HttpStatus.OK) ;
     }
@@ -87,9 +84,9 @@ public class TimelineController {
             return new ResponseEntity("\"FAILURE\"", HttpStatus.NOT_FOUND) ;
         }
 
-//        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
-//            return new ResponseEntity("\"FAILURE\"", HttpStatus.UNAUTHORIZED) ;
-//        }
+        if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
+            return new ResponseEntity("\"FAILURE\"", HttpStatus.UNAUTHORIZED) ;
+        }
         blogService.deleteById(id);
 
         return new ResponseEntity("\"SUCCESS\"", HttpStatus.OK) ;
@@ -109,19 +106,26 @@ public class TimelineController {
             return  saved  ? new ResponseEntity(theUser, HttpStatus.OK) : new ResponseEntity("\"Failure\"", HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping(value = "/blog/bommark")
+    @GetMapping(value = "/blog/bommark")
     private ResponseEntity bommarkBlog(  Principal userPrincipal){
-            List<Blog> blogs = null;
-            blogs = savedBlogService.userBommarks(userPrincipal.getName());
+        List<Blog> blogs = null;
+        blogs = savedBlogService.userBommarks(userPrincipal.getName());
 
-            return  blogs.equals(null)  ?  new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT) : new ResponseEntity(blogs, HttpStatus.OK) ;
-
+        return  blogs.equals(null)  ?  new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT) : new ResponseEntity(blogs, HttpStatus.OK) ;
     }
 
-    @GetMapping(value = "/blog/get/{first}")
-    private ResponseEntity getBlogs(@PathVariable int first){
+    @GetMapping(value = "/blog/my_blogs")
+    private ResponseEntity getUserBlogs(  Principal userPrincipal){
         List<Blog> blogs = null;
-        blogs = blogService.getBlogs(first);
+        blogs = blogService.getUserBlogs(userPrincipal.getName());
+
+        return  new ResponseEntity(blogs, HttpStatus.OK) ;
+    }
+
+    @GetMapping(value = "/blog/get/{user}/{category}/{lastId}")
+    private ResponseEntity getBlogs(@PathVariable int lastId, @PathVariable String user, @PathVariable String category){
+        List<Blog> blogs = null;
+        blogs = blogService.getBlogs(lastId, user, category);
         ResponseEntity response = blogs == null? new ResponseEntity("Failure", HttpStatus.NO_CONTENT): new ResponseEntity(blogs, HttpStatus.OK);
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -131,6 +135,11 @@ public class TimelineController {
             e.printStackTrace();
         }
         return response;
+    }
+    @GetMapping(value = "/blog/count/{author}/{category}")
+    private ResponseEntity getBlogs(@PathVariable String author, @PathVariable String category){
+        long count = blogService.blogsCount(author, category);
+        return new ResponseEntity(count, HttpStatus.OK);
     }
 
     @PostMapping(value = "/comment/{theId}")
@@ -145,7 +154,7 @@ public class TimelineController {
         }else {
             theComment.setDate(new Timestamp(new Date().getTime()));
             theComment.setUser(user);
-//            DbBlog.addComment(theComment);
+            DbBlog.addComment(theComment);
             Blog blog = blogService.update(DbBlog);
             return  blog == null ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(blog, HttpStatus.OK);
         }
@@ -172,9 +181,9 @@ public class TimelineController {
         Like theLike = new Like();
         theLike.setUser(user);
         Blog DbBlog = blogService.getBlogById(blogId);
-//        DbBlog.addLikes(theLike);
-        Blog blog = blogService.update(DbBlog);
-        return blog== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(theLike, HttpStatus.OK);
+        DbBlog.addLikes(theLike);
+        Like like = likeService.save(theLike);
+        return like== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(like, HttpStatus.OK);
     }
 
     @PostMapping(value = "like/delete/{likeId}")
@@ -182,7 +191,11 @@ public class TimelineController {
         User user= userService.userbyUserName(userPrincipal.getName());
         Like theLike = null;
         boolean deleted = false;
-        theLike = likeService.getLikeById(likeId).get();
+        System.out.println("----------------------delete blog"+likeId);
+        Optional<Like> like = likeService.getLikeById(likeId);
+        if(like.isPresent()){
+            theLike = like.get();
+        }
         if (theLike.equals(null)){
 
         }else {

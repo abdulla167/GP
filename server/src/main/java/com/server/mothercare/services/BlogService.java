@@ -11,8 +11,9 @@ public interface BlogService {
     public Blog save(Blog theBlog);
     public Blog update(Blog theBlog);
     public void deleteById(int theId);
-    public List<Blog> getBlogs(int cycle);
+    public List<Blog> getBlogs(int cycle, String author, String category);
     public Blog getBlogById(int theId);
-
+    public List<Blog> getUserBlogs(String userName);
+    public long blogsCount(String author, String category);
 
 }

@@ -36,8 +36,8 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     @Transactional
-    public List<Blog> getBlogs(int cycle) {
-        return blogRepository.getBlogs(cycle);
+    public List<Blog> getBlogs(int cycle, String user, String category) {
+        return blogRepository.getBlogs(cycle, user, category);
     }
 
     @Override
@@ -49,6 +49,16 @@ public class BlogServiceImpl implements BlogService{
             blog = output.get();
         }
         return  blog;
+    }
+    @Override
+    @Transactional
+    public List<Blog> getUserBlogs(String userName) {
+        return blogRepository.getUserBlogs(userName);
+    }
+    @Override
+    @Transactional
+    public long blogsCount(String author, String category) {
+        return blogRepository.blogsCount(author, category);
     }
 
 }
