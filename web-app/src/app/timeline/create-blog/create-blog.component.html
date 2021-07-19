@@ -41,7 +41,6 @@
     <quill-editor  [(ngModel)]="blogEdit.html" name="quill"  ></quill-editor>
 
   </div >
-
     <button mat-raised-button style="margin-top: 80px" color="primary" type="submit" [disabled]="!title.value|| !decription.value|| !file" (click)="submit(title.value, decription.value)" >create </button>
 
 
