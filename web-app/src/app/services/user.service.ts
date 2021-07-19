@@ -6,6 +6,7 @@ import {TokenService} from "./Token.service";
 import {catchError} from "rxjs/operators";
 import {UserInfoModel} from "../models/user-info.model";
 import {throwError} from "rxjs";
+import {BlogService} from './Blog.service';
 
 @Injectable({providedIn:"root"})
 export class UserService{
@@ -21,6 +22,7 @@ export class UserService{
     return this.httpClient.get('http://localhost:8080/getUser', {observe: 'response', headers}).pipe(
       catchError(this.handleError)
     );
+
   }
 
   saveProfileImg(selectedFile : File){

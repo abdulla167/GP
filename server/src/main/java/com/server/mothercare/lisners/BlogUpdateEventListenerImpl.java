@@ -22,13 +22,13 @@ public class BlogUpdateEventListenerImpl implements PostUpdateEventListener {
         final Object entity = postUpdateEvent.getEntity();
 
         if (entity instanceof Blog) {
-            sseService.process(entity, "Blog", "insert");
+            sseService.process(entity, "Blog", "update");
         }
         else if (entity instanceof Comment) {
-            sseService.process(entity, "Comment", "insert");
+            sseService.process(entity, "Comment", "update");
         }
         else if (entity instanceof Like) {
-            sseService.process(entity, "Like", "insert");
+            sseService.process(entity, "Like", "update");
         }
     }
 

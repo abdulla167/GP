@@ -19,7 +19,7 @@
       <mat-label>Select</mat-label>
       <mat-select [(value)]="category" (selectionChange)="categoryChanged($event.value)">
         <mat-option value="all">All</mat-option>
-        <mat-option *ngFor="let category of categoryList" value="category">{{category}}</mat-option>
+        <mat-option *ngFor="let category of categoryList" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

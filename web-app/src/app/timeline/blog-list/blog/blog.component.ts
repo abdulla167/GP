@@ -7,7 +7,6 @@ import {BlogDetailComponent} from './blog-detail/blog-detail.component';
 import {BlogService} from '../../../services/Blog.service';
 import {LikeModel} from '../../../models/like.model';
 import {UserService} from '../../../services/user.service';
-import { isThisSecond } from 'date-fns';
 import { User } from 'src/app/models/user.model';
 
 @Component({
@@ -28,13 +27,15 @@ export class BlogComponent implements OnInit {
   ngOnInit(): void {
     const object = 'data:' + this.blog.image.type + ';base64,' + this.blog.image.picByte;
     this.image = this.sanitizer.bypassSecurityTrustUrl(object);
+    console.log("from beginig",  this.userService.theUser.username);
     for (const like of this.blog.likes) {
-      if (like.user.username === this.userService.theUser.username) {
+      if (like.user.username ===  this.userService.theUser.username) {
         this.likeIt = true;
         this.like = like;
         break;
       }
     }
+    console.log("from beginig");
   }
 
   openDialog(){

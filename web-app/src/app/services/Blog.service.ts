@@ -16,10 +16,12 @@ export class BlogService{
   headers ;
 
   constructor(private http: HttpClient, private tokenService: TokenService, private userService: UserService) {
-    this.headers  =  {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
-      'Content-type': 'application/json'
-    };
+    this.tokenService.tokenSubject.subscribe(token => {
+      this.headers = {
+        Authorization: 'Bearer ' + this.tokenService.getToken()
+      };
+    });
+
   }
   getBlogs() {
     return this.blogs.slice();
@@ -43,7 +45,7 @@ export class BlogService{
     return this.http.get('http://localhost:8080/blog/count/' + user + '/' + category , {observe: 'response', headers: this.headers});
   }
   uploadBlogs(lastId: number, userName: string, category: string){
-
+    console.log(this.headers);
     this.http.get('http://localhost:8080/blog/get/' + userName + '/' + category + '/' + lastId, {observe: 'response', headers: this.headers}).subscribe(
       (response) => {
         const blogs: BlogModel[] = (response.body as BlogModel[]);
@@ -116,17 +118,17 @@ export class BlogService{
 
   getUpdates(){
 
-    const eventSourceInitDict = {headers: {'Authorization': 'Bearer ' + this.tokenService.getToken()}};
+    // const eventSourceInitDict = {headers: {'Authorization': 'Bearer ' + this.tokenService.getToken()}};
     const blogUpdateEvent = new EventSource('http://localhost:8080/blog/updates');
     // tslint:disable-next-line:typedef only-arrow-functions
     blogUpdateEvent.onmessage = event => {
       console.log('Message Received');
-      console.log(event);
-    }
+      console.log(event.data);
+    };
     blogUpdateEvent.onerror = error =>
     {
-      console.log('Message Received');
-      console.log(error);
+      console.log('error Received');
+      console.log(error.type);
     };
   }
 

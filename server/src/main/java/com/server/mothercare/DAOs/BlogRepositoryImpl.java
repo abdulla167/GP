@@ -1,6 +1,7 @@
 package com.server.mothercare.DAOs;
 
 import com.server.mothercare.entities.post.Blog;
+import com.server.mothercare.entities.post.Like;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -116,12 +118,17 @@ public class BlogRepositoryImpl implements BlogRepositoryCustom {
     @Override
     public List<Blog> getLikedBlogs(String userName) {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query theQuery = currentSession.createQuery(" blog from Likes where Likes.blog.user.username =:userName");
-        List<Blog> blogs = null;
-        try {
-            blogs = theQuery.setParameter("userName", userName).getResultList();
-        } catch (Exception e) {
+        List<Blog> blogs = new ArrayList<Blog>();
+        Query theQuery = currentSession.createQuery("from Likes where user.username=:userName");
+        try{
+            List<Like> likes = (List<Like>) theQuery.setParameter("userName",userName).getResultList();
+            for( Like like: likes ){
+                blogs.add(like.getBlog());
+            }
+
+        } catch (Exception e){
             System.out.println(e.getMessage());
+            blogs = null;
         }
         return blogs;
     }

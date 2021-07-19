@@ -15,7 +15,8 @@ export class LoginComponent implements OnInit {
   isLoading:boolean = false;
   error : string;
 
-  constructor(private authService : AuthenticationService, private tokenService: TokenService, private router: Router, private userService: UserService, private blogService: BlogService) { }
+  constructor(private authService : AuthenticationService, private tokenService: TokenService,
+              private router: Router, private userService: UserService, private blogService: BlogService) { }
 
   ngOnInit(): void {
   }
@@ -27,11 +28,13 @@ export class LoginComponent implements OnInit {
     this.authService.login(username, password)
       .subscribe(( response) => {
         if (response.status === 200 ){
+          console.log(response.body);
           this.tokenService.saveToken( response.body['access_token']);
-          this.userService.getUser();
-          console.log(this.tokenService.getToken());
+          this.userService.getUser().subscribe((response) => {
+            console.log(response.body);
+          });
           this.router.navigate(['/profile']);
-          // this.blogService.getUpdates();
+          this.blogService.getUpdates();
         }
       }, resError => {
         this.error = resError;

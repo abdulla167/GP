@@ -50,51 +50,55 @@ export class CalendarComponent implements OnInit {
     event: CalendarEvent;
   };
 
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        console.log(event.id)
-        console.log(event.title)
-        console.log(event.color.primary)
-        this.eventsService.populateEvent(event);
-        const dialogConfig = {
-          autoFocus : true,
-          data : {
-            num : 'edit'
-          }
-        };
-        this.dialog.open(EventChoiceComponent, dialogConfig);
-      },
-    },
-    {
-      label: '<i class="fas fa-fw fa-trash-alt"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.eventsService.events.filter((iEvent) => iEvent !== event);
-        this.changeDetectorRef.detectChanges();
-      },
-    },
-  ];
+  // actions: CalendarEventAction[] = [
+  //   {
+  //     label: '<i class="fas fa-fw fa-pencil-alt"></i>',
+  //     a11yLabel: 'Edit',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       console.log(event.id)
+  //       console.log(event.title)
+  //       console.log(event.color.primary)
+  //       this.eventsService.populateEvent(event);
+  //       const dialogConfig = {
+  //         autoFocus : true,
+  //         data : {
+  //           num : 'edit'
+  //         }
+  //       };
+  //       this.dialog.open(EventChoiceComponent, dialogConfig);
+  //     },
+  //   },
+  //   {
+  //     label: '<i class="fas fa-fw fa-trash-alt"></i>',
+  //     a11yLabel: 'Delete',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       this.events = this.eventsService.events.filter((iEvent) => iEvent.eventCalendar !== event).map(res => {
+  //         for (let event in res){
+  //
+  //         }
+  //       });
+  //       this.changeDetectorRef.detectChanges();
+  //     },
+  //   },
+  // ];
 
 
   events: CalendarEvent[];
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal, private eventsService : EventsService, private dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef, private ngZone : NgZone) {
-    this.events = this.eventsService.events;
-    for ( let i = 0; i < this.events.length ; i++){
-      this.events[i].actions = this.actions;
-    }
-  }
+  constructor(private modal: NgbModal, private eventsService : EventsService, private dialog: MatDialog,
+              private changeDetectorRef: ChangeDetectorRef, private ngZone : NgZone) {}
 
   ngOnInit(): void {
-    this.events = [...this.eventsService.events];
+    this.eventsService.getEvents().subscribe(resp => {
+      this.events = [];
+      this.events = [...this.eventsService.eventsCalendar];
+      this.changeDetectorRef.detectChanges();
+    })
     this.eventsService.addedEvents.subscribe(value => {
       console.log("notified")
-      this.events = [...this.eventsService.events];
+      this.events = [...this.eventsService.eventsCalendar];
       this.changeDetectorRef.detectChanges();
     });
   }
@@ -132,7 +136,6 @@ export class CalendarComponent implements OnInit {
   }
 
   editEvent(action: string, event: CalendarEvent): void {
-    console.log(event)
     this.eventsService.populateEvent(event);
     const dialogConfig = {
       autoFocus : true,

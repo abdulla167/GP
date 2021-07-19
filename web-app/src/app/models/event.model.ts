@@ -6,4 +6,6 @@ export class EventModel{
   primaryColor : string;
   secondaryColor : string;
   reminder : boolean;
+  description : string;
+  image : any;
 }
