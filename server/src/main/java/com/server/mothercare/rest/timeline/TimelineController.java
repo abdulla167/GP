@@ -136,9 +136,9 @@ public class TimelineController {
         }
         return response;
     }
-    @GetMapping(value = "/blog/count/{user}/{category}")
-    private ResponseEntity getBlogs(@PathVariable String user, @PathVariable String category){
-        long count = blogService.blogsCount(user, category);
+    @GetMapping(value = "/blog/count/{author}/{category}")
+    private ResponseEntity getBlogs(@PathVariable String author, @PathVariable String category){
+        long count = blogService.blogsCount(author, category);
         return new ResponseEntity(count, HttpStatus.OK);
     }
 
@@ -182,8 +182,8 @@ public class TimelineController {
         theLike.setUser(user);
         Blog DbBlog = blogService.getBlogById(blogId);
         DbBlog.addLikes(theLike);
-        Blog blog = blogService.update(DbBlog);
-        return blog== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(theLike, HttpStatus.OK);
+        Like like = likeService.save(theLike);
+        return like== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(like, HttpStatus.OK);
     }
 
     @PostMapping(value = "like/delete/{likeId}")
@@ -191,7 +191,11 @@ public class TimelineController {
         User user= userService.userbyUserName(userPrincipal.getName());
         Like theLike = null;
         boolean deleted = false;
-        theLike = likeService.getLikeById(likeId).get();
+        System.out.println("----------------------delete blog"+likeId);
+        Optional<Like> like = likeService.getLikeById(likeId);
+        if(like.isPresent()){
+            theLike = like.get();
+        }
         if (theLike.equals(null)){
 
         }else {

@@ -57,8 +57,8 @@ public class BlogServiceImpl implements BlogService{
     }
     @Override
     @Transactional
-    public long blogsCount(String userName, String category) {
-        return blogRepository.blogsCount(userName, category);
+    public long blogsCount(String author, String category) {
+        return blogRepository.blogsCount(author, category);
     }
 
 }

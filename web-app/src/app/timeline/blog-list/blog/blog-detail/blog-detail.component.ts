@@ -25,7 +25,7 @@ export class BlogDetailComponent implements OnInit {
   index: number;
   selectedFile: File;
   likeIt = false;
-  likeIndex: number;
+  like: LikeModel = null;
   image;
   defaultImae = '../../assets/images/default.jpg';
 
@@ -45,7 +45,7 @@ export class BlogDetailComponent implements OnInit {
     for (const like of this.blog.likes) {
       if (like.user.username === this.userService.theUser.username) {
         this.likeIt = true;
-        this.likeIndex = this.blog.likes.indexOf(like);
+        this.like = like;
         break;
       }
     }
@@ -56,7 +56,11 @@ export class BlogDetailComponent implements OnInit {
 
   openDialogCreate(){
     this.detailDialogRef.close();
-    this.createDialogRef = this.dialog.open(CreateBlogComponent);
+    this.createDialogRef = this.dialog.open(CreateBlogComponent, {
+      height: '90%',
+      width: '80%'
+    });
+
     this.createDialogRef.componentInstance.blogEdit = this.blog;
     this.createDialogRef.componentInstance.editBlog = true;
     this.createDialogRef.componentInstance.dialogRef = this.createDialogRef;
@@ -104,21 +108,23 @@ export class BlogDetailComponent implements OnInit {
     }
   }
 
-  like(deleteLike: boolean){
+  onLike(deleteLike: boolean){
     if (deleteLike){
-      const likeId = this.blog.likes[this.likeIndex].id;
-      this.blogService.deleteLike(likeId).subscribe((response) => {
+      this.blogService.deleteLike(this.like.id).subscribe((response) => {
         if (response.status === 200) {
           this.likeIt = false;
-          this.blogService.blogs[this.index].likes.splice(this.likeIndex, 1);
+          const likeIndex = this.blog.likes.indexOf(this.like);
+          this.blogService.blogs[this.index].likes.splice(likeIndex, 1);
+          this.blog = this.blogService.blogs[this.index];
         }
       });
     } else {
       this.blogService.addLike(this.blog.id).subscribe((response) => {
         if (response.status === 200) {
           this.likeIt = true;
-          this.likeIndex = this.blog.likes.length;
+          this.like =  response.body as LikeModel;
           this.blogService.blogs[this.index].likes.push( response.body as LikeModel);
+          this.blog = this.blogService.blogs[this.index];
         }
       });
     }

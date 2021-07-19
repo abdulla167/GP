@@ -39,7 +39,7 @@ export class BlogService{
 
     return this.http.get('http://localhost:8080/blog/count/' + user + '/' + category , {observe: 'response', headers: this.headers});
   }
-  uploadBlogs(lastId: number,userName: string, category: string){
+  uploadBlogs(lastId: number, userName: string, category: string){
 
     this.http.get('http://localhost:8080/blog/get/' + userName + '/' + category + '/' + lastId, {observe: 'response', headers: this.headers}).subscribe(
       (response) => {
@@ -93,7 +93,7 @@ export class BlogService{
 
   bommarkBlog(blogId: number) {
 
-    return this.http.post('http://localhost:8080/blog/bommark/'+blogId, null, {observe: 'response', headers: this.headers});
+    return this.http.post('http://localhost:8080/blog/bommark/' + blogId, null, {observe: 'response', headers: this.headers});
   }
 
   bommarks() {

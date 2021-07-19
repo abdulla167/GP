@@ -16,19 +16,19 @@ public class BlogRepositoryImpl implements BlogRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<Blog> getBlogs(int currentId, String userName, String category) {
+    public List<Blog> getBlogs(int currentId, String author, String category) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         List<Blog> blogs = null;
         System.out.println("here " );
         Query theQuery;
         if (currentId == 0){
-            if ( userName.equals("mother-care")){
+            if ( author.equals("mother-care")){
                 if(category.equals("all")) {
-                    theQuery = currentSession.createQuery("from Blog where user.username=:userName ORDER BY id DESC ")
-                            .setParameter("userName",userName);
+                    theQuery = currentSession.createQuery("from Blog where user.username=:author ORDER BY id DESC ")
+                            .setParameter("author",author);
                 } else {
-                    theQuery = currentSession.createQuery("from Blog where (user.username=:userName and categories LIKE:category )ORDER BY id DESC ")
-                            .setParameter("userName",userName).setParameter("category", "%"+ category+"%");
+                    theQuery = currentSession.createQuery("from Blog where (user.username=:author and categories LIKE:category )ORDER BY id DESC ")
+                            .setParameter("author",author).setParameter("category", "%"+ category+"%");
                 }
             } else {
                 if (category.equals("all")) {
@@ -40,14 +40,14 @@ public class BlogRepositoryImpl implements BlogRepositoryCustom {
             }
 
         } else {
-            if ( userName.equals("mother-care")){
+            if ( author.equals("mother-care")){
                  if (category.equals("all")) {
-                     theQuery = currentSession.createQuery("from Blog where (id<:currentId and user.username=:userName) ORDER BY id DESC ")
-                             .setParameter("currentId",currentId).setParameter("userName",userName);
+                     theQuery = currentSession.createQuery("from Blog where (id<:currentId and user.username=:author) ORDER BY id DESC ")
+                             .setParameter("currentId",currentId).setParameter("author",author);
                  } else {
-                     theQuery = currentSession.createQuery("from Blog where (id<:currentId and user.username=:userName and categories LIKE:category)" +
+                     theQuery = currentSession.createQuery("from Blog where (id<:currentId and user.username=:author and categories LIKE:category)" +
                              " ORDER BY id DESC ").setParameter("currentId", currentId).setParameter("category", "%"+ category+"%")
-                             .setParameter("userName", userName);
+                             .setParameter("author", author);
                  }
 
             } else {
@@ -71,12 +71,12 @@ public class BlogRepositoryImpl implements BlogRepositoryCustom {
     }
 
     @Override
-    public List<Blog> getUserBlogs(String userName) {
+    public List<Blog> getUserBlogs(String author) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         List<Blog> blogs = null;
-        Query theQuery = currentSession.createQuery("from Blog  where user.username=:userName");
+        Query theQuery = currentSession.createQuery("from Blog  where user.username=:author");
         try{
-            blogs = theQuery.setParameter("userName", userName).getResultList();
+            blogs = theQuery.setParameter("author", author).getResultList();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -84,17 +84,17 @@ public class BlogRepositoryImpl implements BlogRepositoryCustom {
     }
 
     @Override
-    public long blogsCount(String userNmae, String category) {
+    public long blogsCount(String author, String category) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         long count = 0;
         Query theQuery;
-        if (userNmae.equals("mother-care")) {
+        if (author.equals("mother-care")) {
             if (category.equals("all")) {
-                theQuery = currentSession.createQuery("select count(*) from Blog where user.username =: userNmae")
-                        .setParameter("userNmae", userNmae);
+                theQuery = currentSession.createQuery("select count(*) from Blog where user.username =: author")
+                        .setParameter("author", author);
             } else {
-                theQuery = currentSession.createQuery("select count(*) from Blog where user.username =: userNmae and categories LIKE:category").
-                        setParameter("userNmae", userNmae).setParameter("category", "%" + category + "%");
+                theQuery = currentSession.createQuery("select count(*) from Blog where user.username =: author and categories LIKE:category").
+                        setParameter("author", author).setParameter("category", "%" + category + "%");
             }
         } else {
             if (category.equals("all")) {

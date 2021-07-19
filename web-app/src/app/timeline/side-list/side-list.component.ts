@@ -53,7 +53,10 @@ export class SideListComponent implements OnInit {
   }
 
   openDialog(){
-   const dialogRef = this.dialog.open(CreateBlogComponent);
+   const dialogRef = this.dialog.open(CreateBlogComponent, {
+     height: '90%',
+     width: '80%'
+   });
    dialogRef.componentInstance.dialogRef = dialogRef;
    dialogRef.afterClosed().subscribe(result => {
      console.log(`Dialog result: ${result}`);

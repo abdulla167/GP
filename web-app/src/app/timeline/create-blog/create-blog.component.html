@@ -1,4 +1,5 @@
-<form class="example-form" width = "1000px" #form="ngForm" (window:resize)="onResize($event)">
+<form class="example-form" width = "1000px"  #form="ngForm" (window:resize)="onResize($event)">
+
 
   <p>
     <mat-form-field  class="example-full-width"  appearance="legacy">
@@ -36,9 +37,12 @@
     </mat-form-field>
   </p>
 
-  <quill-editor [styles]="{'min-height': '250px', 'max-height': '300px'}" [(ngModel)]="blogEdit.html" name="quill" ></quill-editor>
+  <div style="height: 250px; margin: 5px; display: block">
+    <quill-editor  [(ngModel)]="blogEdit.html" name="quill"  ></quill-editor>
 
-  <p>
-    <button mat-raised-button  color="primary" type="submit" [disabled]="!title.value|| !decription.value|| !file" (click)="submit(title.value, decription.value)" >create </button>
-  </p>
+  </div >
+
+    <button mat-raised-button style="margin-top: 80px" color="primary" type="submit" [disabled]="!title.value|| !decription.value|| !file" (click)="submit(title.value, decription.value)" >create </button>
+
+
 </form>

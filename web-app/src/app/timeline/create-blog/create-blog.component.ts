@@ -5,6 +5,10 @@ import {BlogModel} from '../../models/blog.model';
 import {ImageModel} from '../../models/image.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
+// import Quill from 'quill';
+// import { ImageResize } from 'quill-image-resize-module';
+// //
+// Quill.register('modules/imageResize', ImageResize);
 @Component({
   selector: 'app-create-blog',
   templateUrl: './create-blog.component.html',
@@ -13,7 +17,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class CreateBlogComponent implements OnInit {
   @ViewChild('fileInput') fileInput;
   file: File | null = null;
-  dialogWidth;
+  dialogHieght;
   categories = new FormControl();
   categoryList: string[] = ['COVID-19', 'Labor', 'Delivery', 'Breast Feeding', 'Baby', 'Exercise'];
   BlogContent: string = null;
@@ -21,11 +25,36 @@ export class CreateBlogComponent implements OnInit {
   dialogRef;
   editBlog = false;
   blogIndex: number;
+  // modules = {
+  //   toolbar: [
+  //     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  //     ['blockquote', 'code-block'],
+  //
+  //     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  //     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  //     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+  //     [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  //     [{ 'direction': 'rtl' }],                         // text direction
+  //
+  //     [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+  //     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  //
+  //     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+  //     [{ 'font': [] }],
+  //     [{ 'align': [] }],
+  //
+  //     ['clean'],                                         // remove formatting button
+  //
+  //     ['link', 'image', 'video']                         // link and image, video
+  //   ],
+  //   imageSizes: true,
+  // };
 
 
   constructor(private blogService: BlogService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+
     if (this.editBlog ) {
       this.blogIndex = this.blogService.getBlogs().indexOf(this.blogEdit);
       this.categories.setValue(this.blogEdit.categories.split(','));
@@ -33,9 +62,12 @@ export class CreateBlogComponent implements OnInit {
       this.blogEdit = new BlogModel(null, null, null, null, null,
         null, null, null, null, null, null);
       console.log("kimooo");
+      this.dialogHieght = window.innerHeight;
     }
   }
   onResize(event){
+    this.dialogHieght = event.target.innerHeight;
+
     console.log(event.target.innerWidth);
   }
 
@@ -84,13 +116,14 @@ export class CreateBlogComponent implements OnInit {
       return this.blogService.updateBlog(this.blogEdit).subscribe((response) => {
         if (response.status === 200){
           this.blogService.blogs[this.blogIndex] = (response.body as BlogModel);
-          this.dialogRef.close();
         }
+        this.activateSnack(response.status);
       });
     } else {
       return this.blogService.saveBlog(this.blogEdit).subscribe((response) => {
         this.activateSnack(response.status);
       });
+
     }
   }
   activateSnack(status){
