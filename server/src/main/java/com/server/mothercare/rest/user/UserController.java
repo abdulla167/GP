@@ -48,6 +48,7 @@ public class UserController {
 
     @GetMapping("/connect/{username}")
     public SseEmitter connect(@PathVariable String username){
+        log.debug(username);
         User theUser = this.userService.userbyUserName(username);
         SseEmitter sseEmitter = new SseEmitter(-1L);
         sseEmitter.onError((error) -> {
@@ -170,7 +171,7 @@ public class UserController {
     @PostMapping("/addDevice")
     public ResponseEntity addDevice(@RequestBody String  jsonString, Principal user){
         JSONObject jsonObject = new JSONObject(jsonString);
-        long deviceId = Long.valueOf(jsonObject.getLong("deviceId"));
+        Long deviceId = Long.valueOf(jsonObject.getLong("deviceId"));
         String babyName = jsonObject.getString("babyName");
         MonitoringDevice monitoringDevice = new MonitoringDevice();
         monitoringDevice.setDeviceId(deviceId);
@@ -191,7 +192,7 @@ public class UserController {
         List<MonitoringDevice> monitoringDeviceList = theUser.getDevices();
         for (MonitoringDevice device :
                 monitoringDeviceList) {
-            log.error(device.getBabyName());
+            log.info(device.getBabyName());
         }
         return new ResponseEntity(monitoringDeviceList, HttpStatus.OK);
     }

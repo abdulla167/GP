@@ -21,6 +21,7 @@ import java.util.List;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "user_username", columnNames = {"username"})})
 @Data
 @NoArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +50,7 @@ public class User implements Serializable {
     private Date birthOfDate;
 
     @Column(name = "email")
+    @NotNull
     private String email;
 
     @Column(name = "phone")
