@@ -19,6 +19,7 @@ export class NotificationService{
       }
       eventSource.onerror = error => {
         observer.next(false);
+        eventSource.close();
       }
     })
   }

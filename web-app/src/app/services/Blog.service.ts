@@ -132,6 +132,7 @@ export class BlogService{
     {
       console.log('error Received');
       console.log(error.type);
+      blogUpdateEvent.close();
     };
   }
 

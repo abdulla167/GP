@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user.model";
 
@@ -8,8 +8,12 @@ import {User} from "../../models/user.model";
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.css']
 })
-export class UserInfoComponent{
-  theUser : User = new User("ahmed", "mohamed", "mido", "heis123456789", "male", "asfgzffdfgg", null, "01120090244");
+export class UserInfoComponent implements OnInit{
+  theUser : User = null;
   constructor(public userService : UserService) {
+  }
+
+  ngOnInit(): void {
+    this.theUser = this.userService.theUser;
   }
 }

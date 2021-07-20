@@ -35,7 +35,7 @@ export class TempChartComponent implements OnInit {
         padding: {
           left: 50,
           right: 0,
-          top: 0,
+          top: 20,
           bottom: 0
         }
       }

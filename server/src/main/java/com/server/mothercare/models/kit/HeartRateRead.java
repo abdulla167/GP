@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HeartRateRead {
+public class HeartRateRead{
     private double value;
     private Date time;
 }

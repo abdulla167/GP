@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @Slf4j
-
 public class UserController {
     private UserService userService;
     private BabyMonitorService babyMonitorService;
@@ -55,7 +54,7 @@ public class UserController {
         return responseEntity;
     }
 
-    @GetMapping("/connect/{username}")
+    @GetMapping("/connectUser/{username}")
     public SseEmitter connect(@PathVariable String username){
         User theUser = this.userService.userbyUserName(username);
         SseEmitter sseEmitter = new SseEmitter(-1L);
@@ -103,8 +102,24 @@ public class UserController {
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{
             user1.setAdditionalInfo(true);
-            log.error(jsonString);
         });
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @GetMapping("/babies/getIssues")
+    public ResponseEntity getBabiesIssues(Principal user){
+        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
+        ResponseEntity responseEntity = null;
+        log.error("ok");
+        var resultUser = optionalUser.get();
+        if (user != null){
+            responseEntity = new ResponseEntity(resultUser.getBabyIssues(), HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        return responseEntity;
+    }
+
+
+
 }

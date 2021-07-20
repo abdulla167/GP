@@ -48,7 +48,7 @@ export class RespirChartComponent implements OnInit {
       title: "Baby Heart Rate",
       labels: [],
       datasets: [{
-        label: "Heart rate",
+        label: "SPO2",
         borderColor: "rgba(54, 162, 235, 1)",
         fill : false,
         pointBackgroundColor : "rgba(54, 162, 235, 1)",
