@@ -24,7 +24,10 @@ export class AllBlogsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.initialize(0)
+    this.initialize(0);
+    this.blogService.blogNotification.subscribe((notification) => {
+
+    });
     this.breakpoint = (window.innerWidth - 150) > 400 ? (( (window.innerWidth - 150) / 370) - ((window.innerWidth - 150) % 370) / 370) : 1;
   }
 

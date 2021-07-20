@@ -8,10 +8,12 @@ import {CommentModel} from '../models/comment.model';
 import {isIterable} from 'rxjs/internal-compatibility';
 import {UserService} from './user.service';
 import {BlogModel} from '../models/blog.model';
+import {LikeModel} from '../models/like.model';
 
 @Injectable({providedIn: 'root'})
 export class BlogService{
   public blogSubject = new Subject<BlogModel[]>();
+  public blogNotification = new Subject<any>();
   blogs: BlogModel[] ;
   headers ;
 
@@ -123,7 +125,8 @@ export class BlogService{
     // tslint:disable-next-line:typedef only-arrow-functions
     blogUpdateEvent.onmessage = event => {
       console.log('Message Received');
-      console.log(event.data);
+      this.blogNotification.next(event.data);
+
     };
     blogUpdateEvent.onerror = error =>
     {

@@ -38,7 +38,7 @@
   </p>
 
   <div style="height: 250px; margin: 5px; display: block">
-    <quill-editor  [(ngModel)]="blogEdit.html" name="quill"  ></quill-editor>
+    <quill-editor  [(ngModel)]="blogEdit.html" name="quill"  [modules]="modules"></quill-editor>
 
   </div >
     <button mat-raised-button style="margin-top: 80px" color="primary" type="submit" [disabled]="!title.value|| !decription.value|| !file" (click)="submit(title.value, decription.value)" >create </button>
