@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SPO2Read {
+public class SensorRead {
     private double value;
     private Date time;
 }

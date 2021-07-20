@@ -104,6 +104,13 @@ public class User implements Serializable {
     )
     private List<Event> events;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "babyIssue",
+            joinColumns = @JoinColumn(name = "userId")
+    )
+    private List<BabyIssue> babyIssues;
+
     @OneToMany(mappedBy = "user")
     private List<MonitoringDevice> devices;
 

@@ -48,6 +48,8 @@ export class EventsService{
     };
     return this.http.get('http://localhost:8080/event/getAll', {observe: 'response', headers}).pipe(map((resp) => {
       let eventList : any = resp.body;
+      this.events = [];
+      this.eventsCalendar = [];
       for (let event of eventList) {
         let eventColor = {
           primary: event.primaryColor, secondary: event.secondaryColor

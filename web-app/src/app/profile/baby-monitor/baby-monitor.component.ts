@@ -32,7 +32,6 @@ export class BabyMonitorComponent implements OnInit {
       if (data == true){
         while (this.notificationService.notifications.length > 0){
           let message = this.notificationService.notifications.pop();
-          console.log(message)
           switch (message){
             case "connected":
               this.updateDevice();
@@ -40,7 +39,8 @@ export class BabyMonitorComponent implements OnInit {
             case "disconnected":
               this.updateDevice();
               break;
-            case "event_alarm":
+            case "baby_issue":
+              this.sensorService.babiesIssues.next(true);
               break;
           }
         }

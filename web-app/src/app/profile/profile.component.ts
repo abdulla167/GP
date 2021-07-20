@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewEncapsulation} from "@angular/core";
-import {PostModel} from "../models/post.model";
 import {UserService} from "../services/user.service";
 import {User} from "../models/user.model";
 import {MatDialog} from "@angular/material/dialog";
@@ -7,8 +6,8 @@ import {AdditionalInfoComponent} from "../auth/additional-info/additional-info.c
 import {EventsService} from "../services/events.service";
 import {Router} from "@angular/router";
 import {TokenService} from "../services/Token.service";
-import {CalendarEvent} from "angular-calendar";
 import {EventModel} from "../models/event.model";
+import {DeviceService} from "../services/device-service";
 
 @Component({
   selector: 'user-profile',
@@ -27,8 +26,10 @@ export class ProfileComponent implements  OnInit{
   calender: any = [{name : 'First task', status : true}, {name : 'Second task', status : false}];
   tab : number = 0;
   upcomingEvents : EventModel[] = []
+  babyIssues : any = []
 
-  constructor(public userService :UserService, private dialog: MatDialog, private eventService : EventsService, private tokenService : TokenService, private router : Router)
+  constructor(public userService :UserService, private dialog: MatDialog, private eventService : EventsService,
+              private tokenService : TokenService, private router : Router, private deviceService : DeviceService)
   {}
 
   updateProfileImg(event){
@@ -82,6 +83,23 @@ export class ProfileComponent implements  OnInit{
           this.pregnancyAccomplishment = Math.round((diff / diff2) * 100 * 100) / 100;
         }
       })
+      this.updateBabiesIssues();
+      this.deviceService.babiesIssues.subscribe(value => {
+        this.updateBabiesIssues();
+      })
     }
+  }
+
+  updateBabiesIssues(){
+    this.deviceService.getBabiesIssues().subscribe(resp => {
+      let issues : any = resp.body;
+      console.log(resp)
+      console.log("issues :  "+resp.body)
+      this.babyIssues = []
+      for (let issue of issues){
+        issue.sensorRead.time = new Date(issue.sensorRead.time).toDateString();
+      }
+      this.babyIssues = [...issues];
+    })
   }
 }

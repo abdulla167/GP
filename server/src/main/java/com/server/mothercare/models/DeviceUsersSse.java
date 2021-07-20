@@ -1,4 +1,4 @@
-package com.server.mothercare.entities.kit;
+package com.server.mothercare.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

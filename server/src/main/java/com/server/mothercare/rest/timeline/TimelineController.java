@@ -69,7 +69,6 @@ public class TimelineController {
 
             return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
         }
-
         blogService.update(theBlog);
         return new ResponseEntity(theBlog, HttpStatus.OK) ;
     }

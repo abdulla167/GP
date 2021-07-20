@@ -21,8 +21,11 @@ export class DeviceService {
 
    graphsSubject: Subject<string>;
 
+   babiesIssues : Subject <boolean>;
+
   constructor(private http: HttpClient, private tokenService: TokenService, private zone : NgZone) {
     this.graphsSubject = new Subject<string>();
+    this.babiesIssues = new Subject<boolean>()
   }
 
   addDevice(deviceId : number, babyName : string){
@@ -64,6 +67,14 @@ export class DeviceService {
       observables.push(observable);
     }
     return observables;
+  }
+
+  getBabiesIssues(){
+    const headers = {
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      'Content-type': 'application/json'
+    };
+    return this.http.get('http://localhost:8080/babies/getIssues',{observe: 'response', headers});
   }
 
   getGraphSubject(){

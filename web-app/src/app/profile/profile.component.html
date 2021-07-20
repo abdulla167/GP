@@ -9,17 +9,23 @@
         </div>
         <ul class="list-group" style="width: 90%; margin-top: 20px" *ngIf="tab == 0">
           <li class="list-group-item " style="font-weight: bold; font-size: x-large;color: #0062E6">Upcoming events <i class="fa fa-calendar fa-1x"></i></li>
-          <li *ngFor="let event of upcomingEvents" class="list-group-item text-right"><span class="pull-left"><strong>{{event.title}} </strong></span>{{event.description}}</li>
+          <li *ngFor="let event of upcomingEvents" class="list-group-item text-right">
+            <div fxLayout="column" fxLayoutAlign="5px">
+              <p><span class="pull-left"><strong>{{event.title}} </strong></span>{{event.description}}</p>
+              <p class="text-left"> {{event.startDate}}</p>
+            </div>
+          </li>
 
         </ul>
 
         <ul class="list-group" style="width: 90%; padding-top: 20px" *ngIf="tab == 1">
           <li class="list-group-item " style="font-weight: bold; font-size: x-large;color: #0062E6">Baby Issues <i class="fa fa-bomb" aria-hidden="true"></i>
           </li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span><mat-checkbox></mat-checkbox></li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span><mat-checkbox></mat-checkbox></li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span><mat-checkbox></mat-checkbox></li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span><mat-checkbox></mat-checkbox></li>
+          <li *ngFor="let issue of babyIssues" class="list-group-item text-right">
+            <p style="text-align: left; font-weight: bold">{{issue.description + " " +issue.sensorRead.value}}</p>
+            <p class="pull-right">{{issue.sensorRead.time}}</p>
+          </li>
+
         </ul>
         <br>
       </div>

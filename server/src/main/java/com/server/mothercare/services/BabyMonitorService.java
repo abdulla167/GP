@@ -1,6 +1,6 @@
 package com.server.mothercare.services;
 
-import com.server.mothercare.entities.kit.DeviceUsersSse;
+import com.server.mothercare.models.DeviceUsersSse;
 import com.server.mothercare.entities.kit.MonitoringDevice;
 import org.json.JSONObject;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

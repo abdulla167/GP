@@ -9,9 +9,9 @@ import java.util.Date;
 
 @Embeddable
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class TempRead {
+@AllArgsConstructor
+public class TempRead{
     private double value;
     private Date time;
 }
