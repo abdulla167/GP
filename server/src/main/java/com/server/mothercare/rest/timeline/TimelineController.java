@@ -12,6 +12,7 @@ import com.server.mothercare.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.SerializationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.ByteArrayOutputStream;
@@ -44,6 +45,8 @@ public class TimelineController {
     private SavedBlogService savedBlogService;
 
 
+
+
     @PostMapping(value = "/blog/save")
     private ResponseEntity saveBlog(@RequestBody Blog theBlog,
                                     Principal userPrincipal
@@ -52,6 +55,7 @@ public class TimelineController {
         theBlog.setUser(user);
         theBlog.setDate(new Timestamp(new Date().getTime()));
         Blog savedBlog = blogService.save(theBlog);
+        sseService.process(theBlog, "Blog", "insert");
         return savedBlog != null? new ResponseEntity(savedBlog, HttpStatus.OK) : new ResponseEntity(savedBlog, HttpStatus.CONFLICT);
     }
 
@@ -70,6 +74,7 @@ public class TimelineController {
             return new ResponseEntity(theBlog, HttpStatus.UNAUTHORIZED) ;
         }
         blogService.update(theBlog);
+        sseService.process(theBlog, "Blog", "update");
         return new ResponseEntity(theBlog, HttpStatus.OK) ;
     }
 
@@ -86,8 +91,8 @@ public class TimelineController {
         if (!user.getUsername().equals(DBBlog.getUser().getUsername())) {
             return new ResponseEntity("\"FAILURE\"", HttpStatus.UNAUTHORIZED) ;
         }
+        sseService.process(DBBlog, "Blod", "delete");
         blogService.deleteById(id);
-
         return new ResponseEntity("\"SUCCESS\"", HttpStatus.OK) ;
     }
 
@@ -153,8 +158,10 @@ public class TimelineController {
         }else {
             theComment.setDate(new Timestamp(new Date().getTime()));
             theComment.setUser(user);
+            theComment.setBlogId(theId);
             DbBlog.addComment(theComment);
             Blog blog = blogService.update(DbBlog);
+            sseService.process(blog, "Comment", "insert");
             return  blog == null ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(blog, HttpStatus.OK);
         }
     }
@@ -168,8 +175,13 @@ public class TimelineController {
         Comment commentDB = commentService.getCommentById(commentId);
         theComment.setDate(new Timestamp(new Date().getTime()));
         theComment.setUser(user);
+
+
         commentDB.addComment(theComment);
+
         Comment comment = commentService.update(commentDB);
+        Blog blog = blogService.getBlogById(commentDB.getBlogId());
+        sseService.process(blog, "Comment", "insert");
         return  comment == null ? new ResponseEntity("\"Failure\"", HttpStatus.NO_CONTENT): new ResponseEntity(comment, HttpStatus.OK);
     }
 
@@ -182,6 +194,7 @@ public class TimelineController {
         Blog DbBlog = blogService.getBlogById(blogId);
         DbBlog.addLikes(theLike);
         Like like = likeService.save(theLike);
+        sseService.process(DbBlog, "Like", "insert");
         return like== null? new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) : new ResponseEntity(like, HttpStatus.OK);
     }
 
@@ -199,24 +212,25 @@ public class TimelineController {
 
         }else {
             deleted = likeService.deleteLike(theLike.getId());
+            sseService.process(theLike.getBlog(), "Like", "insert");
         }
 
-        return (theLike== null || deleted == false)?
+        return (deleted == false)?
                 new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT) :
                 new ResponseEntity("\"Like Deleted Successsufly\"", HttpStatus.OK);
     }
-
+    @GetMapping("/blog/liked")
+    public ResponseEntity likedPosts(Principal userPrincipal){
+        List<Blog> likedBlogs = blogService.getLikedBlogs(userPrincipal.getName());
+        return likedBlogs != null? new ResponseEntity(likedBlogs, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
+    }
     @GetMapping("/blog/updates")
     public @ResponseBody
     SseEmitter getEmitter() {
         System.out.println("in updates");
         return sseService.registerClient();
     }
-    @GetMapping(value = "/blog/liked")
-    public ResponseEntity likedPosts(Principal userPrincipal){
-        List<Blog> likedBlogs = blogService.getLikedBlogs(userPrincipal.getName());
-        return likedBlogs != null? new ResponseEntity(likedBlogs, HttpStatus.OK):new ResponseEntity("\"Failure\"", HttpStatus.CONFLICT);
-    }
+
 
     public static byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();

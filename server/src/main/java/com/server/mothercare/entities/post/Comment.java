@@ -26,6 +26,9 @@ import java.util.List;
     @Column(name = "date")
     private Timestamp date;
 
+    @Column(name = "blogId")
+    private int blogId;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id",referencedColumnName = "id")
@@ -82,6 +85,14 @@ import java.util.List;
         this.date = date;
     }
 
+    public int getBlogId() {
+        return blogId;
+    }
+
+    public void setBlogId(int blogId) {
+        this.blogId = blogId;
+    }
+
     public Image getImage() {
         return image;
     }
@@ -97,6 +108,7 @@ import java.util.List;
     public void setUser(User user) {
         this.user = user;
     }
+
     public List<Comment> getComments() {
         return comments;
     }
