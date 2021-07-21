@@ -33,12 +33,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.httpBasic();
         http.cors().and().addFilterBefore(myCorsFilter, ChannelProcessingFilter.class).authorizeRequests().mvcMatchers(HttpMethod.POST,"/register/newUser").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/confirm-account").permitAll()
-                .mvcMatchers(HttpMethod.POST,"/device/*").permitAll().mvcMatchers(HttpMethod.GET,"/device/subscribe/{id}").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/connectUser/{username}").permitAll()
-                .mvcMatchers(HttpMethod.POST,"/device/*/{deviceId}").permitAll()
-                .mvcMatchers(HttpMethod.POST,"/device/push").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/device/subscribe/{id}").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/connect/{username}").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/notifier/{username}").permitAll()
+                .mvcMatchers(HttpMethod.POST,"/device/data").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/device/{deviceId}/*").permitAll()
+                .mvcMatchers(HttpMethod.POST,"/device/{deviceId}/*").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/blog/updates").permitAll()
                 .anyRequest().authenticated().and().csrf().disable();
     }

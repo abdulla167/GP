@@ -5,10 +5,10 @@ import {BlogModel} from '../../models/blog.model';
 import {ImageModel} from '../../models/image.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
-// import Quill from 'quill';
-// import { ImageResize } from 'quill-image-resize-module';
-// //
-// Quill.register('modules/imageResize', ImageResize);
+import Quill from 'quill';
+import  ImageResize   from 'quill-image-resize-module';
+//
+Quill.register('modules/imageResize', ImageResize);
 @Component({
   selector: 'app-create-blog',
   templateUrl: './create-blog.component.html',
@@ -25,30 +25,30 @@ export class CreateBlogComponent implements OnInit {
   dialogRef;
   editBlog = false;
   blogIndex: number;
-  // modules = {
-  //   toolbar: [
-  //     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-  //     ['blockquote', 'code-block'],
-  //
-  //     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-  //     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-  //     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-  //     [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-  //     [{ 'direction': 'rtl' }],                         // text direction
-  //
-  //     [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-  //     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  //
-  //     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-  //     [{ 'font': [] }],
-  //     [{ 'align': [] }],
-  //
-  //     ['clean'],                                         // remove formatting button
-  //
-  //     ['link', 'image', 'video']                         // link and image, video
-  //   ],
-  //   imageSizes: true,
-  // };
+  modules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      ['blockquote', 'code-block'],
+
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+
+      ['clean'],                                         // remove formatting button
+
+      ['link', 'image', 'video']                         // link and image, video
+    ],
+    imageResize:  true
+  };
 
 
   constructor(private blogService: BlogService, private snackBar: MatSnackBar) { }
@@ -82,7 +82,6 @@ export class CreateBlogComponent implements OnInit {
   }
 
   submit(title: string, description: string){
-
     let catgs = '';
     if (this.categories.value != null){
       for (const category of this.categories.value){
@@ -94,29 +93,29 @@ export class CreateBlogComponent implements OnInit {
     this.blogEdit.categories = catgs;
     const reader = new FileReader();
     reader.onload = (e) => {
-      const array = new Uint8Array(e.target.result as ArrayBuffer),
+      const array = new Uint8Array(e.target.result as ArrayBuffer);
         // binaryString = String.fromCharCode.apply(null, array);
-        image: ImageModel = {
-          id: 0,
-          name: this.file.name,
-          type: this.file.type,
-          picByte: btoa(String.fromCharCode.apply(null, array))// this.Utf8ArrayToStr(array)
-        };
+      const len = array.byteLength;
+      let binary = '';
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(array[i]);
+      }
+      const image: ImageModel = {
+        id: 0,
+        name: this.file.name,
+        type: this.file.type,
+        picByte: btoa(binary)// this.Utf8ArrayToStr(array)
+      };
       this.blogEdit.image = image;
 
-      this.blogService.saveBlog(this.blogEdit).subscribe((response) => {
-        this.activateSnack(response.status);
-      });
-
+      this.saveOrUpdateBlog();
     };
     reader.readAsArrayBuffer(this.file);
   }
   saveOrUpdateBlog(){
     if(this.editBlog){
       return this.blogService.updateBlog(this.blogEdit).subscribe((response) => {
-        if (response.status === 200){
-          this.blogService.blogs[this.blogIndex] = (response.body as BlogModel);
-        }
+
         this.activateSnack(response.status);
       });
     } else {
@@ -128,7 +127,6 @@ export class CreateBlogComponent implements OnInit {
   }
   activateSnack(status){
     if (status === 200) {
-      this.dialogRef.close();
       this.snackBar.open('blog created suceesfully!!', 'ok', {
         duration: 2000,
         panelClass: ['green-snack']

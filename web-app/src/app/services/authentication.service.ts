@@ -23,7 +23,7 @@ export class AuthenticationService{
    * [Returns] : Observable OBJECT
    */
   signup(newUser: { firstName: string; lastName: string; password: string; phone: string; email: string; username: string }){
-    return this.http.post('http://localhost:8080/register/newUser', newUser).pipe(catchError(this.handleError));
+    return this.http.post('http://localhost:8080/new/user', newUser).pipe(catchError(this.handleError));
   }
 
   login(username: string, password: string){

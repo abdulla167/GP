@@ -12,7 +12,7 @@ export class NotificationService{
 
   subscribeForNotification(){
     return new Observable<boolean>(observer => {
-      const eventSource = new EventSource('http://localhost:8080/connectUser/' + this.userService.theUser.username)
+      const eventSource = new EventSource('http://localhost:8080/notifier/' + this.userService.theUser.username)
       eventSource.onmessage = event => {
         this.notifications.push(event.data);
         observer.next(true);

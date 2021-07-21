@@ -36,7 +36,7 @@ public class RegistrationController {
         this.confirmationTokenDAO = confirmationTokenDAO;
     }
 
-    @PostMapping(value = "/register/newUser")
+    @PostMapping(value = "/new/user")
     public ResponseEntity registerUser(@RequestBody User user) {
         User dbUser = null;
         ResponseEntity responseEntity = null;

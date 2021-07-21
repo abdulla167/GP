@@ -3,14 +3,28 @@ import {Subject} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class TokenService{
-  private token: string = null;
-  tokenSubject = new Subject<string>();
 
-  saveToken(token: string){
-    this.token = token;
+  tokenSubject : Subject<string>;
+
+  constructor(private _accessToken : string = null, private _refreshToken : string = null, private _expiresIn : string =null) {
+    this.tokenSubject = new Subject<string>();
+  }
+
+  setAccessToken(token: string){
+    this._accessToken = token;
     this.tokenSubject.next(token);
   }
-  getToken(){
-    return this.token;
+
+  getAccessToken(){
+    return this._refreshToken;
   }
+
+  setRefreshToken(token : string){
+    this._refreshToken = token;
+  }
+
+  getRefreshToken(){
+    return this._refreshToken;
+  }
+
 }

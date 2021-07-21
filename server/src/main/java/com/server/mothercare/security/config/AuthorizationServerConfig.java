@@ -46,20 +46,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore()).accessTokenConverter(jwtAccessTokenConverter())
-                .authenticationManager(authenticationManager).userDetailsService(userDetailsService);
+        endpoints.authenticationManager(authenticationManager)
+                .tokenStore(tokenStore()).accessTokenConverter(jwtAccessTokenConverter());
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("mothercare-webapp").secret(encoder.encode("6969"))
-                .authorizedGrantTypes("password", "refresh_token").scopes("read", "write").resourceIds(RESOURCE_ID);
-        ;
+                .authorizedGrantTypes("password", "refresh_token").scopes("read", "write").accessTokenValiditySeconds(6000).and()
+                .withClient("mothercare-mobileapp").secret(encoder.encode("9696"))
+                .authorizedGrantTypes("password", "refresh_token").scopes("read", "write").accessTokenValiditySeconds(6000).resourceIds(RESOURCE_ID);
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.tokenKeyAccess("permitAll()");
+        security.tokenKeyAccess("permitAll()").checkTokenAccess("permitAll()");
     }
 
     @Bean

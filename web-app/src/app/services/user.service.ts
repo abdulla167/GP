@@ -16,10 +16,10 @@ export class UserService{
 
   getUser(){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
       'Content-type': 'application/json'
     };
-    return this.httpClient.get('http://localhost:8080/getUser', {observe: 'response', headers}).pipe(
+    return this.httpClient.get('http://localhost:8080/user', {observe: 'response', headers}).pipe(
       catchError(this.handleError)
     );
 
@@ -33,11 +33,11 @@ export class UserService{
 
   addUserInfo(userInfo: UserInfoModel){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
       'Content-type': 'application/json'
     };
     console.log("request sent")
-    return this.httpClient.post('http://localhost:8080/addUserInfo', userInfo, {observe: 'response', headers}).pipe(
+    return this.httpClient.post('http://localhost:8080/user/info', userInfo, {observe: 'response', headers}).pipe(
       catchError(this.handleError)
     );
   }
@@ -45,10 +45,10 @@ export class UserService{
 
   skipUserInfo(){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
       'Content-type': 'application/json'
     };
-    return this.httpClient.post('http://localhost:8080/skipUserInfo', {observe: 'response', headers}).pipe(
+    return this.httpClient.post('http://localhost:8080/skipping/user/info', {observe: 'response', headers}).pipe(
       catchError(this.handleError)
     );
   }

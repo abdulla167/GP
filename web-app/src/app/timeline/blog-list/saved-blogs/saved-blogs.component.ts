@@ -20,9 +20,13 @@ export class SavedBlogsComponent implements OnInit {
   constructor(private blogService: BlogService) { }
 
   ngOnInit(): void {
+    this.blogService.blogNotification.subscribe(notification => {
+
+    });
     this.blogService.likedBlogs().subscribe((response) => {
       if (response.status === 200) {
         this.allBlogs = (response.body as BlogModel[]);
+        console.log(response.body);
         this.totalLength = this.allBlogs.length;
         if (this.totalLength < 12) {
           this.endIndex = this.allBlogs.length;

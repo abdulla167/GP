@@ -1,14 +1,11 @@
-import {CalendarEvent, CalendarEventAction} from "angular-calendar";
-import {addDays, addHours, endOfMonth, startOfDay, subDays} from "date-fns";
+import {CalendarEvent} from "angular-calendar";
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
-import {EventChoiceComponent} from "../profile/calendar/event-choice/event-choice.component";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {EventModel} from "../models/event.model";
 import {TokenService} from "./Token.service";
-import {any} from "codelyzer/util/function";
 
 
 
@@ -43,10 +40,10 @@ export class EventsService{
 
   getEvents (){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
       'Content-type': 'application/json'
     };
-    return this.http.get('http://localhost:8080/event/getAll', {observe: 'response', headers}).pipe(map((resp) => {
+    return this.http.get('http://localhost:8080/events', {observe: 'response', headers}).pipe(map((resp) => {
       let eventList : any = resp.body;
       this.events = [];
       this.eventsCalendar = [];
@@ -69,7 +66,7 @@ export class EventsService{
 
   addEvent (event : EventModel, reminder : string){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
       'Content-type': 'application/json'
     };
     if (reminder == "yes"){
@@ -77,7 +74,7 @@ export class EventsService{
     } else {
       event.reminder = false;
     }
-    return this.http.post('http://localhost:8080/event/add', event, {observe: 'response', headers}).subscribe(resData => {
+    return this.http.post('http://localhost:8080/event', event, {observe: 'response', headers}).subscribe(resData => {
       let addedEvent : any = resData.body;
       let eventColor = {
         primary: addedEvent.primaryColor, secondary: addedEvent.secondaryColor
@@ -95,7 +92,7 @@ export class EventsService{
 
   editEvent(event : EventModel, reminder : string){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
       'Content-type': 'application/json'
     };
     if (reminder == "yes"){
@@ -103,7 +100,7 @@ export class EventsService{
     } else {
       event.reminder = false;
     }
-    return this.http.post('http://localhost:8080/event/edit', event, {observe: 'response', headers}).subscribe(resData => {
+    return this.http.put('http://localhost:8080/event', event, {observe: 'response', headers}).subscribe(resData => {
       let editedEvent : any = resData.body;
       let index = this.events.findIndex(event1 => event1.id == editedEvent.id);
       this.events[index] = event;
@@ -123,10 +120,10 @@ export class EventsService{
 
   deleteEvent(eventId: number){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getToken(),
+      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
       'Content-type': 'application/json'
     };
-    return this.http.get('http://localhost:8080/event/delete/' + eventId, {observe: 'response', headers}).subscribe(resData => {
+    return this.http.delete('http://localhost:8080/event/' + eventId, {observe: 'response', headers}).subscribe(resData => {
       let index = this.events.findIndex(oldEvent => oldEvent.id == eventId);
       this.events.splice(index, 1);
       this.eventsCalendar.splice(index, 1)

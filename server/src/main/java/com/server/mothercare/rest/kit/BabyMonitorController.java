@@ -33,7 +33,7 @@ public class BabyMonitorController {
     }
 
     /* Device send to this endpoint to connect to server*/
-    @PostMapping("device/connect/{deviceId}")
+    @PostMapping("device/{deviceId}/connection")
     public void connectDevice(@PathVariable String deviceId){
         Long id = Long.valueOf(deviceId);
         log.info("connect device : " + id);
@@ -42,20 +42,20 @@ public class BabyMonitorController {
 
 
     /* Device send to this endpoint to disconnect with server */
-    @PostMapping("device/disconnect")
-    public void disconnectDevice(@RequestBody String jsonString){
-        var jsonObject = new JSONObject(jsonString);
-        this.babyMonitorService.disconnectDevice(jsonObject.getLong("deviceId"));
+    @PostMapping("device/{deviceId}/disconnection")
+    public void disconnectDevice(@PathVariable String deviceId){
+        Long id = Long.valueOf(deviceId);
+        this.babyMonitorService.disconnectDevice(id);
     }
 
     /* Client send to this endpoint to subscribe to a device with exact id */
-    @GetMapping("device/subscribe/{id}")
-    public SseEmitter subscribe(@PathVariable String id){
-        var deviceId = Long.valueOf(id);
+    @GetMapping("device/{deviceId}/subscription")
+    public SseEmitter subscribe(@PathVariable String deviceId){
+        var id = Long.valueOf(deviceId);
         SseEmitter sseEmitter = new SseEmitter(-1L);
-        var result = this.babyMonitorService.subscribeDevice(sseEmitter, deviceId);
+        var result = this.babyMonitorService.subscribeDevice(sseEmitter, id);
         sseEmitter.onCompletion(() -> {
-            List<DeviceUsersSse> subscribers = this.babyMonitorService.getEmitters().get(deviceId);
+            List<DeviceUsersSse> subscribers = this.babyMonitorService.getEmitters().get(id);
 //            subscribers.removeIf(deviceUsersSse -> (deviceUsersSse.getUsername().equals(username)));
         });
         sseEmitter.onError((error) -> {
@@ -65,13 +65,13 @@ public class BabyMonitorController {
     }
 
     /* Device send to this endpoint to send sensors data to its subscribers */
-    @PostMapping("device/push")
+    @PostMapping("device/data")
     public void sendData(@RequestBody String data){
         JSONObject json = new JSONObject(data);
         this.babyMonitorService.pushNewData(json);
     }
 
-    @GetMapping("/getDevices")
+    @GetMapping("/devices")
     public ResponseEntity getUserDevices(Principal user){
         log.error("get devices");
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
@@ -84,7 +84,7 @@ public class BabyMonitorController {
         return new ResponseEntity(monitoringDeviceList, HttpStatus.OK);
     }
 
-    @PostMapping("/addDevice")
+    @PostMapping("/device")
     public ResponseEntity addDevice(@RequestBody String  jsonString, Principal user){
         JSONObject jsonObject = new JSONObject(jsonString);
         long deviceId = Long.valueOf(jsonObject.getLong("deviceId"));
@@ -99,5 +99,19 @@ public class BabyMonitorController {
             this.babyMonitorService.addDevice(monitoringDevice);
         });
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/babies/issues")
+    public ResponseEntity getBabiesIssues(Principal user){
+        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
+        ResponseEntity responseEntity = null;
+        log.error("ok");
+        var resultUser = optionalUser.get();
+        if (user != null){
+            responseEntity = new ResponseEntity(resultUser.getBabyIssues(), HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        return responseEntity;
     }
 }

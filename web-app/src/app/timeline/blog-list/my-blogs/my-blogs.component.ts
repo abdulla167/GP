@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {BlogService} from '../../../services/Blog.service';
 import {BlogModel} from '../../../models/blog.model';
 import {PageEvent} from '@angular/material/paginator';
+import {UserService} from '../../../services/user.service';
 
 @Component({
   selector: 'app-my-blogs',
@@ -17,9 +18,11 @@ export class MyBlogsComponent implements OnInit {
   pageIndex: number = 0;
   startIndex: number = 0;
   endIndex: number;
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: BlogService, private userService: UserService) { }
 
   ngOnInit(): void {
+    this.blogService.blogNotification.subscribe(notification => {
+    });
     this.blogService.myBlogs().subscribe((response) => {
       if (response.status === 200) {
         this.allBlogs = (response.body as BlogModel[]);

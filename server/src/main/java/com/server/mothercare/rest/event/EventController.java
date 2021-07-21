@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @Controller
 @Slf4j
-@RequestMapping("/event")
 public class EventController {
 
     UserService userService;
@@ -26,7 +25,7 @@ public class EventController {
         this.userService = userService;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/events")
     public ResponseEntity getUserEvents(Principal user){
         log.error("get devices");
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
@@ -35,7 +34,7 @@ public class EventController {
         return new ResponseEntity(eventsList, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/event")
     public ResponseEntity addEvent(@RequestBody Event event, Principal user){
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{
@@ -47,7 +46,7 @@ public class EventController {
         return new ResponseEntity(event, HttpStatus.OK);
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/event")
     public ResponseEntity editEvent(@RequestBody Event event, Principal user){
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{
@@ -70,7 +69,7 @@ public class EventController {
         return new ResponseEntity(event, HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{eventId}")
+    @DeleteMapping("/event/{eventId}")
     public ResponseEntity deleteEvent(@PathVariable String eventId, Principal user){
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{

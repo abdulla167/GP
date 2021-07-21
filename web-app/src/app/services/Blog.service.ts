@@ -8,17 +8,19 @@ import {CommentModel} from '../models/comment.model';
 import {isIterable} from 'rxjs/internal-compatibility';
 import {UserService} from './user.service';
 import {BlogModel} from '../models/blog.model';
+import {LikeModel} from '../models/like.model';
 
 @Injectable({providedIn: 'root'})
 export class BlogService{
   public blogSubject = new Subject<BlogModel[]>();
+  public blogNotification = new Subject<any>();
   blogs: BlogModel[] ;
   headers ;
 
   constructor(private http: HttpClient, private tokenService: TokenService, private userService: UserService) {
     this.tokenService.tokenSubject.subscribe(token => {
       this.headers = {
-        Authorization: 'Bearer ' + this.tokenService.getToken()
+        Authorization: 'Bearer ' + this.tokenService.getAccessToken()
       };
     });
 
@@ -34,7 +36,7 @@ export class BlogService{
   }
 
   saveBlog(blog: BlogModel ){
-    console.log(this.tokenService.getToken());
+    console.log(this.tokenService.getAccessToken());
 
     // tslint:disable-next-line:max-line-length
     return this.http.post('http://localhost:8080/blog/save' ,blog , {observe: 'response', headers: this.headers });
@@ -123,7 +125,8 @@ export class BlogService{
     // tslint:disable-next-line:typedef only-arrow-functions
     blogUpdateEvent.onmessage = event => {
       console.log('Message Received');
-      console.log(event.data);
+      this.blogNotification.next(event.data);
+
     };
     blogUpdateEvent.onerror = error =>
     {

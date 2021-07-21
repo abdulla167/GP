@@ -18,7 +18,7 @@ export class BlogComponent implements OnInit {
   @Input() blog: BlogModel;
   @Input() index: number;
   dialogRef;
-  likeIt: boolean = false;
+  likeIt: boolean = false ;
   like: LikeModel = null;
   defaultImae = '../../assets/images/default.jpg';
   image;
@@ -32,10 +32,11 @@ export class BlogComponent implements OnInit {
       if (like.user.username ===  this.userService.theUser.username) {
         this.likeIt = true;
         this.like = like;
+        console.log("from beginig");
         break;
       }
     }
-    console.log("from beginig");
+
   }
 
   openDialog(){

@@ -57,7 +57,7 @@ export class ProfileComponent implements  OnInit{
   }
 
   ngOnInit(): void {
-    if (this.tokenService.getToken() == null){
+    if (this.tokenService.getAccessToken() == null){
       this.router.navigate(['/login']);
     } else {
       this.eventService.addedEvents.subscribe(data => {
