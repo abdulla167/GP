@@ -2,6 +2,7 @@ package com.server.mothercare.rest.event;
 
 import com.server.mothercare.entities.Event;
 import com.server.mothercare.entities.User;
+import com.server.mothercare.services.EventService;
 import com.server.mothercare.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,69 +17,46 @@ import java.util.Optional;
 
 @Controller
 @Slf4j
-@RequestMapping("/event")
 public class EventController {
 
     UserService userService;
+    EventService eventService;
 
     @Autowired
-    public EventController(UserService userService){
+    public EventController(UserService userService, EventService eventService)
+    {
         this.userService = userService;
+        this.eventService = eventService;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/events")
     public ResponseEntity getUserEvents(Principal user){
-        log.error("get devices");
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        User theUser = optionalUser.get();
-        List<Event> eventsList = theUser.getEvents();
-        return new ResponseEntity(eventsList, HttpStatus.OK);
+       var eventsList = eventService.getEvents(user);
+       return new ResponseEntity(eventsList, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/event")
     public ResponseEntity addEvent(@RequestBody Event event, Principal user){
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        optionalUser.ifPresent(user1 ->{
-            user1.numOfEvents++;
-            event.setId(user1.numOfEvents);
-            user1.getEvents().add(event);
-            this.userService.update(user1);
-        });
-        return new ResponseEntity(event, HttpStatus.OK);
+       var newEvent = this.eventService.addEvent(event, user);
+        return new ResponseEntity(newEvent, HttpStatus.OK);
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/event")
     public ResponseEntity editEvent(@RequestBody Event event, Principal user){
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        optionalUser.ifPresent(user1 ->{
-            for (var e :
-                    user1.getEvents()) {
-                if (e.getId() == event.getId()){
-                    e.setTitle(event.getTitle());
-                    e.setReminder(event.isReminder());
-                    e.setPrimaryColor(event.getPrimaryColor());
-                    e.setSecondaryColor(event.getSecondaryColor());
-                    e.setTitle(event.getTitle());
-                    e.setStartDate(event.getStartDate());
-                    e.setEndDate(event.getEndDate());
-                    e.setDescription(event.getDescription());
-                    e.setImage(event.getImage());
-                }
-            }
-            this.userService.update(user1);
-        });
-        return new ResponseEntity(event, HttpStatus.OK);
+        var editedEvent = this.eventService.editEvent(event, user);
+        return new ResponseEntity(editedEvent, HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{eventId}")
+    @DeleteMapping("/event/{eventId}")
     public ResponseEntity deleteEvent(@PathVariable String eventId, Principal user){
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        optionalUser.ifPresent(user1 ->{
-            log.error(user1.getUsername());
-            var events = user1.getEvents();
-            events.removeIf(event -> event.getId() == Long.valueOf(eventId));
-            this.userService.update(user1);
-        });
-        return new ResponseEntity(HttpStatus.OK);
+        Long id = Long.valueOf(eventId);
+        boolean result = this.eventService.deleteEvent(id, user);
+        ResponseEntity responseEntity = null;
+        if (result == true){
+            responseEntity = new ResponseEntity(HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        return responseEntity;
     }
 }

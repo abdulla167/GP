@@ -1,8 +1,8 @@
 export class EventModel{
   id : number;
   title : string;
-  startDate : Date;
-  endDate : Date;
+  startDate : string;
+  endDate : string;
   primaryColor : string;
   secondaryColor : string;
   reminder : boolean;

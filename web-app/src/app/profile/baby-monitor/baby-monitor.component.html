@@ -16,7 +16,7 @@
 </div>
 
 <br>
-<div class="row" style="padding-bottom: 30px; width: 99%" *ngFor="let device of this.devices">
+<div class="row" style="padding-bottom: 30px; width: 99%" *ngFor="let device of this.devices; let i = index">
   <div class="col-12">
     <div class="row">
       <div class="col">
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="row" style="padding-bottom: 30px">
+    <div class="row" style="padding-bottom: 25px">
       <div class="col-4" fxLayoutAlign="center">
         <mat-card style="width: 60%">
           <mat-card-title style="font-size:1.5vw;">Heart rate</mat-card-title>
@@ -60,7 +60,17 @@
         </mat-card>
       </div>
     </div>
+    <div class="row" style="padding-bottom: 30px">
+      <div class="col-4"  fxLayoutAlign="center">
+        <mat-card style="width: 60%">
+          <mat-card-title style="font-size:1.5vw;">Position</mat-card-title>
+          <mat-card-content fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center" (click)="showGraph('respir',device.deviceId)">
+            <img width="90%" height="90%" [src]="positions[0]">
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
+  </div>
 
 
   <div>

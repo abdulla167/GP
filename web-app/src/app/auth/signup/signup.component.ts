@@ -3,9 +3,7 @@ import {NgForm} from '@angular/forms';
 import {User} from '../../models/user.model';
 import {AuthenticationService} from '../../services/authentication.service';
 import {Router} from '@angular/router';
-import {MatDialog} from "@angular/material/dialog";
-import {AdditionalInfoComponent} from "../additional-info/additional-info.component";
-import {TempChartComponent} from "../../profile/baby-monitor/temp-chart/temp-chart.component";
+
 
 @Component({
   selector: 'app-signup',
@@ -28,17 +26,17 @@ export class SignupComponent implements OnInit {
     this.datepickerValue = new Date();
   }
 
-  onSubmitForm(form: NgForm){
+  onSubmitForm(form: NgForm): void{
     if (!form.valid){
       return;
     }else {
       if (form.value.password === form.value.confirmPassword){
         this.invalidConfirmPassword = false;
-        let user = new User(form.value.firstName, form.value.lastName, form.value.username,  form.value.password, this.defaultGender,
-                            form.value.email,form.value.birthOfDate, form.value.phone);
+        const user = new User(form.value.firstName, form.value.lastName, form.value.username,  form.value.password, this.defaultGender,
+                            form.value.email, form.value.birthOfDate, form.value.phone);
         this.isLoading = true;
         this.authService.signup(user).subscribe(resData => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login']).then(r => {});
           form.reset();
         }, resError => {
           this.error = resError;

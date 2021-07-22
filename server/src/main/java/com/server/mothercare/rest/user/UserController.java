@@ -41,7 +41,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/getUser")
+    @GetMapping("/user")
     public ResponseEntity getUser(Principal user){
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         ResponseEntity responseEntity = null;
@@ -54,7 +54,7 @@ public class UserController {
         return responseEntity;
     }
 
-    @GetMapping("/connectUser/{username}")
+    @GetMapping("/notifier/{username}")
     public SseEmitter connect(@PathVariable String username){
         User theUser = this.userService.userbyUserName(username);
         SseEmitter sseEmitter = new SseEmitter(-1L);
@@ -66,7 +66,7 @@ public class UserController {
         return sseEmitter;
     }
 
-    @PostMapping("/addUserInfo")
+    @PostMapping("/user/info")
     public ResponseEntity addUserInfo(@RequestBody String jsonString, Principal user){
         var jsonObject = new JSONObject(jsonString);
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
@@ -96,30 +96,15 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/skipUserInfo")
+    @PostMapping("/skipping/user/info")
     public ResponseEntity skipUserInfo(@RequestBody String jsonString, Principal user){
         var jsonObject = new JSONObject(jsonString);
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{
             user1.setAdditionalInfo(true);
+            this.userService.update(user1);
         });
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @GetMapping("/babies/getIssues")
-    public ResponseEntity getBabiesIssues(Principal user){
-        Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
-        ResponseEntity responseEntity = null;
-        log.error("ok");
-        var resultUser = optionalUser.get();
-        if (user != null){
-            responseEntity = new ResponseEntity(resultUser.getBabyIssues(), HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity(HttpStatus.CONFLICT);
-        }
-        return responseEntity;
-    }
-
-
 
 }

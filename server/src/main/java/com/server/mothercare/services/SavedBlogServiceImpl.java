@@ -5,23 +5,27 @@ import com.server.mothercare.entities.post.Blog;
 import com.server.mothercare.entities.post.SavedBlog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class SavedBlogServiceImpl implements SavedBlogService{
 
+    private SavedBlogDAO savedBlogDAO;
+
     @Autowired
-    private SavedBlogDAO savedBlogDao;
+    public SavedBlogServiceImpl(SavedBlogDAO savedBlogDAO){
+        this.savedBlogDAO = savedBlogDAO;
+    }
 
     @Override
-    @Transactional
     public boolean bommarkBlog(SavedBlog savedBlog) {
         boolean saved = false;
         try {
             savedBlog.setId(0);
-            savedBlogDao.save(savedBlog);
+            savedBlogDAO.save(savedBlog);
             saved = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -30,11 +34,10 @@ public class SavedBlogServiceImpl implements SavedBlogService{
     }
 
     @Override
-    @Transactional
     public boolean unBommarkBlog(SavedBlog savedBlog) {
         boolean deleted = false;
         try {
-            savedBlogDao.delete(savedBlog);
+            savedBlogDAO.delete(savedBlog);
             deleted = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -45,6 +48,6 @@ public class SavedBlogServiceImpl implements SavedBlogService{
     @Override
     @Transactional
     public List<Blog> userBommarks(String userName) {
-        return savedBlogDao.getUserBommarks(userName);
+        return savedBlogDAO.getUserBommarks(userName);
     }
 }

@@ -8,24 +8,67 @@
           </div>
         </div>
         <ul class="list-group" style="width: 90%; margin-top: 20px" *ngIf="tab == 0">
-          <li class="list-group-item " style="font-weight: bold; font-size: x-large;color: #0062E6">Upcoming events <i class="fa fa-calendar fa-1x"></i></li>
-          <li *ngFor="let event of upcomingEvents" class="list-group-item text-right">
-            <div fxLayout="column" fxLayoutAlign="5px">
-              <p><span class="pull-left"><strong>{{event.title}} </strong></span>{{event.description}}</p>
-              <p class="text-left"> {{event.startDate}}</p>
-            </div>
-          </li>
+          <li class="list-group-item "><a style="font-weight: bold; font-size: x-large;color: #0062E6; cursor: pointer; padding-right: 10px" (click)="showList('events')">Upcoming events</a><i style="color: #0062E6" class="fa fa-calendar fa-2x"></i></li>
+
+          <mat-accordion *ngFor="let event of upcomingEvents" class="list-group-item" style="width: 100%;" fxFlex>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title class="mx-auto" style="position: center; font-weight: bold; font-size: large">
+                  <div fxLayout="row" >
+                    <span *ngIf="event.title == 'Medication time'"><i class="fa fa-medkit " aria-hidden="true" style="margin-right: 5px"></i></span>
+                    <span *ngIf="event.title == 'Doctor visit'"><i class="fa fa-user-md " aria-hidden="true" style="margin-right: 5px"></i></span>
+                    <span *ngIf="event.title == 'Memory'"><i class="fa fa-birthday-cake " aria-hidden="true" style="margin-right: 5px"></i></span>
+                    {{event.title}}
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div fxLayout="column">
+                <p class="pull-left" style="text-align: left; font-weight: bold; color: #0062E6">
+                  Description : {{event.description}}
+                </p>
+                <p class="pull-left" style="text-align: left; font-weight: bold; color: #0062E6">
+                  <span style="padding-right: 20px; font-weight: bold">Start Date :</span>{{event.startDate}}
+                </p>
+                <p class="pull-left" style="text-align: left; font-weight: bold; color: #0062E6">
+                  <span style="padding-right: 20px; font-weight: bold">End Date :</span> {{event.endDate}}
+                </p>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
 
         </ul>
 
-        <ul class="list-group" style="width: 90%; padding-top: 20px" *ngIf="tab == 1">
-          <li class="list-group-item " style="font-weight: bold; font-size: x-large;color: #0062E6">Baby Issues <i class="fa fa-bomb" aria-hidden="true"></i>
+        <ul class="list-group" style="width: 90%; padding-top: 20px" *ngIf="tab == 1" fxLayout="column">
+          <li class="list-group-item " >
+            <a style="font-weight: bold; font-size: x-large;color: #0062E6; padding-right: 10px;cursor: pointer" (click)="showList('issues')">Baby Issues</a>
+            <i style="color: #0062E6" class="fa fa-bomb fa-2x" aria-hidden="true"></i>
           </li>
-          <li *ngFor="let issue of babyIssues" class="list-group-item text-right">
-            <p style="text-align: left; font-weight: bold">{{issue.description + " " +issue.sensorRead.value}}</p>
-            <p class="pull-right">{{issue.sensorRead.time}}</p>
-          </li>
+            <mat-accordion *ngFor="let issue of recentBabyIssues" class="list-group-item" style="width: 100%">
+              <mat-expansion-panel >
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="mx-auto" style="position: center; font-weight: bold; font-size: large">
+                    <div fxLayout="row" >
+                      <span><i class="fa fa-child" aria-hidden="true" style="margin-right: 5px"></i></span>
+                      <i class="fas fa-baby"></i>
 
+
+                      {{issue.babyName}}
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div fxLayout="column">
+                  <p class="pull-left" style="text-align: left; font-weight: bold; color: #0062E6">
+                    Description : {{issue.description}}
+                  </p>
+                  <p class="pull-left" style="text-align: left; font-weight: bold; color: #0062E6">
+                    <span style="padding-right: 20px; font-weight: bold">Read :</span>{{issue.sensorRead.value}}
+                  </p>
+                  <p class="pull-left" style="text-align: left; font-weight: bold; color: #0062E6">
+                    <span style="padding-right: 20px; font-weight: bold">Date :</span> {{issue.sensorRead.time}}
+                  </p>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
         </ul>
         <br>
       </div>

@@ -31,7 +31,5 @@ public class MyCorsFilter extends OncePerRequestFilter {
     }
 
     @Override
-    public void destroy() {
-
-    }
+    public void destroy() {}
 }

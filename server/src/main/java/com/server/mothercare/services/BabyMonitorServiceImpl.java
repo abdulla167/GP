@@ -10,17 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 @Service
 @Slf4j
-@Transactional
 public class BabyMonitorServiceImpl implements BabyMonitorService{
     Hashtable<Long,List<DeviceUsersSse>> deviceUsers = new Hashtable<>();
 
@@ -39,15 +37,12 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
     }
 
     @Override
-    public void sendDataToUsers(JSONObject vitalSignReads) {
-
-    }
-
-    @Override
     public Hashtable<Long, List<DeviceUsersSse>> getEmitters() {
         return deviceUsers;
     }
 
+    @Override
+    @Transactional
     public void connectDevice(long id){
         this.deviceDAO.findById(id).ifPresentOrElse(device -> {
             this.deviceUsers.putIfAbsent(id, new ArrayList<>());
@@ -61,6 +56,7 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
     }
 
     @Override
+    @Transactional
     public void disconnectDevice(long id){
         this.deviceDAO.findById(id).ifPresentOrElse(device -> {
             this.deviceUsers.remove(id);
@@ -73,6 +69,7 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
     }
 
     @Override
+    @Transactional
     public int subscribeDevice(SseEmitter emitter, Long id){
         int connectedDevice = 0;
         Optional<MonitoringDevice> device = this.deviceDAO.findById(id);
@@ -90,74 +87,80 @@ public class BabyMonitorServiceImpl implements BabyMonitorService{
         return connectedDevice;
     }
 
+
     @Override
-    public void pushNewData(JSONObject json){
+    @Transactional
+    public void saveSensorRead(JSONObject json){
         Long id = json.getLong("deviceId");
         this.deviceDAO.findById(id).ifPresentOrElse(device -> {
             this.deviceUsers.putIfAbsent(id, new ArrayList<>());
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.execute(()->{
-                var users = this.deviceUsers.get(id);
-                if (users.size() > 0){
-                    var username = users.get(0).getUsername();
-                    var optionalUser = this.userDAO.getUserbyUserName(username);
-                    optionalUser.ifPresent(user1 -> {
-                        boolean issueFlag = false;
-                        var babyIssues = user1.getBabyIssues();
-                        TempRead tempRead = new TempRead(json.getDouble("tempRead"), new Date());
-                        PositionRead positionRead = new PositionRead(json.getDouble("positionRead"), new Date());
-                        HeartRateRead heartRateRead = new HeartRateRead(json.getDouble("heartrateRead"), new Date());
-                        SPO2Read spo2Read = new SPO2Read(json.getDouble("spo2Read"), new Date());
-                        SensorsReads sensorsReads = new SensorsReads(tempRead, spo2Read, heartRateRead, positionRead);
-                        if (36.1 > tempRead.getValue() || tempRead.getValue() > 37.9){
-                            var issue = new BabyIssue("Something wrong with : " + device.getBabyName() + "temperature",
-                                    new SensorRead(tempRead.getValue(), tempRead.getTime()), device.getBabyName());
-                            babyIssues.add(issue);
-                            issueFlag = true;
-                        }
-                        if (70 > heartRateRead.getValue() || 160 < heartRateRead.getValue()){
-                            var issue = new BabyIssue("Something wrong with : " + device.getBabyName() + "heart rate",
-                                    new SensorRead(heartRateRead.getValue(), heartRateRead.getTime()), device.getBabyName());
-                            babyIssues.add(issue);
-                            issueFlag = true;
-                        }
-                        if (spo2Read.getValue() < 97){
-                            var issue = new BabyIssue("Something wrong with : " + device.getBabyName() + "SPO2",
-                                    new SensorRead(spo2Read.getValue(), spo2Read.getTime()), device.getBabyName());
-                            babyIssues.add(issue);
-                            issueFlag = true;
-                        }
-                        device.getSpo2Reads().add(spo2Read);
-                        device.getHeartRateReads().add(heartRateRead);
-                        device.getTempReads().add(tempRead);
-                        device.getPositionReads().add(positionRead);
-                        deviceDAO.save(device);
-                        userDAO.save(user1);
-                        log.error("ok");
+            var users = this.deviceUsers.get(id);
+            if (users.size() > 0){
+                var username = users.get(0).getUsername();
+                var optionalUser = this.userDAO.getUserbyUserName(username);
+                optionalUser.ifPresent(user1 -> {
+                    boolean issueFlag = false;
+                    var babyIssues = user1.getBabyIssues();
+                    TempRead tempRead = new TempRead(json.getDouble("tempRead"), new Date());
+                    PositionRead positionRead = new PositionRead(json.getDouble("positionRead"), new Date());
+                    HeartRateRead heartRateRead = new HeartRateRead(json.getDouble("heartrateRead"), new Date());
+                    SPO2Read spo2Read = new SPO2Read(json.getDouble("spo2Read"), new Date());
+                    SensorsReads sensorsReads = new SensorsReads(tempRead, spo2Read, heartRateRead, positionRead);
+                    if (36.1 > tempRead.getValue() || tempRead.getValue() > 37.9){
+                        var issue = new BabyIssue("Something wrong with temperature",
+                                new SensorRead(tempRead.getValue(), tempRead.getTime()), device.getBabyName());
+                        babyIssues.add(issue);
+                        issueFlag = true;
+                    }
+                    if (70 > heartRateRead.getValue() || 160 < heartRateRead.getValue()){
+                        var issue = new BabyIssue("Something wrong with heart rate",
+                                new SensorRead(heartRateRead.getValue(), heartRateRead.getTime()), device.getBabyName());
+                        babyIssues.add(issue);
+                        issueFlag = true;
+                    }
+                    if (spo2Read.getValue() < 97){
+                        var issue = new BabyIssue("Something wrong with blood oxygen",
+                                new SensorRead(spo2Read.getValue(), spo2Read.getTime()), device.getBabyName());
+                        babyIssues.add(issue);
+                        issueFlag = true;
+                    }
+                    device.getSpo2Reads().add(spo2Read);
+                    device.getHeartRateReads().add(heartRateRead);
+                    device.getTempReads().add(tempRead);
+                    device.getPositionReads().add(positionRead);
+                    deviceDAO.save(device);
+                    userDAO.save(user1);
+                    if (issueFlag == true){
+                        this.notifyWithBabyIssue(user1.getUserId());
+                    }
+                    this.notifyOnlineUser(id, sensorsReads);
+                });
+            }
+        }, ()-> new Exception("This device is not found"));
+    }
 
-                        if (issueFlag == true){
-                            try {
-                                this.notificationService.notifyConnectedDevice(user1.getUserId(), "baby_issue");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        for (DeviceUsersSse deviceUsersSse: deviceUsers.get(id)) {
-                            try {
-                                deviceUsersSse.getUsername();
-                                deviceUsersSse.getEmitters().send(SseEmitter.event().data(sensorsReads));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-        });
-        executor.shutdown();
-    }, ()-> new Exception("This device is not found"));
+
+    private void notifyWithBabyIssue(Long userId){
+        try {
+            this.notificationService.notifyConnectedDevice(userId, "baby_issue");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void notifyOnlineUser(Long id, SensorsReads sensorsReads){
+        for (DeviceUsersSse deviceUsersSse: deviceUsers.get(id)) {
+            try {
+                deviceUsersSse.getUsername();
+                deviceUsersSse.getEmitters().send(SseEmitter.event().data(sensorsReads));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
+    @Transactional
     public void addDevice(MonitoringDevice device){
         this.deviceDAO.save(device);
     }

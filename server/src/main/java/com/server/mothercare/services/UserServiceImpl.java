@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@Transactional
 public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
@@ -21,7 +22,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public User registerUser(User theUser) {
         theUser.setUserId(0);
         return this.userDAO.save(theUser);
@@ -35,13 +35,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public User userbyUserName(String theUserName) {
         return userDAO.userbyUserName(theUserName);
     }
 
     @Override
-    @Transactional
     public User update(User thUser) {
         return userDAO.save(thUser);
     }

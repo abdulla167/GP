@@ -63,7 +63,7 @@ export class TempChartComponent implements OnInit {
     }
   };
 
-  constructor(private sensorService : DeviceService, public dialogRef: MatDialogRef<TempChartComponent>,
+  constructor(private sensorService: DeviceService, public dialogRef: MatDialogRef<TempChartComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {

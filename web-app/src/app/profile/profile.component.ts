@@ -1,13 +1,14 @@
-import {Component, OnInit, ViewEncapsulation} from "@angular/core";
-import {UserService} from "../services/user.service";
-import {User} from "../models/user.model";
-import {MatDialog} from "@angular/material/dialog";
-import {AdditionalInfoComponent} from "../auth/additional-info/additional-info.component";
-import {EventsService} from "../services/events.service";
-import {Router} from "@angular/router";
-import {TokenService} from "../services/Token.service";
-import {EventModel} from "../models/event.model";
-import {DeviceService} from "../services/device-service";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {UserService} from '../services/user.service';
+import {User} from '../models/user.model';
+import {MatDialog} from '@angular/material/dialog';
+import {AdditionalInfoComponent} from '../auth/additional-info/additional-info.component';
+import {EventsService} from '../services/events.service';
+import {Router} from '@angular/router';
+import {TokenService} from '../services/Token.service';
+import {EventModel} from '../models/event.model';
+import {DeviceService} from '../services/device-service';
+import {ListItemsComponent} from './list-items/list-items.component';
 
 @Component({
   selector: 'user-profile',
@@ -16,31 +17,30 @@ import {DeviceService} from "../services/device-service";
   encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements  OnInit{
-  mainPage : string = 'about';
+  mainPage = 'about';
   pregnancyAccomplishment = null;
-  theUser : User;
-  profileImg : any = "../../assets/images/newimg2.jpeg";
-  selectedFile: File;
+  theUser: User;
+  profileImg: any = '../../assets/images/newimg2.jpeg';
   message: string;
   imageName: any;
-  calender: any = [{name : 'First task', status : true}, {name : 'Second task', status : false}];
-  tab : number = 0;
-  upcomingEvents : EventModel[] = []
-  babyIssues : any = []
+  tab = 0;
+  upcomingEvents: EventModel[] = [];
+  babyIssues: any = [];
+  recentBabyIssues: any = [];
 
-  constructor(public userService :UserService, private dialog: MatDialog, private eventService : EventsService,
-              private tokenService : TokenService, private router : Router, private deviceService : DeviceService)
+  constructor(public userService: UserService, private dialog: MatDialog, private eventService: EventsService,
+              private tokenService: TokenService, private router: Router, private deviceService: DeviceService)
   {}
 
   updateProfileImg(event){
-    if(!event.target.files[0] || event.target.files[0].length == 0) {
+    if (!event.target.files[0] || event.target.files[0].length == 0) {
       return;
     }
-    let mimeType = event.target.files[0].type;
+    const mimeType = event.target.files[0].type;
     if (mimeType.match(/image\/*/) == null) {
       return;
     }
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     this.userService.saveProfileImg(event.target.files[0]).subscribe((response) => {
         if (response.status === 200) {
@@ -62,11 +62,11 @@ export class ProfileComponent implements  OnInit{
     } else {
       this.eventService.addedEvents.subscribe(data => {
         this.upcomingEvents = [...this.eventService.upcomingEvents];
-      })
+      });
       this.userService.getUser().subscribe(resp => {
         this.userService.theUser = resp.body;
         this.theUser = this.userService.theUser;
-        let pregnancyDate = this.userService.theUser.pregnancyDate;
+        const pregnancyDate = this.userService.theUser.pregnancyDate;
         if (this.userService.theUser.additionalInfo == false){
           const dialogConfig = {
             autoFocus : true,
@@ -75,31 +75,62 @@ export class ProfileComponent implements  OnInit{
           this.dialog.open(AdditionalInfoComponent, dialogConfig);
         }
         if (pregnancyDate != null){
-          let currentDate = new Date();
-          let dateOfPregnancy = new Date(pregnancyDate);
-          let dateOfbirth = new Date(dateOfPregnancy.getTime() + 23328000000);
-          let diff = Math.ceil(Math.abs((currentDate.getTime() - dateOfPregnancy.getTime())/ (1000 * 3600 * 24)));
-          let diff2 = Math.ceil(Math.abs( (dateOfbirth.getTime() - dateOfPregnancy.getTime()) / (1000 * 3600 * 24)));
+          const currentDate = new Date();
+          const dateOfPregnancy = new Date(pregnancyDate);
+          const dateOfbirth = new Date(dateOfPregnancy.getTime() + 23328000000);
+          const diff = Math.ceil(Math.abs((currentDate.getTime() - dateOfPregnancy.getTime()) / (1000 * 3600 * 24)));
+          const diff2 = Math.ceil(Math.abs( (dateOfbirth.getTime() - dateOfPregnancy.getTime()) / (1000 * 3600 * 24)));
           this.pregnancyAccomplishment = Math.round((diff / diff2) * 100 * 100) / 100;
         }
-      })
+      });
       this.updateBabiesIssues();
       this.deviceService.babiesIssues.subscribe(value => {
         this.updateBabiesIssues();
-      })
+      });
     }
   }
 
-  updateBabiesIssues(){
+  updateBabiesIssues(): void{
     this.deviceService.getBabiesIssues().subscribe(resp => {
-      let issues : any = resp.body;
-      console.log(resp)
-      console.log("issues :  "+resp.body)
-      this.babyIssues = []
-      for (let issue of issues){
-        issue.sensorRead.time = new Date(issue.sensorRead.time).toDateString();
+      const issues: any = resp.body;
+      this.babyIssues = [];
+      for (const issue of issues){
+        issue.sensorRead.time = new Date(issue.sensorRead.time).toLocaleString();
       }
       this.babyIssues = [...issues];
-    })
+      this.updateRecentBabyIssues();
+    });
+  }
+
+  showList(listName: string): void{
+    let dialogConfig = null;
+    if (listName === 'events'){
+      dialogConfig = {
+        autoFocus : true,
+        data : {
+          type : listName,
+          list : this.eventService.upcomingEvents
+        }
+      };
+    } else {
+      dialogConfig = {
+        autoFocus : true,
+        data : {
+          type : listName,
+          list : this.babyIssues
+        }
+      };
+    }
+    this.dialog.open(ListItemsComponent, dialogConfig);
+  }
+
+  updateRecentBabyIssues(): void{
+    this.babyIssues.sort((o1, o2) => {
+      if (o1.sensorRead.time > o2.sensorRead.time) {    return -1; }
+      else if (o1.sensorRead.time < o2.sensorRead.time) { return  1; }
+      else { return  0; }
+    });
+    this.recentBabyIssues = [];
+    this.recentBabyIssues = this.babyIssues.slice(0, 4);
   }
 }

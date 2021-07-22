@@ -159,3 +159,17 @@ a:hover {
   top: 5%;
   left: 5%;
 }
+
+.white {
+  color: white;
+}
+
+.graywhite{
+  color: #a09c9c;
+}
+
+
+a:active{
+  color : red;
+  background-color: black;
+}
