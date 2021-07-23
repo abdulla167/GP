@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Subject} from "rxjs";
-import {EventsService} from "../../../services/events.service";
-import {addDays, endOfMonth, subDays} from "date-fns";
-import {CalendarEvent} from "angular-calendar";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {EventModel} from "../../../models/event.model";
+import {Subject} from 'rxjs';
+import {EventsService} from '../../../services/events.service';
+import {addDays, endOfMonth, subDays} from 'date-fns';
+import {CalendarEvent} from 'angular-calendar';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {EventModel} from '../../../models/event.model';
 
 @Component({
   selector: 'app-event-choice',
@@ -13,11 +13,11 @@ import {EventModel} from "../../../models/event.model";
 })
 export class EventChoiceComponent implements OnInit {
   date = new Date();
-  event : EventModel = new EventModel();
-  actionType : string;
-  reminder : string = "no";
+  event: EventModel = new EventModel();
+  actionType: string;
+  reminder = 'no';
 
-  constructor(public eventsService : EventsService,  public dialogRef : MatDialogRef<EventChoiceComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
+  constructor(public eventsService: EventsService,  public dialogRef: MatDialogRef<EventChoiceComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
     if (this.data.num == 'add'){
@@ -38,7 +38,7 @@ export class EventChoiceComponent implements OnInit {
 
 
   addEvent(){
-    console.log("add event : " + this.event.title);
+    console.log('add event : ' + this.event.title);
     this.eventsService.addEvent(this.event, this.reminder);
     this.onClose();
   }
@@ -59,11 +59,11 @@ export class EventChoiceComponent implements OnInit {
   }
 
   resetEvent(){
-    this.eventsService.event.title ='';
-    this.eventsService.event.startDate = new Date();
-    this.eventsService.event.endDate = new Date();
-    this.eventsService.event.primaryColor ='';
-    this.eventsService.event.secondaryColor='';
+    this.eventsService.event.title = '';
+    this.eventsService.event.startDate = new Date().toLocaleString();
+    this.eventsService.event.endDate = new Date().toLocaleString();
+    this.eventsService.event.primaryColor = '';
+    this.eventsService.event.secondaryColor = '';
     this.eventsService.event.description = '';
     this.eventsService.event.image = null;
   }

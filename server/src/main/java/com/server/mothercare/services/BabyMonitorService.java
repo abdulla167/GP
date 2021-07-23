@@ -9,7 +9,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 public interface BabyMonitorService {
-    public void sendDataToUsers(JSONObject vitalSignReads);
 
     public Hashtable<Long, List<DeviceUsersSse>> getEmitters();
 
@@ -19,8 +18,7 @@ public interface BabyMonitorService {
 
     public int subscribeDevice(SseEmitter emitter, Long id);
 
-    public void pushNewData(JSONObject json);
-
+    public void saveSensorRead(JSONObject json);
 
     public void addDevice(MonitoringDevice device);
 }

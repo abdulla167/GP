@@ -3,13 +3,13 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {TempChartComponent} from './temp-chart/temp-chart.component';
 import {HeartRateChartComponent} from './heart-rate-chart/heart-rate-chart.component';
 import {RespirChartComponent} from './respir-chart/respir-chart.component';
-import {DeviceService} from "../../services/device-service";
-import {Observable, Subscription} from "rxjs";
-import {NotificationService} from "../../services/notification.service";
-import {DeviceModel} from "../../models/device.model";
-import {copyArrayItem} from "@angular/cdk/drag-drop";
-import {AdditionalInfoComponent} from "../../auth/additional-info/additional-info.component";
-import {UserService} from "../../services/user.service";
+import {DeviceService} from '../../services/device-service';
+import {Observable, Subscription} from 'rxjs';
+import {NotificationService} from '../../services/notification.service';
+import {DeviceModel} from '../../models/device.model';
+import {copyArrayItem} from '@angular/cdk/drag-drop';
+import {AdditionalInfoComponent} from '../../auth/additional-info/additional-info.component';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'baby-monitor',
@@ -17,59 +17,62 @@ import {UserService} from "../../services/user.service";
   styleUrls: ['./baby-monitor.component.css']
   })
 export class BabyMonitorComponent implements OnInit {
-  subscriptions : Subscription[] = [];
-  devices : DeviceModel[] = []
+  subscriptions: Subscription[] = [];
+  devices: DeviceModel[] = [];
   heartRateRead = 0;
   tempRead = 0 ;
   spo2Read = 0;
+  positions: string[] = ['../../../assets/images/front.jpg', 'down-position', 'left-position', 'right-position'];
+  currentPositions: string[] = [];
 
 
-  constructor(private dialog: MatDialog, private  sensorService: DeviceService, private notificationService: NotificationService, public zone: NgZone, private userService : UserService) {}
+  constructor(private dialog: MatDialog, private  sensorService: DeviceService, private notificationService: NotificationService,
+              public zone: NgZone, private userService: UserService) {}
 
-  ngOnInit() {
+  ngOnInit(): void{
     this.updateDevice();
     this.notificationService.subscribeForNotification().subscribe(data => {
-      if (data == true){
+      if (data === true){
         while (this.notificationService.notifications.length > 0){
-          let message = this.notificationService.notifications.pop();
+          const message = this.notificationService.notifications.pop();
           switch (message){
-            case "connected":
+            case 'connected':
               this.updateDevice();
               break;
-            case "disconnected":
+            case 'disconnected':
               this.updateDevice();
               break;
-            case "baby_issue":
+            case 'baby_issue':
               this.sensorService.babiesIssues.next(true);
               break;
           }
         }
       }else {
-        console.log("error in notification")
+        console.log('error in notification');
       }
-    })
+    });
   }
 
-  updateDevice(){
+  updateDevice(): void{
     this.sensorService.getDevices().subscribe(resp => {
-      let devices = resp.body;
-      this.sensorService.monitoringDevices = []
-      this.devices = []
-      for (let deviceNum in devices){
-        let newDevice = new DeviceModel();
+      const devices = resp.body;
+      this.sensorService.monitoringDevices = [];
+      this.devices = [];
+      for (const deviceNum in devices){
+        const newDevice = new DeviceModel();
         newDevice.deviceId = devices[deviceNum].deviceId;
         newDevice.babyName = devices[deviceNum].babyName;
         this.sensorService.monitoringDevices.push(newDevice);
         this.devices.push(newDevice);
+        this.currentPositions.push('');
       }
-      console.log(this.devices)
     });
-    setTimeout(() =>{
-      this.zone.run(() =>{
-        let observables = this.sensorService.connectDevices();
-        for (let observable in observables){
-          let subscription = observables[observable].subscribe(data =>{
-            let dataJson = JSON.parse(data)
+    setTimeout(() => {
+      this.zone.run(() => {
+        const observables = this.sensorService.connectDevices();
+        for (const observable in observables){
+          const subscription = observables[observable].subscribe(data => {
+            const dataJson = JSON.parse(data);
             this.sensorService.monitoringDevices[observable].tempReads.tempRead.push(dataJson.tempRead.value);
             this.sensorService.monitoringDevices[observable].tempReads.readTime.push(dataJson.tempRead.time);
             this.tempRead = dataJson.tempRead.value;
@@ -78,20 +81,20 @@ export class BabyMonitorComponent implements OnInit {
             this.heartRateRead = dataJson.heartRateRead.value;
             this.sensorService.monitoringDevices[observable].spo2Reads.spo2Read.push(dataJson.spo2Read.value);
             this.sensorService.monitoringDevices[observable].spo2Reads.readTime.push(dataJson.spo2Read.time);
+            const position = dataJson.spo2Read.value;
             this.spo2Read = dataJson.spo2Read.value;
             this.sensorService.graphsSubject.next(observable);
-          })
+          });
           this.subscriptions.push(subscription);
         }
-      })
+      });
     }, 50);
-    for (let device of this.sensorService.monitoringDevices){
-      this.devices.push(device)
+    for (const device of this.sensorService.monitoringDevices){
+      this.devices.push(device);
     }
   }
 
-  addNewDevice(deviceId, babyName){
-    console.log("ok")
+  addNewDevice(deviceId, babyName): void{
     this.sensorService.addDevice(deviceId, babyName).subscribe((response) => {
       if (response.status === 200) {
         console.log('Device added successfully');
@@ -102,7 +105,7 @@ export class BabyMonitorComponent implements OnInit {
     });
   }
 
-  showGraph(graphName: string, deviceId : number): void{
+  showGraph(graphName: string, deviceId: number): void{
     const dialogConfig = {
       autoFocus : true,
       data : {

@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       .subscribe(( response) => {
         if (response.status === 200 ){
           console.log(response.body);
-          this.tokenService.saveToken( response.body['access_token']);
+          this.tokenService.setAccessToken(( response.body['access_token']));
           this.userService.getUser().subscribe((response) => {
             console.log(response.body);
           });

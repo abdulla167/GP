@@ -27,30 +27,33 @@ import java.util.zip.Inflater;
 @RestController
 public class TimelineController {
 
-    @Autowired
     private CommentService commentService;
-    @Autowired
+
     private BlogService blogService;
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private SseService sseService;
 
-    @Autowired
     private LikeService likeService;
 
-    @Autowired
     private SavedBlogService savedBlogService;
 
-
-
+    @Autowired
+    public TimelineController(CommentService commentService, BlogService blogService, UserService userService,
+                              SseService sseService, LikeService likeService, SavedBlogService savedBlogService){
+        this.commentService = commentService;
+        this.blogService = blogService;
+        this.userService = userService;
+        this.sseService = sseService;
+        this.likeService = likeService;
+        this.savedBlogService = savedBlogService;
+    }
 
     @PostMapping(value = "/blog/save")
     private ResponseEntity saveBlog(@RequestBody Blog theBlog,
-                                    Principal userPrincipal
-    ){
+                                    Principal userPrincipal)
+    {
         User user= userService.userbyUserName(userPrincipal.getName());
         theBlog.setUser(user);
         theBlog.setDate(new Timestamp(new Date().getTime()));

@@ -102,6 +102,7 @@ public class UserController {
         Optional<User> optionalUser = this.userService.getUserbyUserName(user.getName());
         optionalUser.ifPresent(user1 ->{
             user1.setAdditionalInfo(true);
+            this.userService.update(user1);
         });
         return new ResponseEntity(HttpStatus.OK);
     }

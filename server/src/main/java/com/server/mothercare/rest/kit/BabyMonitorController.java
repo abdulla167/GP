@@ -68,7 +68,7 @@ public class BabyMonitorController {
     @PostMapping("device/data")
     public void sendData(@RequestBody String data){
         JSONObject json = new JSONObject(data);
-        this.babyMonitorService.pushNewData(json);
+        this.babyMonitorService.saveSensorRead(json);
     }
 
     @GetMapping("/devices")

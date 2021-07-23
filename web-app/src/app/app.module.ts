@@ -65,6 +65,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { CommentComponent } from './timeline/blog-list/blog/blog-detail/comment/comment.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { ListItemsComponent } from './profile/list-items/list-items.component';
 
 
 
@@ -100,7 +102,8 @@ import { CommentComponent } from './timeline/blog-list/blog/blog-detail/comment/
     MyBlogsComponent,
     AllBlogsComponent,
     LogoutComponent,
-    CommentComponent
+    CommentComponent,
+    ListItemsComponent
   ],
   imports: [
     BrowserModule,
@@ -145,6 +148,7 @@ import { CommentComponent } from './timeline/blog-list/blog/blog-detail/comment/
     MatSnackBarModule,
     MatMenuModule,
     QuillModule.forRoot(),
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -18,7 +19,6 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public void notifyConnectedDevice(Long id, String message) throws IOException {
         if (this.notificationList.containsKey(id)){
-            log.info("send message to user with id : " + id);
             this.notificationList.get(id).send(message);
         }
     }
@@ -31,6 +31,5 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public void addUser(Long userId, SseEmitter sseEmitter){
         this.notificationList.putIfAbsent(userId, sseEmitter);
-        log.error("" + userId);
     }
 }
