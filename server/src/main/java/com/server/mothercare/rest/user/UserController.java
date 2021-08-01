@@ -59,6 +59,9 @@ public class UserController {
         User theUser = this.userService.userbyUserName(username);
         SseEmitter sseEmitter = new SseEmitter(-1L);
         sseEmitter.onError((error) -> {
+            sseEmitter.complete();
+        });
+        sseEmitter.onCompletion(() -> {
             this.notificationService.removeUser(theUser.getUserId());
         });
         log.error("adding user to be online with id : " + theUser.getUserId());

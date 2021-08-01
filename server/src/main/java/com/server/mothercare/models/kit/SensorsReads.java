@@ -12,5 +12,5 @@ public class SensorsReads {
     private TempRead tempRead;
     private SPO2Read spo2Read;
     private HeartRateRead heartRateRead;
-    private PositionRead positionRead;
+    private String  positionRead;
 }

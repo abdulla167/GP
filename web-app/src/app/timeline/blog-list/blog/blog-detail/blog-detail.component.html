@@ -1,27 +1,28 @@
-<mat-icon matSuffix [routerLink]="['/blog', index]" *ngIf="!newTap" (click)="closeDialog()" >open_in_new</mat-icon>
 <div class="container border" style="border-radius: 2rem" >
 
   <div class="d-flex justify-content-between p-2 px-3">
     <div class="d-flex flex-row align-items-center"> <img [src]="image" width="50" class="rounded-circle">
-      <div class="d-flex flex-column ml-2"> <span class="font-weight-bold">{{blog.user.username}}</span> <small class="text-primary">Collegues</small> </div>
+      <div class="d-flex flex-column ml-2"> <span class="font-weight-bold">{{blog.user.username}}</span> <small class="text-primary">{{blog.categories}}</small> </div>
     </div>
-    <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{ blog.date|date }}</small>
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{ blog.date|date:'short' }}</small>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" >
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openDialogCreate()" >
+        <button class="click" mat-menu-item (click)="openDialogCreate()" [disabled]="!myBlog" >
           <mat-icon>edit</mat-icon>
           <span>edit</span>
         </button>
-        <button mat-menu-item disabled>
-          <mat-icon>voicemail</mat-icon>
-          <span>Check voice mail</span>
+        <button class="click" mat-menu-item (click)="deleteBlog()"  [disabled]="!myBlog">
+          <mat-icon>delete</mat-icon>
+          <span>delete blog</span>
         </button>
-        <button mat-menu-item>
-          <mat-icon>notifications_off</mat-icon>
-          <span>Disable alerts</span>
+
+        <button class="click" mat-menu-item (click)="closeDialog()" *ngIf="!newTap" [routerLink]="['/blog', index]">
+          <mat-icon>open_in_new</mat-icon>
+          <span>new tap</span>
         </button>
+
       </mat-menu>
     </div>
   </div>

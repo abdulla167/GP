@@ -5,18 +5,23 @@ import {DeviceModel} from "../models/device.model";
 import {TokenService} from "./Token.service";
 import {catchError} from "rxjs/operators";
 import {UserInfoModel} from "../models/user-info.model";
-import {throwError} from "rxjs";
+import {Subject, throwError} from 'rxjs';
 import {BlogService} from './Blog.service';
 
 @Injectable({providedIn:"root"})
 export class UserService{
 
   theUser : any;
-  constructor(private httpClient : HttpClient, private tokenService : TokenService) {}
+
+  userReceived: Subject<boolean>;
+
+  constructor(private httpClient : HttpClient, private tokenService : TokenService) {
+    this.userReceived = new Subject();
+  }
 
   getUser(){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
     return this.httpClient.get('http://localhost:8080/user', {observe: 'response', headers}).pipe(
@@ -33,7 +38,7 @@ export class UserService{
 
   addUserInfo(userInfo: UserInfoModel){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
     console.log("request sent")
@@ -45,7 +50,7 @@ export class UserService{
 
   skipUserInfo(){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
     return this.httpClient.post('http://localhost:8080/skipping/user/info', {observe: 'response', headers}).pipe(

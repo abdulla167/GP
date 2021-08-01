@@ -1,10 +1,14 @@
 import {PostModel} from '../models/post.model';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {toString} from '@ng-bootstrap/ng-bootstrap/util/util';
+import {stringify} from 'querystring';
+import {User} from '../models/user.model';
 import {TokenService} from './Token.service';
 import {async, Subject, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-
+import {getClassName} from 'codelyzer/util/utils';
+// import {type} from 'os';
 
 @Injectable({providedIn: 'root'})
 export class PostService{
@@ -24,8 +28,9 @@ export class PostService{
   }
 
   savePost(image: FormData, post: PostModel ){
+    console.log(this.tokenService.getToken());
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
     return this.http.post('http://localhost:8080/post/save',  JSON.parse(JSON.stringify(post)) , {observe: 'response', headers: headers }).pipe(catchError(this.handleError))
@@ -41,7 +46,7 @@ export class PostService{
 
   uploadPosts(){
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken()
+      Authorization: 'Bearer ' + this.tokenService.getToken()
     };
      this.http.get('http://localhost:8080/post/get', {headers}).subscribe(
       res => {

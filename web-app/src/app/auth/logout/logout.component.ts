@@ -16,7 +16,7 @@ export class LogoutComponent implements OnInit {
   }
 
   logOut(){
-    this.tokenService.setAccessToken(null);
+    this.tokenService.saveToken(null);
     this.router.navigate(['/login']);
     this.dialogRef.close();
   }

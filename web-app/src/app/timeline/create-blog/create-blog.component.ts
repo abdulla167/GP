@@ -19,7 +19,7 @@ export class CreateBlogComponent implements OnInit {
   file: File | null = null;
   dialogHieght;
   categories = new FormControl();
-  categoryList: string[] = ['COVID-19', 'Labor', 'Delivery', 'Breast Feeding', 'Baby', 'Exercise'];
+  categoryList: string[] = ['COVID-19', 'Pregnancy','Labor', 'Delivery', 'Breast Feeding', 'Baby', 'Exercise'];
   BlogContent: string = null;
   blogEdit: BlogModel;
   dialogRef;
@@ -127,6 +127,7 @@ export class CreateBlogComponent implements OnInit {
   }
   activateSnack(status){
     if (status === 200) {
+      this.dialogRef.close();
       this.snackBar.open('blog created suceesfully!!', 'ok', {
         duration: 2000,
         panelClass: ['green-snack']

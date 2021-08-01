@@ -17,6 +17,8 @@ export class SignupComponent implements OnInit {
   invalidConfirmPassword = false;
   isLoading = false;
   error: string = null;
+  passVisi: string = 'password';
+  confVisi: string = 'password';
 
   constructor(private authService: AuthenticationService, private router: Router) {}
 
@@ -24,6 +26,19 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     this.datepickerValue = new Date();
+  }
+
+  toggleVisibiltiy(){
+    if (this.passVisi === 'password'){
+      this.passVisi = 'text';
+    } else {
+      this.passVisi = 'password';
+    }
+    if (this.confVisi === 'password'){
+      this.confVisi = 'text';
+    } else {
+      this.confVisi = 'password';
+    }
   }
 
   onSubmitForm(form: NgForm): void{

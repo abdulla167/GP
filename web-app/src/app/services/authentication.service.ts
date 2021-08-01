@@ -4,22 +4,26 @@ import {User} from '../models/user.model';
 import {Observable, Subject} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
+import {TokenService} from './Token.service';
 
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService{
   public user = new Subject<User>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private tokenService : TokenService) {}
 
   /* [Description] : METHOD USED TO SEND POST HTTP REQUEST TO THE API TO SIGN UP NEW USER
    *                 AND RETURN OBSERVABLE WHICH YOU SHOULD SUBSCRIBE TO GET TH RESPONSE.
    * [Parameters] : User OBJECT
    * [Returns] : Observable OBJECT
    */
-
   signup(newUser: { firstName: string; lastName: string; password: string; phone: string; email: string; username: string }): Observable<any>{
     return this.http.post('http://localhost:8080/new/user', newUser).pipe(catchError(this.handleError));
+  }
+
+  confirmAccount(token: string) {
+    return this.http.get(this.tokenService.getIpAddress() + '/confirm-account?token=' + token, {observe: 'response'});
   }
 
   login(username: string, password: string): Observable<any>{

@@ -71,19 +71,56 @@ export class HeartRateChartComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
+    this.initializeGraph();
     this.graphUpdateSubscription = this.sensorService.getGraphSubject().subscribe((graphNum) => {
-      this.config.data.labels = this.sensorService.monitoringDevices[graphNum].heartRateReads.readTime;
-      this.config.data.datasets[0].data = this.sensorService.monitoringDevices[graphNum].heartRateReads.heartRateRead;
+      this.initializeGraph()
+      // let deviceIndex = this.sensorService.monitoringDevices.findIndex(device => device.deviceId == this.data.num);
+      // this.currentChart = deviceIndex;
+      // if (this.sensorService.monitoringDevices[deviceIndex].heartRateReads.heartRateRead.length > 20){
+      //   this.config.data.labels = [];
+      //   this.config.data.datasets[0].data = [];
+      //   this.myChart.update();
+      //   this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].heartRateReads.readTime.slice(-20).map(time => {
+      //     let date = new Date(time);
+      //     return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      //   });
+      //   this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].heartRateReads.heartRateRead.slice(-20);
+      //   this.myChart.update();
+      // }else {
+      //   this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].heartRateReads.readTime.map(time => {
+      //     let date = new Date(time);
+      //     return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      //   });;
+      //   this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].heartRateReads.heartRateRead;
+      //   this.myChart.update();
+      // }
       if (this.currentChart == graphNum){
         this.myChart.update();
       }
     });
-    let deviceIndex = this.sensorService.monitoringDevices.findIndex(device => device.deviceId == this.data.num);
-    this.currentChart = deviceIndex;
-    this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].heartRateReads.readTime;
-    this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].heartRateReads.heartRateRead;
-    this.myChart = new Chart('myChart', this.config);
+    // this.myChart = new Chart('myChart', this.config);
   }
 
+  initializeGraph(){
+    let deviceIndex = this.sensorService.monitoringDevices.findIndex(device => device.deviceId == this.data.num);
+    this.currentChart = deviceIndex;
+    let yAxis = this.sensorService.monitoringDevices[deviceIndex].heartRateReads.heartRateRead;
+    let xAxis = this.sensorService.monitoringDevices[deviceIndex].heartRateReads.readTime;
+    if (yAxis.length > 20){
+      this.config.data.labels = xAxis.slice(-20).map(time => {
+        let date = new Date(time);
+        return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      });
+      this.config.data.datasets[0].data = yAxis.slice(-20);
+    } else {
+      this.config.data.labels = xAxis.map(time => {
+        let date = new Date(time);
+        return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      });
+      this.config.data.datasets[0].data = yAxis;
+    }
+    this.myChart = new Chart('myChart', this.config);
+    this.myChart.update();
+  }
 
 }

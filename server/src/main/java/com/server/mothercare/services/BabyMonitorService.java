@@ -18,6 +18,8 @@ public interface BabyMonitorService {
 
     public int subscribeDevice(SseEmitter emitter, Long id);
 
+    public int unsubscribeDevice(Long id, String username);
+
     public void saveSensorRead(JSONObject json);
 
     public void addDevice(MonitoringDevice device);

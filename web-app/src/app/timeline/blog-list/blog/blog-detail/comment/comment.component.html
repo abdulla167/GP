@@ -1,6 +1,6 @@
 <div class="d-flex flex-row mb-2"> <img [src]="comment.user.profileImg||defaultImae" width="40" class="rounded-image" >
   <div class="d-flex flex-column ml-2"> <span class="name">{{comment.user.username}}</span> <small class="comment-text">{{comment.text}}</small>
-    <div class="d-flex flex-row align-items-center status"> <small >Like</small> <small (click)="hideReplies()">Reply</small> <small>Translate</small> <small>18 mins</small> </div>
+    <div class="d-flex flex-row align-items-center status"> <small class="click" (click)="hideReplies()">Reply</small>  <small class="click">{{comment.date | date}}</small> </div>
   </div>
 </div >
 <div style="margin-left: 25px; margin-right: 10px" *ngIf="showReplies">

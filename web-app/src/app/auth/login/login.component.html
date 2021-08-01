@@ -18,9 +18,13 @@
                 <i class="fa fa-user fa-2x" aria-hidden="true" style="margin-bottom: 2px"></i>
                 <input type="text" id="inputEmail" class="form-control" placeholder="Username" ngModel name="username" required autofocus>
               </div>
-              <div class="form-group">
+              <div class="form-group" class="fontpassword">
                 <i class="fa fa-unlock-alt fa-2x" aria-hidden="true" style="margin-bottom: 2px"></i>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" ngModel name="password" required>
+                <input [type]="passVis" id="inputPassword" class="form-control" placeholder="Password" ngModel name="password" required >
+                <div>
+                  <a style="cursor: pointer" (click)="toggleVisibiltiy()" *ngIf="passVis === 'text'"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                  <a style="cursor: pointer" (click)="toggleVisibiltiy()" *ngIf="passVis === 'password'"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                </div>
               </div>
               <div class="custom-control custom-checkbox mb-3">
                 <input type="checkbox" class="custom-control-input" id="customCheck1">

@@ -1,8 +1,9 @@
 package com.server.mothercare.entities.kit;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.User;
 
 import com.server.mothercare.models.kit.HeartRateRead;
-import com.server.mothercare.models.kit.PositionRead;
 import com.server.mothercare.models.kit.SPO2Read;
 import com.server.mothercare.models.kit.TempRead;
 import lombok.Data;
@@ -24,6 +25,15 @@ public class MonitoringDevice {
 
     @Column(name = "baby_name")
     private String babyName;
+
+    @Column(name = "temp_issue_flag")
+    private boolean tempIssueFlag;
+
+    @Column(name = "heartrate_issue_flag")
+    private boolean heartrateIssueFlag;
+
+    @Column(name = "spo2_issue_flag")
+    private boolean spo2IssueFlag;
 
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -50,14 +60,6 @@ public class MonitoringDevice {
     )
     @Fetch(value = FetchMode.SUBSELECT)
     private List<SPO2Read> spo2Reads;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "position_reads",
-            joinColumns = @JoinColumn(name = "deviceId")
-    )
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<PositionRead> positionReads;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")

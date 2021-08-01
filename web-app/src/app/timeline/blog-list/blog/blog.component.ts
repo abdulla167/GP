@@ -22,11 +22,35 @@ export class BlogComponent implements OnInit {
   like: LikeModel = null;
   defaultImae = '../../assets/images/default.jpg';
   image;
+  userImage;
   constructor(private sanitizer: DomSanitizer, public dialog: MatDialog, private blogService: BlogService, private userService: UserService) { }
 
   ngOnInit(): void {
+    let audio: HTMLAudioElement = new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7');
+    this.initialize();
+    this.blogService.blogNotification.subscribe((notification) => {
+      if (this.blogService.newBlogs !== notification) {
+        notification = (notification as BlogModel);
+        if (notification.id === this.blog.id) {
+          this.blog = notification;
+          audio.play();
+          console.log(notification);
+          this.initialize();
+        }
+      }
+    });
+  }
+
+
+  initialize() {
     const object = 'data:' + this.blog.image.type + ';base64,' + this.blog.image.picByte;
     this.image = this.sanitizer.bypassSecurityTrustUrl(object);
+    if (this.blog.user.profileImg !== undefined && this.blog.user.profileImg !== null ) {
+      const imageBase = 'data:' + this.blog.user.profileImg.type + ';base64,' + this.blog.user.profileImg.picByte;
+      this.userImage = this.sanitizer.bypassSecurityTrustUrl(imageBase);
+    } else {
+      this.userImage = '../../assets/images/default.jpg';
+    }
     console.log("from beginig",  this.userService.theUser.username);
     for (const like of this.blog.likes) {
       if (like.user.username ===  this.userService.theUser.username) {
@@ -36,7 +60,6 @@ export class BlogComponent implements OnInit {
         break;
       }
     }
-
   }
 
   openDialog(){
@@ -59,8 +82,8 @@ export class BlogComponent implements OnInit {
           if (response.status === 200) {
             this.likeIt = false;
             const likeIndex = this.blog.likes.indexOf(this.like);
-            this.blogService.blogs[this.index].likes.splice(likeIndex, 1);
-            this.blog = this.blogService.blogs[this.index];
+            // this.blogService.blogs[this.index].likes.splice(likeIndex, 1);
+            // this.blog = this.blogService.blogs[this.index];
             this.like = null;
           }
         });
@@ -71,22 +94,12 @@ export class BlogComponent implements OnInit {
           this.likeIt = true;
 
           this.like = response.body as LikeModel;
-          this.blogService.blogs[this.index].likes.push(this.like);
-          this.blog = this.blogService.blogs[this.index];
+          // this.blogService.blogs[this.index].likes.push(this.like);
+          // this.blog = this.blogService.blogs[this.index];
         }
       });
     }
   }
 
-  bommarkBlog(){
-    this.blogService.bommarkBlog(this.blog.id)
-      .subscribe((response) => {
-        if (response.status === 200) {
-          this.userService.theUser = (response.body as User);
 
-
-        }
-      });
-
-  }
 }

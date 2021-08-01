@@ -35,9 +35,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET,"/confirm-account").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/notifier/{username}").permitAll()
                 .mvcMatchers(HttpMethod.POST,"/device/data").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/device/{deviceId}/*").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/device/{deviceId}/subscription").permitAll()
                 .mvcMatchers(HttpMethod.POST,"/device/{deviceId}/*").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/blog/updates").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/new/user").permitAll()
                 .anyRequest().authenticated().and().csrf().disable();
     }
 }

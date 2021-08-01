@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {UserService} from '../services/user.service';
 import {User} from '../models/user.model';
 import {MatDialog} from '@angular/material/dialog';
@@ -9,6 +9,8 @@ import {TokenService} from '../services/Token.service';
 import {EventModel} from '../models/event.model';
 import {DeviceService} from '../services/device-service';
 import {ListItemsComponent} from './list-items/list-items.component';
+import {Subject} from 'rxjs';
+
 
 @Component({
   selector: 'user-profile',
@@ -29,8 +31,30 @@ export class ProfileComponent implements  OnInit{
   recentBabyIssues: any = [];
 
   constructor(public userService: UserService, private dialog: MatDialog, private eventService: EventsService,
-              private tokenService: TokenService, private router: Router, private deviceService: DeviceService)
+              private tokenService: TokenService, private router: Router, private deviceService: DeviceService, private detector : ChangeDetectorRef)
   {}
+
+  ngOnInit(): void {
+    if (this.tokenService.getToken() == null){
+      this.router.navigate(['/login']);
+    } else {
+      this.getUser();
+      this.updateBabiesIssues();
+      this.eventService.addedEvents.subscribe(data => {
+        this.upcomingEvents = [...this.eventService.upcomingEvents];
+      });
+      this.deviceService.babiesIssues.subscribe(babyName => {
+        this.deviceService.getLastIssue(babyName).subscribe(resp => {
+          console.log(resp.body);
+          resp.body.sensorRead.time = new Date(resp.body.sensorRead.time).toLocaleString();
+          this.recentBabyIssues.unshift(resp.body);
+          this.recentBabyIssues.splice(-1);
+          this.recentBabyIssues = [...this.recentBabyIssues]
+        });
+      });
+    }
+  }
+
 
   updateProfileImg(event){
     if (!event.target.files[0] || event.target.files[0].length == 0) {
@@ -56,38 +80,28 @@ export class ProfileComponent implements  OnInit{
     };
   }
 
-  ngOnInit(): void {
-    if (this.tokenService.getAccessToken() == null){
-      this.router.navigate(['/login']);
-    } else {
-      this.eventService.addedEvents.subscribe(data => {
-        this.upcomingEvents = [...this.eventService.upcomingEvents];
-      });
-      this.userService.getUser().subscribe(resp => {
-        this.userService.theUser = resp.body;
-        this.theUser = this.userService.theUser;
-        const pregnancyDate = this.userService.theUser.pregnancyDate;
-        if (this.userService.theUser.additionalInfo == false){
-          const dialogConfig = {
-            autoFocus : true,
-            disableClose : true
-          };
-          this.dialog.open(AdditionalInfoComponent, dialogConfig);
-        }
-        if (pregnancyDate != null){
-          const currentDate = new Date();
-          const dateOfPregnancy = new Date(pregnancyDate);
-          const dateOfbirth = new Date(dateOfPregnancy.getTime() + 23328000000);
-          const diff = Math.ceil(Math.abs((currentDate.getTime() - dateOfPregnancy.getTime()) / (1000 * 3600 * 24)));
-          const diff2 = Math.ceil(Math.abs( (dateOfbirth.getTime() - dateOfPregnancy.getTime()) / (1000 * 3600 * 24)));
-          this.pregnancyAccomplishment = Math.round((diff / diff2) * 100 * 100) / 100;
-        }
-      });
-      this.updateBabiesIssues();
-      this.deviceService.babiesIssues.subscribe(value => {
-        this.updateBabiesIssues();
-      });
-    }
+  getUser(): void{
+    this.userService.getUser().subscribe(resp => {
+      this.userService.theUser = resp.body;
+      this.userService.userReceived.next(true);
+      this.theUser = this.userService.theUser;
+      const pregnancyDate = this.userService.theUser.pregnancyDate;
+      if (this.userService.theUser.additionalInfo == false){
+        const dialogConfig = {
+          autoFocus : true,
+          disableClose : true
+        };
+        this.dialog.open(AdditionalInfoComponent, dialogConfig);
+      }
+      if (pregnancyDate != null){
+        const currentDate = new Date();
+        const dateOfPregnancy = new Date(pregnancyDate);
+        const dateOfbirth = new Date(dateOfPregnancy.getTime() + 23328000000);
+        const diff = Math.ceil(Math.abs((currentDate.getTime() - dateOfPregnancy.getTime()) / (1000 * 3600 * 24)));
+        const diff2 = Math.ceil(Math.abs( (dateOfbirth.getTime() - dateOfPregnancy.getTime()) / (1000 * 3600 * 24)));
+        this.pregnancyAccomplishment = Math.round((diff / diff2) * 100 * 100) / 100;
+      }
+    });
   }
 
   updateBabiesIssues(): void{
@@ -130,7 +144,10 @@ export class ProfileComponent implements  OnInit{
       else if (o1.sensorRead.time < o2.sensorRead.time) { return  1; }
       else { return  0; }
     });
+    this.babyIssues
+    this.babyIssues = [...this.babyIssues]
     this.recentBabyIssues = [];
-    this.recentBabyIssues = this.babyIssues.slice(0, 4);
+    this.recentBabyIssues = [...this.babyIssues.slice(0, 4)];
+    this.detector.detectChanges();
   }
 }

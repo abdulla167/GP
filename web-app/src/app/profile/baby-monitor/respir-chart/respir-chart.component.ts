@@ -69,17 +69,54 @@ export class RespirChartComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
+    this.initializeGraph();
     this.graphUpdateSubscription = this.sensorService.getGraphSubject().subscribe((graphNum) => {
-      this.config.data.labels = this.sensorService.monitoringDevices[graphNum].spo2Reads.readTime;
-      this.config.data.datasets[0].data = this.sensorService.monitoringDevices[graphNum].spo2Reads.spo2Read;
+      this.initializeGraph();
+      // let deviceIndex = this.sensorService.monitoringDevices.findIndex(device => device.deviceId == this.data.num);
+      // this.currentChart = deviceIndex;
+      // if (this.sensorService.monitoringDevices[deviceIndex].spo2Reads.spo2Read.length > 20){
+      //   this.config.data.labels = [];
+      //   this.config.data.datasets[0].data = [];
+      //   this.myChart.update();
+      //   this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].spo2Reads.readTime.slice(-20).map(time => {
+      //     let date = new Date(time);
+      //     return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      //   });
+      //   this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].spo2Reads.spo2Read.slice(-20);
+      //   this.myChart.update();
+      // }else {
+      //   this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].spo2Reads.readTime.map(time => {
+      //     let date = new Date(time);
+      //     return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      //   });;
+      //   this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].spo2Reads.spo2Read;
+      //   this.myChart.update();
+      // }
       if (this.currentChart == graphNum){
         this.myChart.update();
       }
     });
+  }
+
+  initializeGraph(){
     let deviceIndex = this.sensorService.monitoringDevices.findIndex(device => device.deviceId == this.data.num);
     this.currentChart = deviceIndex;
-    this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].spo2Reads.readTime;
-    this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].spo2Reads.spo2Read;
+    let yAxis = this.sensorService.monitoringDevices[deviceIndex].spo2Reads.spo2Read;
+    let xAxis = this.sensorService.monitoringDevices[deviceIndex].spo2Reads.readTime;
+    if (yAxis.length > 20){
+      this.config.data.labels = xAxis.slice(-20).map(time => {
+        let date = new Date(time);
+        return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      });
+      this.config.data.datasets[0].data = yAxis.slice(-20);
+    } else {
+      this.config.data.labels = xAxis.map(time => {
+        let date = new Date(time);
+        return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      });
+      this.config.data.datasets[0].data = yAxis;
+    }
     this.myChart = new Chart('myChart', this.config);
+    this.myChart.update();
   }
 }

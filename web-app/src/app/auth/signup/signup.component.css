@@ -6,7 +6,7 @@
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  height:100%;
+  height: 1000px;
 
 }
 
@@ -20,18 +20,30 @@
   color: red
 }
 
-body {
-  background-image: url("../../../assets/images/pregnant-woman-thinking-of-baby.jpg");
-  background-repeat: no-repeat;
-
-  background: #007bff;
-  background: linear-gradient(to right, #0062E6, #33AEFF);
-}
-
 
 #loading-spinner-row{
   text-align: center;
   padding-top: 200px;
+}
+
+.mainPass{
+  position: relative;
+}
+
+.mainPass div{
+  position: absolute;
+  left: 355px;
+  top: 40px;
+}
+
+.confirmed{
+  position: relative;
+}
+
+.confirmed div{
+  position: absolute;
+  left: 355px;
+  top: 40px;
 }
 
 #signup-form{

@@ -1,6 +1,8 @@
 package com.server.mothercare.entities.post;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.server.mothercare.entities.Image;
 import com.server.mothercare.entities.User;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Entity(name = "Blog")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Blog implements Serializable {
     @Id
     @Column(name = "id")

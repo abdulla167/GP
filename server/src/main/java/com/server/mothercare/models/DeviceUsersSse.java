@@ -13,5 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class DeviceUsersSse {
     private String username;
-    private SseEmitter emitters;
+    private SseEmitter emitter;
 }

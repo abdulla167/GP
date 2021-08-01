@@ -1,9 +1,11 @@
 
 <mat-card class="example-card">
   <mat-card-header>
-    <div mat-card-avatar  class="example-header-image"></div>
+    <img mat-card-avatar [src]="userImage"  class="example-header-image">
     <mat-card-title> {{blog.user.username}}</mat-card-title>
-    <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+    <mat-card-subtitle>{{blog.categories}}</mat-card-subtitle>
+
+    <span style="margin: 20px"> {{blog.date|date:'short'}}</span>
   </mat-card-header>
   <img mat-card-image [src]="image"  width="200px" height="200px" alt="Photo of a Shiba Inu">
   <mat-card-content>

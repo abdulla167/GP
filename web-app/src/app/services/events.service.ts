@@ -8,6 +8,8 @@ import {EventModel} from '../models/event.model';
 import {TokenService} from './Token.service';
 
 
+
+
 @Injectable({
   providedIn : 'root'
 })
@@ -38,7 +40,7 @@ export class EventsService{
 
   getEvents(): Observable<any>{
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
     return this.http.get('http://localhost:8080/events', {observe: 'response', headers}).pipe(map((resp) => {
@@ -65,7 +67,7 @@ export class EventsService{
 
   addEvent(event: EventModel, reminder: string): Subscription{
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
     reminder === 'yes' ? event.reminder = true : event.reminder = false;
@@ -88,7 +90,7 @@ export class EventsService{
 
   editEvent(event: EventModel, reminder: string): Subscription{
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
     reminder === 'yes' ? event.reminder = true : event.reminder = false;
@@ -111,7 +113,7 @@ export class EventsService{
 
   deleteEvent(eventId: number): Subscription{
     const headers = {
-      Authorization: 'Bearer ' + this.tokenService.getAccessToken(),
+      Authorization: 'Bearer ' + this.tokenService.getToken(),
       'Content-type': 'application/json'
     };
     return this.http.delete('http://localhost:8080/event/' + eventId, {observe: 'response', headers}).subscribe(() => {
@@ -150,6 +152,7 @@ export class EventsService{
       const eventDate = new Date(event.startDate);
       if (eventDate >= nowDate){
         event.startDate = new Date(event.startDate).toLocaleString();
+        event.endDate = new Date(event.endDate).toLocaleString();
         this.upcomingEvents.push(event);
       }
       if (this.upcomingEvents.length > 3){

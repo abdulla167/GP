@@ -14,6 +14,7 @@ import {BlogService} from '../../services/Blog.service';
 export class LoginComponent implements OnInit {
   isLoading:boolean = false;
   error : string;
+  passVis = 'password';
 
   constructor(private authService : AuthenticationService, private tokenService: TokenService,
               private router: Router, private userService: UserService, private blogService: BlogService) { }
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
       .subscribe(( response) => {
         if (response.status === 200 ){
           console.log(response.body);
-          this.tokenService.setAccessToken(( response.body['access_token']));
+          this.tokenService.saveToken( response.body['access_token']);
           this.userService.getUser().subscribe((response) => {
             console.log(response.body);
           });
@@ -40,5 +41,13 @@ export class LoginComponent implements OnInit {
         this.error = resError;
       });
     this.isLoading = false;
+  }
+
+  toggleVisibiltiy(){
+    if (this.passVis === 'text'){
+      this.passVis = 'password';
+    } else {
+      this.passVis = 'text';
+    }
   }
 }

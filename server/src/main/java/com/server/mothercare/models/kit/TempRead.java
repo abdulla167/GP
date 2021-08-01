@@ -11,7 +11,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TempRead{
+public class TempRead implements Comparable<TempRead>{
     private double value;
     private Date time;
+
+    @Override
+    public int compareTo(TempRead o) {
+        return time.compareTo(o.time);
+    }
 }

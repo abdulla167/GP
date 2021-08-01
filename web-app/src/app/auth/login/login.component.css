@@ -15,6 +15,16 @@
 
 }
 
+.fontpassword{
+  position: relative;
+}
+
+.fontpassword div{
+  position: absolute;
+  left: 355px;
+  top: 40px;
+}
+
 
 #loading-spinner-row{
   text-align: center;

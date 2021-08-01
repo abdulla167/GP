@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { BlogModel } from 'src/app/models/blog.model';
 import { BlogService } from 'src/app/services/Blog.service';
@@ -17,11 +17,21 @@ export class SideListComponent implements OnInit {
   alwaysOpened = true;
   savedBlogs: boolean = false;
   myBlogs: boolean = false;
-  constructor(public dialog: MatDialog, private blogService: BlogService) { }
+  newBlogs: boolean = false;
+  newBlogsList: BlogModel[] = [];
+  badge: number ;
+  constructor(public dialog: MatDialog, private blogService: BlogService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.getAllBlogs();
     const toggle = window.innerWidth  > 800 ? true : false;
+    this.blogService.blogNotification.subscribe((notification) => {
+      if ( (typeof notification) === (typeof this.newBlogsList)) {
+        this.badge = (notification as BlogModel[]).length;
+        this.changeDetectorRef.detectChanges();
+      }
+
+    });
     this.responsiveSideNav(toggle);
   }
 
@@ -64,16 +74,25 @@ export class SideListComponent implements OnInit {
   }
 
   getSavedBlogs() {
+    this.newBlogs = false;
     this.savedBlogs = true;
     this.myBlogs = false;
   }
   getMyBlogs() {
+    this.newBlogs = false;
     this.myBlogs = true;
     this.savedBlogs = false;
   }
 
   getAllBlogs() {
+    this.newBlogs = false;
     this.savedBlogs = false;
     this.myBlogs = false;
+  }
+
+  getNewBlogs() {
+    this.getAllBlogs();
+    this.newBlogs = true;
+
   }
 }

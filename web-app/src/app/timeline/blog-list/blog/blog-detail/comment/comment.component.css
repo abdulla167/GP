@@ -105,3 +105,7 @@ a + input {
   left: 0;
   opacity: 0;
 }
+
+.click {
+  cursor: pointer;
+}

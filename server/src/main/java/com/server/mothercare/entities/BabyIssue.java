@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BabyIssue {
+public class BabyIssue implements Comparable<BabyIssue> {
     @Column(name = "description")
     private String description;
 
@@ -24,4 +24,9 @@ public class BabyIssue {
 
     @Column(name = "baby_name")
     private String babyName;
+
+    @Override
+    public int compareTo(BabyIssue o) {
+        return this.sensorRead.getTime().compareTo(o.sensorRead.getTime());
+    }
 }

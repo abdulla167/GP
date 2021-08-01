@@ -14,6 +14,7 @@ export class BlogListComponent implements OnInit {
 
   @Input() savedBlogs: boolean = false;
   @Input() myBlogs: boolean = false;
+  @Input() newBlogs: boolean = false;
   constructor() { }
 
   ngOnInit() {

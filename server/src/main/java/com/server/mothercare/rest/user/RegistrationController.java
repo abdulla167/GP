@@ -61,12 +61,17 @@ public class RegistrationController {
     }
 
     @GetMapping("/confirm-account")
-    public void confirmUserAccount(@RequestParam("token") String confirmationToken) {
+    public ResponseEntity confirmUserAccount(@RequestParam("token") String confirmationToken) {
         ConfirmationToken token = confirmationTokenDAO.findByConfirmationToken(confirmationToken);
+        ResponseEntity responseEntity = null;
         if (token != null) {
+            responseEntity = new ResponseEntity(HttpStatus.OK);
             User user = userService.userbyUserName(token.getUser().getUsername());
             user.setConfirmed(true);
             userService.update(user);
-        } else {}
+        } else {
+            responseEntity = new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return responseEntity;
     }
 }

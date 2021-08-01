@@ -19,7 +19,11 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public void notifyConnectedDevice(Long id, String message) throws IOException {
         if (this.notificationList.containsKey(id)){
-            this.notificationList.get(id).send(message);
+            try{
+                this.notificationList.get(id).send(message);
+            } catch (IOException ioException){
+                this.notificationList.get(id).complete();
+            }
         }
     }
 

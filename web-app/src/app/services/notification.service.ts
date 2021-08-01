@@ -1,27 +1,28 @@
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {Observable, Subject} from 'rxjs';
 import {UserService} from "./user.service";
 
 @Injectable({
   providedIn : "root"
 })
 export class NotificationService{
-  public notifications: string[] = [];
+  notification: Subject<any>;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+    this.notification = new Subject();
+  }
 
-  subscribeForNotification(): Observable<boolean>{
-    return new Observable<boolean>(observer => {
+  subscribeForNotification() {
+    console.log("subscribe");
       const eventSource = new EventSource('http://localhost:8080/notifier/' + this.userService.theUser.username);
       eventSource.onmessage = event => {
-        this.notifications.push(event.data);
-        observer.next(true);
+        this.notification.next(event.data);
+        console.log("recieve notification");
       };
       eventSource.onerror = error => {
-        observer.next(false);
         eventSource.close();
+        this.subscribeForNotification();
       };
-    });
   }
 
 }

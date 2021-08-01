@@ -11,7 +11,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HeartRateRead{
+public class HeartRateRead implements Comparable<HeartRateRead>{
     private double value;
     private Date time;
+
+    @Override
+    public int compareTo(HeartRateRead o) {
+        return time.compareTo(o.time);
+    }
 }

@@ -9,13 +9,13 @@ export class DeviceModel{
   public heartRateReads : HeartRateRead;
   public tempReads : TempRead;
   public spo2Reads : SPO2Read;
-  public positionRead : PositionRead;
+  public positionRead : string;
   public eventSource : EventSource;
 
   constructor() {
     this.tempReads = new TempRead();
     this.spo2Reads  = new SPO2Read();
     this.heartRateReads = new HeartRateRead();
-    this.positionRead = new PositionRead();
+    this.positionRead = '';
   }
 }

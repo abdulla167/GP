@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {Chart} from '../../../../../node_modules/chart.js';
 import {DeviceService} from "../../../services/device-service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
@@ -64,21 +64,59 @@ export class TempChartComponent implements OnInit {
   };
 
   constructor(private sensorService: DeviceService, public dialogRef: MatDialogRef<TempChartComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any, private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.initializeGraph();
     this.graphUpdateSubscription = this.sensorService.getGraphSubject().subscribe((graphNum) => {
-      this.config.data.labels = this.sensorService.monitoringDevices[graphNum].tempReads.readTime;
-      this.config.data.datasets[0].data = this.sensorService.monitoringDevices[graphNum].tempReads.tempRead;
+      this.initializeGraph();
+
       if (this.currentChart == graphNum){
         this.myChart.update();
       }
+      // let deviceIndex = this.sensorService.monitoringDevices.findIndex(device => device.deviceId == this.data.num);
+      // this.currentChart = deviceIndex;
+      // if (this.sensorService.monitoringDevices[deviceIndex].tempReads.tempRead.length > 20){
+      //   this.config.data.labels = [];
+      //   this.config.data.datasets[0].data = [];
+      //   this.myChart.update();
+      //   this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].tempReads.readTime.slice(-20).map(time => {
+      //     let date = new Date(time);
+      //     return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      //   });
+      //   this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].tempReads.tempRead.slice(-20);
+      //   this.myChart.update();
+      // }else {
+      //   this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].tempReads.readTime.map(time => {
+      //     let date = new Date(time);
+      //     return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      //   });
+      //   this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].tempReads.tempRead;
+      //   this.myChart.update();
+      // }
     });
+  }
+
+  initializeGraph(){
     let deviceIndex = this.sensorService.monitoringDevices.findIndex(device => device.deviceId == this.data.num);
     this.currentChart = deviceIndex;
-    this.config.data.labels = this.sensorService.monitoringDevices[deviceIndex].tempReads.readTime;
-    this.config.data.datasets[0].data = this.sensorService.monitoringDevices[deviceIndex].tempReads.tempRead;
+    let yAxis = this.sensorService.monitoringDevices[deviceIndex].tempReads.tempRead;
+    let xAxis = this.sensorService.monitoringDevices[deviceIndex].tempReads.readTime;
+    if (yAxis.length > 20){
+      this.config.data.labels = xAxis.slice(-20).map(time => {
+        let date = new Date(time);
+        return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      });
+      this.config.data.datasets[0].data = yAxis.slice(-20);
+    } else {
+      this.config.data.labels = xAxis.map(time => {
+        let date = new Date(time);
+        return date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds();
+      });
+      this.config.data.datasets[0].data = yAxis;
+    }
     this.myChart = new Chart('myChart', this.config);
+    this.myChart.update();
   }
 
 

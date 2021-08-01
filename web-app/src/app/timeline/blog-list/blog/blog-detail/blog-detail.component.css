@@ -23,6 +23,11 @@ hr {
   margin-bottom: 0
 }
 
+.click{
+  cursor: pointer;
+}
+
+
 .muted-color {
   color: #a09c9c;
   font-size: 13px

@@ -19,7 +19,7 @@ export class AllBlogsComponent implements OnInit {
   blogs: BlogModel[] ;
   user: string = 'mother-care';
   category: string ='all';
-  categoryList: string[] = ['COVID-19', 'Labor', 'Delivery', 'Breast Feeding', 'Baby', 'Exercise'];
+  categoryList: string[] = ['COVID-19', 'Pregnancy','Labor', 'Delivery', 'Breast Feeding', 'Baby', 'Exercise'];
   constructor(private blogService: BlogService) { }
 
 

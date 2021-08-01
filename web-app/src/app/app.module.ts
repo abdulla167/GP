@@ -67,6 +67,9 @@ import { LogoutComponent } from './auth/logout/logout.component';
 import { CommentComponent } from './timeline/blog-list/blog/blog-detail/comment/comment.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ListItemsComponent } from './profile/list-items/list-items.component';
+import {MatBadge, MatBadgeModule} from '@angular/material/badge';
+import {NewBlogsComponent} from './timeline/blog-list/new-blogs/new-blogs.component';
+import { ConfirmAccountComponent } from './auth/confirm-account/confirm-account.component';
 
 
 
@@ -103,7 +106,9 @@ import { ListItemsComponent } from './profile/list-items/list-items.component';
     AllBlogsComponent,
     LogoutComponent,
     CommentComponent,
-    ListItemsComponent
+    ListItemsComponent,
+    NewBlogsComponent,
+    ConfirmAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -138,6 +143,7 @@ import { ListItemsComponent } from './profile/list-items/list-items.component';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    MatBadgeModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatButtonToggleModule,

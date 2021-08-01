@@ -76,15 +76,22 @@
                 <span class="help-block error-message" *ngIf="email.invalid && email.touched">Please enter a valid email</span>
               </div>
 
-              <div class=" form-group">
+              <div class=" form-group" class="mainPass">
                 <label for="inputPassword"> Password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" ngModel name="password" minlength="6" required>
+                <input [type]="passVisi" id="inputPassword" class="form-control" placeholder="Password" ngModel name="password" minlength="6" required>
+                <div>
+                  <a style="cursor: pointer" (click)="toggleVisibiltiy()" *ngIf="passVisi === 'text'"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                  <a style="cursor: pointer" (click)="toggleVisibiltiy()" *ngIf="passVisi === 'password'"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                </div>
               </div>
 
-              <div class=" form-group">
+              <div class=" form-group" class="confirmed">
                 <label for="confirmPassword"> Confirm password</label>
-                <input type="password" id="confirmPassword" class="form-control" placeholder="Password" ngModel name="confirmPassword" minlength="6" required>
-                <i class="bi bi-eye-slash" id="togglePassword"></i>
+                <input [type]="confVisi" id="confirmPassword" class="form-control" placeholder="Password" ngModel name="confirmPassword" minlength="6" required>
+                <div>
+                  <a style="cursor: pointer" (click)="toggleVisibiltiy()" *ngIf="confVisi === 'text'"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                  <a style="cursor: pointer" (click)="toggleVisibiltiy()" *ngIf="confVisi=== 'password'"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                </div>
                 <span class="help-block error-message" *ngIf="invalidConfirmPassword">Does not match the password</span>
               </div>
 

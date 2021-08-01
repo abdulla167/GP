@@ -11,7 +11,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SPO2Read {
+public class SPO2Read implements Comparable<SPO2Read>{
     private double value;
     private Date time;
+
+    @Override
+    public int compareTo(SPO2Read o) {
+        return time.compareTo(o.time);
+    }
 }
